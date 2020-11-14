@@ -8,14 +8,14 @@ class Genes:
         # return output values
         pass
     
-    def num_nodes(self):
+    def _num_nodes(self):
         return 1
         pass
 
-    def add_connection(self, in, out, weight, enabled = True):
+    def _add_connection(self, in, out, weight, enabled = True):
         pass
 
-    def add_node(self, in, out):
+    def _add_node(self, in, out):
         pass
 
     def mutate(self):
