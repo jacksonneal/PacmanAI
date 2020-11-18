@@ -131,6 +131,8 @@ class Genes:
             connection[Genes._WEIGHT] += np.random.normal(0, self._metaparameters.perturbation_stdev)
 
     def _enable_mutation(self, enable):
+        if len(self._connections) == 0:
+            return
         connection = util.random.choice(self._connections)
         connection[Genes._ENABLED] = enable
 
