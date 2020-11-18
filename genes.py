@@ -197,6 +197,9 @@ class Genes:
         c3 = self._metaparameters.c3
         slen = len(self._connections)
         olen = len(other._connections)
+        n = max(olen, slen)
+        if n == 0:
+            return 0
         disjoint = 0
         weight_difference = 0
         shared = 0
@@ -218,8 +221,7 @@ class Genes:
                     i += 1
                 else:
                     j += 1
-        excess = j - olen + i - slen
-        n = max(1, olen, slen)
+        excess = olen - j + slen - i
         return (c1 * excess / n) + (c2 * disjoint / n) + (0 if shared == 0 else c3 * weight_difference / shared)
 
     def clone(self):
