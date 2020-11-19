@@ -20,6 +20,7 @@ from game import Agent
 import distanceCalculator
 from util import nearestPoint
 import util
+import numpy as np
 
 # Note: the following class is not used, but is kept for backwards
 # compatibility with team submissions that try to import it.
@@ -302,3 +303,85 @@ class TimeoutAgent( Agent ):
     import random, time
     time.sleep(2.0)
     return random.choice( state.getLegalActions( self.index ) )
+
+from genes import Genes
+
+class GenesAgent( CaptureAgent ):
+
+  def __init__(self, index, genes = None):
+    self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+    self.neurons = None
+    CaptureAgent.__init__(self, index)
+
+  def _makeInput(self, gameState):
+    walls = gameState.getWalls()
+    capsules = gameState.getCapsules()
+    width = gameState.getWalls().width
+    height = gameState.getWalls().height
+
+    ret = [0] * (8 +  width * height)
+    if self.red:
+      team = gameState.getRedTeamIndices()
+      enemy = gameState.getBlueTeamIndices()
+      food = gameState.getRedFood()
+      food2 = gameState.getBlueFood()
+      for x in range(width):
+        for y in range(height):
+          if walls[x][y]:
+            ret[x * height + y] = 1
+          elif food[x][y]:
+            ret[x * height + y] = 2
+          elif food2[x][y]:
+            ret[x * height + y] = 3
+      for x, y in capsules:
+        ret[x * height + y] = 4
+    else:
+      enemy = gameState.getRedTeamIndices()
+      team = gameState.getBlueTeamIndices()
+      food = gameState.getRedFood()
+      food2 = gameState.getBlueFood()
+      for x in range(width):
+        for y in range(height):
+          if walls[x][y]:
+            ret[(width - x - 1) * height + y] = 1
+          elif food[x][y]:
+            ret[(width - x - 1) * height + y] = 2
+          elif food2[x][y]:
+            ret[(width - x - 1) * height + y] = 3
+      for x, y in capsules:
+        ret[(width - x - 1) * height + y] = 4
+    total = width * height
+
+    def assignPosition(arrayIndex, agentIndex):
+      position = gameState.getAgentPosition(agentIndex)
+      if position is None:
+        ret[arrayIndex] = -1
+        ret[arrayIndex + 1] = -1
+      else:
+        if (self.red):
+          ret[arrayIndex] = position[0]
+        else:
+          ret[arrayIndex] = width - position[0] - 1
+        ret[arrayIndex+1] = position[1]
+    assignPosition(total, team[0])
+    assignPosition(total + 2, team[1])
+    assignPosition(total + 4, enemy[0])
+    assignPosition(total + 6, enemy[1])
+    return ret
+
+  def chooseAction(self, gameState):
+    self.neurons = self.genes.feed_sensor_values(self._makeInput(gameState), self.neurons)
+    output = self.genes.extract_output_values(self.neurons)
+    best = 0
+    for i in range(1, len(output)):
+      if output[i] > output[best]:
+        best = i
+    if self.red:
+      choice = ["North", "South", "East", "West", "Stop"][best]
+    else:
+      choice = ["North", "South", "West", "East", "Stop"][best]
+    legalActions = gameState.getLegalActions(self.index)
+    if choice in legalActions:
+      return choice
+    return "Stop"
+
