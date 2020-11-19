@@ -310,6 +310,8 @@ class GenesAgent( CaptureAgent ):
 
   def __init__(self, index, genes = None):
     self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+    for i in range(0, 1000):
+      self.genes.mutate()
     self.neurons = None
     CaptureAgent.__init__(self, index)
 
@@ -372,16 +374,11 @@ class GenesAgent( CaptureAgent ):
   def chooseAction(self, gameState):
     self.neurons = self.genes.feed_sensor_values(self._makeInput(gameState), self.neurons)
     output = self.genes.extract_output_values(self.neurons)
-    best = 0
-    for i in range(1, len(output)):
-      if output[i] > output[best]:
-        best = i
     if self.red:
-      choice = ["North", "South", "East", "West", "Stop"][best]
+      values = {"North": output[0], "South": output[1], "East": output[2], "West": output[3], "Stop": output[4]}
     else:
-      choice = ["North", "South", "West", "East", "Stop"][best]
+      values = {"North": output[0], "South": output[1], "East": output[3], "West": output[2], "Stop": output[4]}
     legalActions = gameState.getLegalActions(self.index)
-    if choice in legalActions:
-      return choice
-    return "Stop"
+    action = max(legalActions, key=lambda dir: values[dir])
+    return action
 

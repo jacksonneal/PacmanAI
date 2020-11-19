@@ -78,7 +78,9 @@ class Genes:
             neuron_index = node_index + self._num_sensors + 1
             has_connections = False
             sum = 0
-            for in_node, out_node, weight, enabled, innov in node:
+
+            for connection_index in node:
+                in_node, out_node, weight, enabled, innov = self._connections[connection_index]
                 # assert out_node = neuron_index
                 if enabled:
                     has_connections = True
@@ -99,28 +101,30 @@ class Genes:
 
     def _add_connection(self):
         total_nodes = self._total_nodes()
-        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(1, total_nodes)
-        output_index = util.random.randint(self._num_sensors + 1, total_nodes)
+        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(1, total_nodes - 1)
+        output_index = util.random.randint(self._num_sensors, total_nodes - 1)
 
-        incoming = self._dynamic_nodes[output_index - self._num_sensors - 1]
+        incoming = self._node_by_index(output_index)
         for connection_index in incoming:
             connection = self._connections[connection_index]
             if connection[Genes._IN_NODE] == input_index:
                 return
         innovation_number = self._metaparameters.increment_innovation()
-        connection = (input_index, output_index, np.random.normal(0, self._metaparameters.new_link_weight_stdev), 1, innovation_number)
+        connection = [input_index, output_index, np.random.normal(0, self._metaparameters.new_link_weight_stdev), 1, innovation_number]
         incoming.append(len(self._connections))
         self._connections.append(connection)
         pass
 
     def _add_node(self):
+        if len(self._connections) == 0:
+            return
         connection = util.random.choice(self._connections)
         connection[Genes._ENABLED] = False
-        in_node, out_node = connection
+        in_node, out_node, _a, _b, _c  = connection
         new_node = []
         self._dynamic_nodes.append(new_node)
-        leading = (in_node, self._total_nodes() - 1, 1, True, self._metaparameters.increment_innovation())
-        trailing = (self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, self._metaparameters.increment_innovation())
+        leading = [in_node, self._total_nodes() - 1, 1, True, self._metaparameters.increment_innovation()]
+        trailing = [self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, self._metaparameters.increment_innovation()]
         self._connections.append(leading)
         self._connections.append(trailing)
         new_node.append(len(self._connections) - 2)
