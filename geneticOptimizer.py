@@ -4,11 +4,12 @@ from captureAgents import GenesAgent
 from capture import CaptureRules
 from genes import Genes
 from baselineTeam import OffensiveReflexAgent
+import math as m
 
 
 class GeneticOptimizer:
 
-    def __init__(self, population, fitnessCalculator, maxGenerations):
+    def __init__(self, population, fitnessCalculator, maxGenerations, populationSize):
         """ Initialize the optimizer
         :param population - set of starting genes, all of same initial species
         :param fitnessCalculator - capable of scoring a population of individuals
@@ -16,12 +17,13 @@ class GeneticOptimizer:
         self.population = [{
             "id": 0,
             "individuals": population,
-            "fitness": -1,
+            "fitness": 0,
             "stagnation": 0
         }]
         self.speciesCount = 1
         self.fitnessCalculator = fitnessCalculator
         self.generationCount = 0
+        self.populationSize = populationSize
         self.maxGenerations = maxGenerations
         self.best = population[randint(0, len(population) - 1)]
 
@@ -31,71 +33,71 @@ class GeneticOptimizer:
 
     def evolve(self):
         """ Run optimization until a termination condition is met. """
-        while not self.isTerminated:
+
+        while not self.isTerminated():
             self._evolveSingle()
             self.generationCount += 1
 
     def _evolveSingle(self):
         """ Execute a single evolution of genetic optimization. """
-        representatives = map(
-            lambda species: (species["individuals"][randint(0, len(species["individuals"]) - 1)], species), self.population)
+        representatives = list(map(
+            lambda species: (species["individuals"][randint(0, len(species["individuals"]) - 1)], species), self.population))
 
         populationFitnessSum = sum(map(lambda species: sum(
             map(lambda ind: ind.getFitness(), species["individuals"])), self.population))
 
         nextGenPopulation = []
-        for species in population:
+        for species in self.population:
             nextGenPopulation.append({
                 "id": species["id"],
-                "individuals": []
+                "individuals": [],
+                "fitness": species["fitness"],
+                "stagnation": species["stagnation"]
             })
 
         for species in self.population:
             speciesFitnessSum = sum(
                 map(lambda ind: ind.getFitness(), species["individuals"]))
             # Constant number of offspring proportional to species fitness within larger population
-            # TODO: ensure total population size stays consistent
-            speciesNumOffspring = round(
-                speciesFitnessSum / populationFitnessSum)
-            species["individuals"].sort(key=compare)
+            speciesNumOffspring = 0
+            if populationFitnessSum == 0:
+                speciesNumOffspring = len(species["individuals"])
+            else:
+                speciesNumOffspring = m.ceil(
+                    speciesFitnessSum / populationFitnessSum)
+            species["individuals"].sort(key=lambda ind: 0 - ind.getFitness())
 
             speciesOffspring = []
             # Eliminate worst individual
             candidates = species["individuals"][1:]
             # Autocopy best individual for large species
-            if len(species["individuals"] > 5):
+            if len(species["individuals"]) > 5:
                 speciesOffspring.append(
                     species["individuals"][len(species["individuals"]) - 1])
 
             # Only non-empty, non-stagnating species may evolve
-            if len(candidates > 1) and species["stagnation"] < 15:
+            if len(candidates) >= 1 and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
                     selected = candidates[randint(0, len(candidates) - 1)]
                     child = selected
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
-                    nodeMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
                         if crossRand < .001:
-                            # TODO: perform interspecies crossover. what is selection strategy for mate?
-                            pass
+                            randSpecies = self.population[randint(0, len(self.population) - 1)]
+                            randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
+                            child = selected.clone().breed(randMate.clone(), (selected.getFitness() > randMate.getFitness()))
                         else:
                             mate = candidates[randint(0, len(candidates) - 1)]
-                            child = selected.clone.breed(mate.clone)
-                    # TODO: properly call into mutate functions
-                    if connMutateRand < 80:
-                        connTypeRand = random.uniform(0, 1)
-                        if connTypeRand < .9:
-                            child = selected.mutateConnUniformPertubation()
-                        else:
-                            child = selected.mutateConnRandValue()
-                speciesOffspring.append(child)
+                            child = selected.clone().breed(mate.clone(), (selected.getFitness() > mate.getFitness()))
+                    if connMutateRand < .80:
+                        child = selected.clone().mutate()
+                    speciesOffspring.append(child)
 
             for offspring in speciesOffspring:
                 compatible = False
                 for rep in representatives:
-                    # TODO: where is compatibility configuration set? Probably should be in optimizer and passed to function here
-                    if offspring.compatible(rep[0]):
+                    if offspring.distance(rep[0]) < .3:
                         compatible = True
                         for species in nextGenPopulation:
                             if species["id"] == rep[1]["id"]:
@@ -106,16 +108,16 @@ class GeneticOptimizer:
                         "id": self.speciesCount,
                         "individuals": [offspring],
                         "stagnation": 0,
-                        "fitness": -1
+                        "fitness": 0
                     }
                     self.speciesCount += 1
                     nextGenPopulation.append(newSpecies)
                     newRep = (offspring, [offspring])
-                    representatives.append(offspring, newRep)
+                    representatives.append((offspring, newRep))
 
         # Filter out empty species
-        nextGenPopulation = filter(lambda species: len(
-            species["individuals"]), nextGenPopulation)
+        nextGenPopulation = list(filter(lambda species: len(
+            species["individuals"]), nextGenPopulation))
 
         # Calculate fitness in each new species
         self._calculateFitness(nextGenPopulation, self.best)
@@ -125,12 +127,13 @@ class GeneticOptimizer:
             maxFitness = max(
                 map(lambda ind: ind.getFitness(), species["individuals"]))
             if maxFitness <= species["fitness"]:
-                species["stagnation"]
+                species["stagnation"] += 1
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
         self.population = nextGenPopulation
         self.best = self.getBestIndividual()
+        print("POP_SIZE: ", len(self.population))
 
     def _calculateFitness(self, population, bestInd):
         """ Calculate and cache the fitness of each individual in the population. """
@@ -145,14 +148,14 @@ class GeneticOptimizer:
         """ Access best individual by fitness across entire population. """
         bestInd = None
         for species in self.population:
-            for ind in species:
+            for ind in species["individuals"]:
                 if bestInd is None or ind.getFitness() > bestInd.getFitness():
                     bestInd = ind
         return bestInd
 
     def isTerminated(self):
         """ Access whether optimization has reached any termination condition. """
-        return self.generationCount < self.maxGenerations
+        return self.generationCount >= self.maxGenerations
 
 
 class FitnessCalculator:
@@ -174,12 +177,11 @@ class FitnessCalculator:
         # Cache score as fitness on individual
         for species in population:
             for individual in species["individuals"]:
-                agents = [GenesAgent(0), GenesAgent(1), OffensiveReflexAgent(2), OffensiveReflexAgent(3)]
+                agents = [GenesAgent(0, individual), GenesAgent(1, prevBest), OffensiveReflexAgent(2), OffensiveReflexAgent(3)]
                 g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                        self.length, self.muteAgents, self.catchExceptions)
                 g.run()
-                # TODO: terminate if running too long
-                # TODO: extract score and save
+                individual.setFitness(g.state.getScore())
 
 
 class Runner:
@@ -187,15 +189,16 @@ class Runner:
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
         self.fitnessCalculator = FitnessCalculator(
             layout, gameDisplay, length, muteAgents, catchExceptions)
-        base = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
-        self.optimizer = GeneticOptimizer([base], self.fitnessCalculator, 2)
+        base = []
+        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        populationSize = 2
+        for i in range(populationSize):
+            base.append(baseUnit.clone())
+        self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, 2, populationSize)
 
     def run(self):
+        # TODO: Load previous best into optimizer
         self.optimizer.initialize()
         self.optimizer.evolve()
+        # TODO: Save best to file
         exit(0)
-
-
-def compare(ind0, ind1):
-    """ Comparator used to sort individuals by fitness values. """
-    return ind0.getFitness() - ind1.getFitness()

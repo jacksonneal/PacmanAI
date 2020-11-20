@@ -65,6 +65,7 @@ class Genes:
                 self._dynamic_nodes.append([])
             self._connections = []
             self._metaparameters = metaparameters
+        self.fitness = 0
 
     def feed_sensor_values(self, values, neurons=None):
         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
@@ -238,3 +239,9 @@ class Genes:
 
     def load(in_stream, metaparameters):
         return Genes(0, 0, metaparameters)
+
+    def setFitness(self, fitness):
+        self.fitness = fitness
+
+    def getFitness(self):
+        return self.fitness

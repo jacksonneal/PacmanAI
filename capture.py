@@ -1047,7 +1047,6 @@ def runGames(layouts, agents, display, length, numGames, record, numTraining, re
 
         ###################
         # TODO: properly integrate options for running optimization
-        print("AGENTS: ", agents)
         optimizerRunner = geneticOptimizer.Runner(
             layout, gameDisplay, length, muteAgents, catchExceptions)
         optimizerRunner.run()
