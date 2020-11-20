@@ -2,7 +2,7 @@ from scipy.special import expit as sigmoid
 import numpy as np
 import util
 import copy
-
+import json
 
 class RandomlyTrue:
     def __bool__(self):
@@ -235,13 +235,29 @@ class Genes:
         return Genes(self)
 
     def save(self, out_stream):
-        pass
+        asJson = {"nodeCount": self._total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
+        out_stream.write(json.dumps(asJson))
+        out_stream.flush()
 
     def load(in_stream, metaparameters):
-        return Genes(0, 0, metaparameters)
+        asJson = json.load(in_stream)
+        ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
+        toAdd = asJson["nodeCount"] - ret._total_nodes()
+        for _ in range(toAdd):
+            ret._dynamic_nodes.append([])
+        connections = asJson["connections"]
+        count = 0
+        for in_node, out_node, weight, enabled, innov in connections:
+            ret._node_by_index(out_node).append(count)
+            count += 1
+        return ret
 
     def setFitness(self, fitness):
         self.fitness = fitness
 
     def getFitness(self):
         return self.fitness
+
+f = open("out.genes", "r")
+g = Genes.load(f, Genes.Metaparameters())
+f.close()
