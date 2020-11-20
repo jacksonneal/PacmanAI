@@ -257,7 +257,3 @@ class Genes:
 
     def getFitness(self):
         return self.fitness
-
-f = open("out.genes", "r")
-g = Genes.load(f, Genes.Metaparameters())
-f.close()
