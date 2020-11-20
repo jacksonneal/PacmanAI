@@ -247,6 +247,7 @@ class Genes:
             ret._dynamic_nodes.append([])
         connections = asJson["connections"]
         count = 0
+        ret._connections = connections
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
