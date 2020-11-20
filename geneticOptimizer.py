@@ -1,10 +1,14 @@
 import random
 from random import randint
+from captureAgents import GenesAgent
+from capture import CaptureRules
+from genes import Genes
+from baselineTeam import OffensiveReflexAgent
 
 
 class GeneticOptimizer:
 
-    def __init__(self, population, fitnessCalculator):
+    def __init__(self, population, fitnessCalculator, maxGenerations):
         """ Initialize the optimizer
         :param population - set of starting genes, all of same initial species
         :param fitnessCalculator - capable of scoring a population of individuals
@@ -18,11 +22,12 @@ class GeneticOptimizer:
         self.speciesCount = 1
         self.fitnessCalculator = fitnessCalculator
         self.generationCount = 0
-        self.maxGenerations = 10
+        self.maxGenerations = maxGenerations
+        self.best = population[randint(0, len(population) - 1)]
 
-    def initialize(self, population):
+    def initialize(self):
         """ Prepare for evolution. """
-        self._calculateFitness()
+        self._calculateFitness(self.population, self.best)
 
     def evolve(self):
         """ Run optimization until a termination condition is met. """
@@ -45,7 +50,7 @@ class GeneticOptimizer:
                 "individuals": []
             })
 
-        for species in population:
+        for species in self.population:
             speciesFitnessSum = sum(
                 map(lambda ind: ind.getFitness(), species["individuals"]))
             # Constant number of offspring proportional to species fitness within larger population
@@ -65,7 +70,6 @@ class GeneticOptimizer:
             # Only non-empty, non-stagnating species may evolve
             if len(candidates > 1) and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
-                    # TODO: what is selection strategy within species?
                     selected = candidates[randint(0, len(candidates) - 1)]
                     child = selected
                     crossRand = random.uniform(0, 1)
@@ -76,9 +80,9 @@ class GeneticOptimizer:
                             # TODO: perform interspecies crossover. what is selection strategy for mate?
                             pass
                         else:
-                            # TODO: what is selection strategy for mate?
                             mate = candidates[randint(0, len(candidates) - 1)]
                             child = selected.clone.breed(mate.clone)
+                    # TODO: properly call into mutate functions
                     if connMutateRand < 80:
                         connTypeRand = random.uniform(0, 1)
                         if connTypeRand < .9:
@@ -114,7 +118,7 @@ class GeneticOptimizer:
             species["individuals"]), nextGenPopulation)
 
         # Calculate fitness in each new species
-        self._calculateFitness(nextGenPopulation)
+        self._calculateFitness(nextGenPopulation, self.best)
 
         # Update fitness and stagnation values
         for species in nextGenPopulation:
@@ -126,14 +130,25 @@ class GeneticOptimizer:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
         self.population = nextGenPopulation
+        self.best = self.getBestIndividual()
 
-    def _calculateFitness(self, population):
+    def _calculateFitness(self, population, bestInd):
         """ Calculate and cache the fitness of each individual in the population. """
-        fitnessCalculator.calculateFitness(population)
+        self.fitnessCalculator.calculateFitness(
+            population, bestInd)
 
     def getPopulation(self):
         """ Access all individuals by species. """
         return self.population
+
+    def getBestIndividual(self):
+        """ Access best individual by fitness across entire population. """
+        bestInd = None
+        for species in self.population:
+            for ind in species:
+                if bestInd is None or ind.getFitness() > bestInd.getFitness():
+                    bestInd = ind
+        return bestInd
 
     def isTerminated(self):
         """ Access whether optimization has reached any termination condition. """
@@ -142,13 +157,43 @@ class GeneticOptimizer:
 
 class FitnessCalculator:
 
-    def calculateFitness(self, population):
+    def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
+        self.layout = layout
+        self.gameDisplay = gameDisplay
+        self.length = length
+        self.muteAgents = muteAgents
+        self.catchExceptions = catchExceptions
+        self.rules = CaptureRules()
+
+    def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
         Run competitive simulation to determine fitness scores. 
         Utilize fitness sharing within each species. 
         """
-        # TODO: calculate species sharing fitness
-        pass
+        # Run a game for each member of the population against the previous best member of the population
+        # Cache score as fitness on individual
+        for species in population:
+            for individual in species["individuals"]:
+                agents = [GenesAgent(0), GenesAgent(1), OffensiveReflexAgent(2), OffensiveReflexAgent(3)]
+                g = self.rules.newGame(self.layout, agents, self.gameDisplay,
+                                       self.length, self.muteAgents, self.catchExceptions)
+                g.run()
+                # TODO: terminate if running too long
+                # TODO: extract score and save
+
+
+class Runner:
+
+    def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
+        self.fitnessCalculator = FitnessCalculator(
+            layout, gameDisplay, length, muteAgents, catchExceptions)
+        base = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        self.optimizer = GeneticOptimizer([base], self.fitnessCalculator, 2)
+
+    def run(self):
+        self.optimizer.initialize()
+        self.optimizer.evolve()
+        exit(0)
 
 
 def compare(ind0, ind1):
