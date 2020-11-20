@@ -64,7 +64,8 @@ class GeneticOptimizer:
                 speciesNumOffspring = len(species["individuals"])
             else:
                 speciesNumOffspring = m.ceil(
-                    speciesFitnessSum / populationFitnessSum)
+                    speciesFitnessSum / populationFitnessSum) * self.populationSize
+            print("NUM offspring: ", speciesNumOffspring)
             species["individuals"].sort(key=lambda ind: 0 - ind.getFitness())
 
             speciesOffspring = []
@@ -134,6 +135,8 @@ class GeneticOptimizer:
         self.population = nextGenPopulation
         self.best = self.getBestIndividual()
         print("POP_SIZE: ", len(self.population))
+        for species in self.population:
+            print("SPECIES_SIZE: ", len(species["individuals"]))
 
     def _calculateFitness(self, population, bestInd):
         """ Calculate and cache the fitness of each individual in the population. """
@@ -177,6 +180,7 @@ class FitnessCalculator:
         # Cache score as fitness on individual
         for species in population:
             for individual in species["individuals"]:
+                # TODO: how do we want the others to play? random?
                 agents = [GenesAgent(0, individual), GenesAgent(1, prevBest), OffensiveReflexAgent(2), OffensiveReflexAgent(3)]
                 g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                        self.length, self.muteAgents, self.catchExceptions)
@@ -191,10 +195,11 @@ class Runner:
             layout, gameDisplay, length, muteAgents, catchExceptions)
         base = []
         baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
-        populationSize = 2
+        maxGen = 10
+        populationSize = 5
         for i in range(populationSize):
             base.append(baseUnit.clone())
-        self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, 2, populationSize)
+        self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen, populationSize)
 
     def run(self):
         # TODO: Load previous best into optimizer
