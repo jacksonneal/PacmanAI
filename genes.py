@@ -1,3 +1,4 @@
+from numpy.core.fromnumeric import sort
 from scipy.special import expit as sigmoid
 import numpy as np
 import util
@@ -38,10 +39,34 @@ class Genes:
             self.perturbation_stdev = perturbation_stdev
             self.disable_mutation_chance = disable_mutation_chance
             self.enable_mutation_chance = enable_mutation_chance
+            self.connections = {}
+            self.node_splits = {}
 
-        def increment_innovation(self):
+        def _increment_innovation(self):
             self.innovation_number += 1
             return self.innovation_number
+        
+        def reset_tracking(self):
+            self.connections = {}
+            self.node_splits = {}
+
+        def register_connection(self, in_node, out_node):
+            pair = (in_node, out_node)
+            innovation_number = self.connections.get(pair, None)
+            if innovation_number is None:
+                innovation_number = self._increment_innovation()
+                self.connections[pair] = innovation_number
+            return innovation_number
+
+        def register_node_split(self, in_node, out_node, between_node):
+            tuple = (in_node, out_node, between_node)
+            innovation_numbers = self.node_splits.get(tuple, None)
+            if innovation_numbers is None:
+                leading = self._increment_innovation()
+                trailing = self._increment_innovation()
+                innovation_numbers = (leading, trailing)
+                self.node_splits[tuple] = innovation_numbers
+            return innovation_numbers
 
     _IN_NODE = 0
     _OUT_NODE = 1
@@ -118,7 +143,7 @@ class Genes:
             connection = self._connections[connection_index]
             if connection[Genes._IN_NODE] == input_index:
                 return
-        innovation_number = self._metaparameters.increment_innovation()
+        innovation_number = self._metaparameters.register_connection(input_index, output_index)
         connection = [input_index, output_index, np.random.normal(0, self._metaparameters.new_link_weight_stdev), 1, innovation_number]
         incoming.append(len(self._connections))
         self._connections.append(connection)
@@ -132,8 +157,9 @@ class Genes:
         in_node, out_node, _a, _b, _c  = connection
         new_node = []
         self._dynamic_nodes.append(new_node)
-        leading = [in_node, self._total_nodes() - 1, 1, True, self._metaparameters.increment_innovation()]
-        trailing = [self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, self._metaparameters.increment_innovation()]
+        leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self._total_nodes() - 1)
+        leading = [in_node, self._total_nodes() - 1, 1, True, leading_innov]
+        trailing = [self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
         self._connections.append(leading)
         self._connections.append(trailing)
         new_node.append(len(self._connections) - 2)
@@ -166,13 +192,20 @@ class Genes:
     def breed(self, other, self_more_fit=RandomlyTrue.instance):
         """ Creates a child from the result of breeding self and other genes, returns new child """
         ret = Genes(self._num_sensors, self._num_outputs, self._metaparameters)
-        slen = len(self._connections)
-        olen = len(other._connections)
+        def get_sorted(connections):
+            if all(connections[i][Genes._INNOV_NUMBER] <= connections[i + 1][Genes._INNOV_NUMBER] for i in range(len(connections) - 1)):
+                return connections
+            return sorted(connections, key=lambda c: c[Genes._INNOV_NUMBER])
+            
+        sconnections = get_sorted(self._connections)
+        oconnections = get_sorted(other._connections)
+        slen = len(sconnections)
+        olen = len(oconnections)
         i = 0
         j = 0
         while i < slen and j < olen:
-            sc = self._connections[i]
-            so = other._connections[j]
+            sc = sconnections[i]
+            so = oconnections[j]
             sci = sc[Genes._INNOV_NUMBER]
             soi = so[Genes._INNOV_NUMBER]
             if sci == soi:
@@ -189,16 +222,16 @@ class Genes:
                     ret._connections.append(copy.deepcopy(soi))
         while i < slen:
             if self_more_fit:
-                ret._connections.append(self._connections[i])
+                ret._connections.append(sconnections[i])
             i += 1
         while j < olen:
             if not self_more_fit:
-                ret._connections.append(other._connections[j])
+                ret._connections.append(oconnections[j])
             j += 1
         max_node = 0
         for connection in ret._connections:
             max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
-        i = ret._num_sensors + ret._num_outputs + 1
+        i = ret._total_nodes()
         while i < max_node:
             ret._dynamic_nodes.append([])
         for index, connection in enumerate(ret._connections):
