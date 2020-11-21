@@ -5,6 +5,7 @@ import util
 import copy
 import json
 
+
 class RandomlyTrue:
     def __bool__(self):
         return util.flipCoin(0.5)
@@ -45,7 +46,7 @@ class Genes:
         def _increment_innovation(self):
             self.innovation_number += 1
             return self.innovation_number
-        
+
         def reset_tracking(self):
             self.connections = {}
             self.node_splits = {}
@@ -82,6 +83,7 @@ class Genes:
             self._dynamic_nodes = copy.deepcopy(to_copy._dynamic_nodes)
             self._connections = copy.deepcopy(to_copy._connections)
             self._metaparameters = to_copy._metaparameters
+            self._connections_sorted = to_copy._connections_sorted
         else:
             self._num_sensors = num_sensors_or_copy
             self._num_outputs = num_outputs
@@ -90,6 +92,7 @@ class Genes:
                 self._dynamic_nodes.append([])
             self._connections = []
             self._metaparameters = metaparameters
+            self._connections_sorted = True
         self.fitness = 0
 
     def feed_sensor_values(self, values, neurons=None):
@@ -143,9 +146,12 @@ class Genes:
             connection = self._connections[connection_index]
             if connection[Genes._IN_NODE] == input_index:
                 return
+
         innovation_number = self._metaparameters.register_connection(input_index, output_index)
         connection = [input_index, output_index, np.random.normal(0, self._metaparameters.new_link_weight_stdev), 1, innovation_number]
         incoming.append(len(self._connections))
+        if len(self._connections) > 0 and innovation_number < self._connections[-1][Genes._INNOV_NUMBER]:
+            self._connections_sorted = False
         self._connections.append(connection)
         pass
 
@@ -154,12 +160,14 @@ class Genes:
             return
         connection = util.random.choice(self._connections)
         connection[Genes._ENABLED] = False
-        in_node, out_node, _a, _b, _c  = connection
+        in_node, out_node, _a, _b, _c = connection
         new_node = []
         self._dynamic_nodes.append(new_node)
         leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self._total_nodes() - 1)
         leading = [in_node, self._total_nodes() - 1, 1, True, leading_innov]
         trailing = [self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
+        if len(self._connections) > 0 and leading_innov < self._connections[-1][Genes._INNOV_NUMBER]:
+            self._connections_sorted = False
         self._connections.append(leading)
         self._connections.append(trailing)
         new_node.append(len(self._connections) - 2)
@@ -189,16 +197,17 @@ class Genes:
             self._enable_mutation(True)
         return self
 
+    def _sorted_connections(self):
+        if self._connections_sorted:
+            return self._connections
+        return sorted(self._connections, key=lambda c: c[Genes._INNOV_NUMBER])
+
     def breed(self, other, self_more_fit=RandomlyTrue.instance):
         """ Creates a child from the result of breeding self and other genes, returns new child """
         ret = Genes(self._num_sensors, self._num_outputs, self._metaparameters)
-        def get_sorted(connections):
-            if all(connections[i][Genes._INNOV_NUMBER] <= connections[i + 1][Genes._INNOV_NUMBER] for i in range(len(connections) - 1)):
-                return connections
-            return sorted(connections, key=lambda c: c[Genes._INNOV_NUMBER])
-            
-        sconnections = get_sorted(self._connections)
-        oconnections = get_sorted(other._connections)
+
+        sconnections = self._sorted_connections()
+        oconnections = other._sorted_connections()
         slen = len(sconnections)
         olen = len(oconnections)
         i = 0
@@ -243,8 +252,10 @@ class Genes:
         c1 = self._metaparameters.c1
         c2 = self._metaparameters.c2
         c3 = self._metaparameters.c3
-        slen = len(self._connections)
-        olen = len(other._connections)
+        sconnections = self._sorted_connections()
+        oconnections = other._sorted_connections()
+        slen = len(sconnections)
+        olen = len(oconnections)
         n = max(olen, slen)
         if n == 0:
             return 0
@@ -254,8 +265,8 @@ class Genes:
         i = 0
         j = 0
         while i < slen and j < olen:
-            sc = self._connections[i]
-            so = other._connections[j]
+            sc = sconnections[i]
+            so = oconnections[j]
             sci = sc[Genes._INNOV_NUMBER]
             soi = so[Genes._INNOV_NUMBER]
             if sci == soi:
@@ -282,7 +293,7 @@ class Genes:
         out_stream.flush()
 
     def load(in_stream, metaparameters, decoder=json):
-        """ load from stream using given decoder, decoder must define load function that takes in a stream """ 
+        """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
         asJson = decoder.load(in_stream)
         ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
         toAdd = asJson["nodeCount"] - ret._total_nodes()
@@ -291,6 +302,7 @@ class Genes:
         connections = asJson["connections"]
         count = 0
         ret._connections = connections
+        sort(connections, key=lambda c: c[Genes._INNOV_NUMBER])
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
