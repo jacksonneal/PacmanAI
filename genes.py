@@ -75,7 +75,9 @@ class Genes:
         neurons[0] = 1  # BIAS node
         for i in range(self._num_sensors):
             neurons[i + 1] = values[i]
-        for node_index, node in enumerate(self._dynamic_nodes):
+
+        def feed(node_index):
+            node = self._dynamic_nodes[node_index]
             neuron_index = node_index + self._num_sensors + 1
             has_connections = False
             sum = 0
@@ -88,6 +90,12 @@ class Genes:
                     sum += neurons[in_node] * weight
             if has_connections:
                 neurons[neuron_index] = sigmoid(sum)
+
+        for hidden_node_index in range(self._num_outputs, self._dynamic_nodes):
+            feed(hidden_node_index)
+        for output_node_index in range(self._num_outputs):
+            feed(output_node_index)
+
         return neurons
 
     def extract_output_values(self, neuron_values):
@@ -234,13 +242,15 @@ class Genes:
     def clone(self):
         return Genes(self)
 
-    def save(self, out_stream):
+    def save(self, out_stream, encoder=json):
+        """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
         asJson = {"nodeCount": self._total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
-        out_stream.write(json.dumps(asJson))
+        out_stream.write(encoder.dumps(asJson))
         out_stream.flush()
 
-    def load(in_stream, metaparameters):
-        asJson = json.load(in_stream)
+    def load(in_stream, metaparameters, decoder=json):
+        """ load from stream using given decoder, decoder must define load function that takes in a stream """ 
+        asJson = decoder.load(in_stream)
         ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
         toAdd = asJson["nodeCount"] - ret._total_nodes()
         for _ in range(toAdd):
