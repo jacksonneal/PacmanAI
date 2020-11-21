@@ -119,7 +119,7 @@ class Genes:
             if has_connections:
                 neurons[neuron_index] = sigmoid(sum)
 
-        for hidden_node_index in range(self._num_outputs, self._dynamic_nodes):
+        for hidden_node_index in range(self._num_outputs, len(self._dynamic_nodes)):
             feed(hidden_node_index)
         for output_node_index in range(self._num_outputs):
             feed(output_node_index)
