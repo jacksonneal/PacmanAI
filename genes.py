@@ -324,27 +324,34 @@ class Genes:
     def clone(self):
         return Genes(self)
 
+    def as_json(self):
+        """ returns self as a dict """
+        return {"nodeCount": self._total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
+
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
-        asJson = {"nodeCount": self._total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
+        asJson = self.as_json()
         out_stream.write(encoder.dumps(asJson))
         out_stream.flush()
 
-    def load(in_stream, metaparameters, decoder=json):
-        """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
-        asJson = decoder.load(in_stream)
-        ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
-        toAdd = asJson["nodeCount"] - ret._total_nodes()
+    def load_from_json(json_object, metaparameters):
+        """ loads from a dict-like object """
+        ret = Genes(json_object["inputCount"], json_object["outputCount"], metaparameters)
+        toAdd = json_object["nodeCount"] - ret._total_nodes()
         for _ in range(toAdd):
             ret._dynamic_nodes.append([])
-        connections = asJson["connections"]
+        connections = json_object["connections"]
         count = 0
         ret._connections = connections
         connections.sort(key=lambda c: c[Genes._INNOV_NUMBER])
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
-        return ret
+
+    def load(in_stream, metaparameters, decoder=json):
+        """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
+        asJson = decoder.load(in_stream)
+        return Genes.load_from_json(asJson, metaparameters)
 
     def setFitness(self, fitness):
         self.fitness = fitness
