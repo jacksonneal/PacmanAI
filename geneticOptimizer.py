@@ -197,6 +197,7 @@ class FitnessCalculator:
             pool = mp.Pool(mp.cpu_count())
             print("POOL_SIZE: ", mp.cpu_count())
             res = pool.map(self.battle, all_inds)
+            pool.close()
         else:
             for ind in all_inds:
                 self.battle(ind)
@@ -234,5 +235,4 @@ class Runner:
         self.optimizer.evolve()
         if self.save:
             self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
-        self.fitnessCalculator.pool.close()
         exit(0)
