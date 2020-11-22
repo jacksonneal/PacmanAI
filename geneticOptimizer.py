@@ -214,6 +214,7 @@ class FitnessCalculator:
             score = agents[0].maxPathDist / 10000
         else:
             score += 1
+        return score
 
 
 class Runner:
