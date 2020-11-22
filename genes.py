@@ -293,7 +293,7 @@ class Genes:
         out_stream.write(encoder.dumps(asJson))
         out_stream.flush()
 
-    def load(in_stream, metaparameters, decoder=json):
+    def load(self, in_stream, metaparameters, decoder=json):
         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
         asJson = decoder.load(in_stream)
         ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
@@ -303,7 +303,7 @@ class Genes:
         connections = asJson["connections"]
         count = 0
         ret._connections = connections
-        sort(connections, key=lambda c: c[Genes._INNOV_NUMBER])
+        connections.sort(key=lambda c: c[Genes._INNOV_NUMBER])
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
