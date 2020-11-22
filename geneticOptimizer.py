@@ -68,7 +68,6 @@ class GeneticOptimizer:
             else:
                 speciesNumOffspring = m.ceil(
                     speciesFitnessSum / populationFitnessSum) * self.populationSize
-            print("NUM offspring: ", speciesNumOffspring)
             species["individuals"].sort(key=lambda ind: 0 - ind.getFitness())
 
             speciesOffspring = []
@@ -87,7 +86,6 @@ class GeneticOptimizer:
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
-                        print("CROSSING!!!")
                         if crossRand < .001:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
@@ -96,7 +94,6 @@ class GeneticOptimizer:
                             mate = candidates[randint(0, len(candidates) - 1)]
                             child = selected.clone().breed(mate.clone(), (selected.getFitness() > mate.getFitness()))
                     if connMutateRand < .80:
-                        print("MUTATING!!!")
                         child = selected.clone().mutate()
                     speciesOffspring.append(child)
 
@@ -140,10 +137,6 @@ class GeneticOptimizer:
         if len(nextGenPopulation):
             self.population = nextGenPopulation
             self.best = self.getBestIndividual()
-            print("BEST_FITNESS: ", self.best.getFitness())
-            print("POP_SIZE: ", len(self.population))
-            for species in self.population:
-                print("SPECIES_SIZE: ", len(species["individuals"]))
         else: 
             self.stagnated = True
 
@@ -153,6 +146,8 @@ class GeneticOptimizer:
             population, bestInd)
 
     def _endOfEpoch(self):
+        print("BEST_FITNESS: ", self.best.getFitness(), " SPECIES_SIZE: ", 
+            [len(species["individuals"]) for species in self.population], " POP_SIZE: ", len(self.population))
         self.best._metaparameters.reset_tracking()
 
     def getPopulation(self):
@@ -198,8 +193,7 @@ class FitnessCalculator:
             for individual in species["individuals"]:
                 all_inds.append(individual)
         if self.isRunParallel:
-            pool = mp.Pool(mp.cpu_count())
-            print("POOL_SIZE: ", mp.cpu_count())
+            pool = mp.Pool(int(mp.cpu_count() / 2))
             res = pool.map(self.battle, all_inds)
             pool.close()
         else:
