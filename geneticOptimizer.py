@@ -68,7 +68,7 @@ class GeneticOptimizer:
             else:
                 speciesNumOffspring = m.ceil(
                     speciesFitnessSum / populationFitnessSum) * self.populationSize
-            species["individuals"].sort(key=lambda ind: 0 - ind.getFitness())
+            species["individuals"].sort(key=lambda ind: ind.getFitness())
 
             speciesOffspring = []
             # Eliminate worst individual
@@ -222,7 +222,7 @@ class Runner:
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
             self.baseUnit = self.baseUnit.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        maxGen = 100
+        maxGen = 10
         populationSize = 100
         for i in range(populationSize):
             base.append(self.baseUnit.clone())
