@@ -196,19 +196,20 @@ class FitnessCalculator:
             pool = mp.Pool(int(mp.cpu_count() / 2))
             res = pool.map(self.battle, all_inds)
             pool.close()
+            i = 0
+            while i < len(res):
+                all_inds[i].setFitness(res[i])
+                i += 1
         else:
             for ind in all_inds:
-                self.battle(ind)
-
-    def f(self, x):
-        return x + 1
+                ind.setFitness(self.battle(ind))
     
     def battle(self, individual):
         agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
-        individual.setFitness(g.state.getScore())
+        return g.state.getScore()
 
 
 class Runner:
