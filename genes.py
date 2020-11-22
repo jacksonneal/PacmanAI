@@ -241,8 +241,9 @@ class Genes:
         for connection in ret._connections:
             max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
         i = ret._total_nodes()
-        while i < max_node:
+        while i <= max_node:
             ret._dynamic_nodes.append([])
+            i += 1
         for index, connection in enumerate(ret._connections):
             ret._node_by_index(connection[Genes._OUT_NODE]).append(index)
         return ret
