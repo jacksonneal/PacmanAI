@@ -79,7 +79,7 @@ class GeneticOptimizer:
                     species["individuals"][len(species["individuals"]) - 1].clone())
 
             # Only non-empty, non-stagnating species may evolve
-            if len(candidates) >= 1 and species["stagnation"] < 15:
+            if len(candidates) >= 1 and species["stagnation"] < 50:
                 while len(speciesOffspring) < speciesNumOffspring:
                     selected = candidates[randint(0, len(candidates) - 1)]
                     child = selected.clone()
@@ -228,7 +228,7 @@ class Runner:
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
             self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        maxGen = 10
+        maxGen = 100
         populationSize = 100
         for i in range(populationSize):
             base.append(self.baseUnit.clone())
