@@ -323,6 +323,8 @@ class GenesAgent(CaptureAgent):
         for i in range(0, 1000):
             self.genes.mutate()
         self.neurons = None
+        self.startingPos = None
+        self.maxPathDist = None
         CaptureAgent.__init__(self, index)
 
     def _makeInput(self, gameState):
@@ -382,6 +384,12 @@ class GenesAgent(CaptureAgent):
         return ret
 
     def chooseAction(self, gameState):
+        if self.startingPos is None: 
+            self.startingPos = gameState.getAgentPosition(self.index)
+        curPos = gameState.getAgentPosition(self.index)
+        curPathDist = self.getMazeDistance(curPos, self.startingPos)
+        if self.maxPathDist is None or curPathDist > self.maxPathDist:
+            self.maxPathDist = curPathDist
         self.neurons = self.genes.feed_sensor_values(
             self._makeInput(gameState), self.neurons)
         output = self.genes.extract_output_values(self.neurons)

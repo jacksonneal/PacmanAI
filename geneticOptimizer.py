@@ -209,7 +209,11 @@ class FitnessCalculator:
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
-        return g.state.getScore()
+        score = g.state.getScore()
+        if score == 0:
+            score = agents[0].maxPathDist / 10000
+        else:
+            score += 1
 
 
 class Runner:
