@@ -191,19 +191,23 @@ class FitnessCalculator:
 class Runner:
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
+        self.load = True
+        self.save = True
         self.fitnessCalculator = FitnessCalculator(
             layout, gameDisplay, length, muteAgents, catchExceptions)
         base = []
-        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
-        maxGen = 10
-        populationSize = 5
+        self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        if self.load:
+            self.baseUnit = self.baseUnit.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
+        maxGen = 2
+        populationSize = 2
         for i in range(populationSize):
-            base.append(baseUnit.clone())
+            base.append(self.baseUnit.clone())
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen, populationSize)
 
     def run(self):
-        # TODO: Load previous best into optimizer
         self.optimizer.initialize()
         self.optimizer.evolve()
-        # TODO: Save best to file
+        if self.save:
+            self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
         exit(0)
