@@ -239,7 +239,7 @@ class Genes:
             j += 1
         max_node = 0
         for connection in ret._connections:
-            max_node = max([max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE]])
+            max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
         i = ret._total_nodes()
         while i <= max_node:
             ret._dynamic_nodes.append([])
@@ -315,10 +315,3 @@ class Genes:
     def getFitness(self):
         return self.fitness
 
-m = Genes.Metaparameters()
-f1 = Genes(10, 10, m)
-f2 = f1.clone()
-for _ in range(100):
-    f1.mutate()
-    f2.mutate()
-f3 = f1.breed(f2)
