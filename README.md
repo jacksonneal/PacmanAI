@@ -6,3 +6,7 @@ TASKS:
     - Train mode: Takes in a generation count for how many generations of optimization to run.  Also takes flags for whether or not to load a previous agent as the base of the population or start from scratch and whether/where to save the final best agent.
     - Observe mode: Runs optimization same as training, but uses the GUI to show progress of evolution maybe every 10 generations if fitness improves
     - Battle Mode: Runs a game with one agent loaded from our training and the user playing with keys against that agent
+
+Is there an infinite loop in breeding?
+Should we be eliminating worst from EACH species?
+if noone improves for 15 generations, we essentially die

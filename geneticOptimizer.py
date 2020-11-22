@@ -27,6 +27,7 @@ class GeneticOptimizer:
         self.populationSize = populationSize
         self.maxGenerations = maxGenerations
         self.best = population[randint(0, len(population) - 1)]
+        self.stagnated = False
 
     def initialize(self):
         """ Prepare for evolution. """
@@ -136,12 +137,15 @@ class GeneticOptimizer:
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
-        self.population = nextGenPopulation
-        self.best = self.getBestIndividual()
-        print("BEST_FITNESS: ", self.best.getFitness())
-        print("POP_SIZE: ", len(self.population))
-        for species in self.population:
-            print("SPECIES_SIZE: ", len(species["individuals"]))
+        if len(nextGenPopulation):
+            self.population = nextGenPopulation
+            self.best = self.getBestIndividual()
+            print("BEST_FITNESS: ", self.best.getFitness())
+            print("POP_SIZE: ", len(self.population))
+            for species in self.population:
+                print("SPECIES_SIZE: ", len(species["individuals"]))
+        else: 
+            self.stagnated = True
 
     def _calculateFitness(self, population, bestInd):
         """ Calculate and cache the fitness of each individual in the population. """
@@ -166,7 +170,7 @@ class GeneticOptimizer:
 
     def isTerminated(self):
         """ Access whether optimization has reached any termination condition. """
-        return self.generationCount >= self.maxGenerations
+        return self.generationCount >= self.maxGenerations or self.stagnated
 
 
 class FitnessCalculator:
