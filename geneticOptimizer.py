@@ -3,8 +3,9 @@ from random import randint
 from captureAgents import GenesAgent
 from capture import CaptureRules
 from genes import Genes
-from baselineTeam import OffensiveReflexAgent
+from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
 import math as m
+import multiprocessing as mp
 
 
 class GeneticOptimizer:
@@ -36,6 +37,7 @@ class GeneticOptimizer:
 
         while not self.isTerminated():
             self._evolveSingle()
+            self._endOfEpoch()
             self.generationCount += 1
 
     def _evolveSingle(self):
@@ -84,6 +86,7 @@ class GeneticOptimizer:
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
+                        print("CROSSING!!!")
                         if crossRand < .001:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
@@ -92,13 +95,14 @@ class GeneticOptimizer:
                             mate = candidates[randint(0, len(candidates) - 1)]
                             child = selected.clone().breed(mate.clone(), (selected.getFitness() > mate.getFitness()))
                     if connMutateRand < .80:
+                        print("MUTATING!!!")
                         child = selected.clone().mutate()
                     speciesOffspring.append(child)
 
             for offspring in speciesOffspring:
                 compatible = False
                 for rep in representatives:
-                    if offspring.distance(rep[0]) < .3:
+                    if offspring.distance(rep[0]) < 3.0:
                         compatible = True
                         for species in nextGenPopulation:
                             if species["id"] == rep[1]["id"]:
@@ -134,6 +138,7 @@ class GeneticOptimizer:
                 species["stagnation"] = 0
         self.population = nextGenPopulation
         self.best = self.getBestIndividual()
+        print("BEST_FITNESS: ", self.best.getFitness())
         print("POP_SIZE: ", len(self.population))
         for species in self.population:
             print("SPECIES_SIZE: ", len(species["individuals"]))
@@ -142,6 +147,9 @@ class GeneticOptimizer:
         """ Calculate and cache the fitness of each individual in the population. """
         self.fitnessCalculator.calculateFitness(
             population, bestInd)
+
+    def _endOfEpoch(self):
+        self.best._metaparameters.reset_tracking()
 
     def getPopulation(self):
         """ Access all individuals by species. """
@@ -170,6 +178,8 @@ class FitnessCalculator:
         self.muteAgents = muteAgents
         self.catchExceptions = catchExceptions
         self.rules = CaptureRules()
+        self.prevBest = None
+        self.isRunParallel = True
 
     def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
@@ -178,14 +188,28 @@ class FitnessCalculator:
         """
         # Run a game for each member of the population against the previous best member of the population
         # Cache score as fitness on individual
+        self.prevBest = prevBest
+        all_inds = []
         for species in population:
             for individual in species["individuals"]:
-                # TODO: how do we want the others to play? random?
-                agents = [GenesAgent(0, individual), GenesAgent(1, prevBest), OffensiveReflexAgent(2), OffensiveReflexAgent(3)]
-                g = self.rules.newGame(self.layout, agents, self.gameDisplay,
-                                       self.length, self.muteAgents, self.catchExceptions)
-                g.run()
-                individual.setFitness(g.state.getScore())
+                all_inds.append(individual)
+        if self.isRunParallel:
+            pool = mp.Pool(mp.cpu_count())
+            print("POOL_SIZE: ", mp.cpu_count())
+            res = pool.map(self.battle, all_inds)
+        else:
+            for ind in all_inds:
+                self.battle(ind)
+
+    def f(self, x):
+        return x + 1
+    
+    def battle(self, individual):
+        agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
+        g = self.rules.newGame(self.layout, agents, self.gameDisplay,
+                                self.length, self.muteAgents, self.catchExceptions)
+        g.run()
+        individual.setFitness(g.state.getScore())
 
 
 class Runner:
@@ -199,8 +223,8 @@ class Runner:
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
             self.baseUnit = self.baseUnit.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        maxGen = 2
-        populationSize = 2
+        maxGen = 100
+        populationSize = 100
         for i in range(populationSize):
             base.append(self.baseUnit.clone())
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen, populationSize)
@@ -210,4 +234,5 @@ class Runner:
         self.optimizer.evolve()
         if self.save:
             self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
+        self.fitnessCalculator.pool.close()
         exit(0)
