@@ -40,34 +40,71 @@ class Genes:
             self.perturbation_stdev = perturbation_stdev
             self.disable_mutation_chance = disable_mutation_chance
             self.enable_mutation_chance = enable_mutation_chance
-            self.connections = {}
-            self.node_splits = {}
+            self._connections = {}
+            self._node_splits = {}
 
         def _increment_innovation(self):
             self.innovation_number += 1
             return self.innovation_number
 
         def reset_tracking(self):
-            self.connections = {}
-            self.node_splits = {}
+            self._connections = {}
+            self._node_splits = {}
 
         def register_connection(self, in_node, out_node):
             pair = (in_node, out_node)
-            innovation_number = self.connections.get(pair, None)
+            innovation_number = self._connections.get(pair, None)
             if innovation_number is None:
                 innovation_number = self._increment_innovation()
-                self.connections[pair] = innovation_number
+                self._connections[pair] = innovation_number
             return innovation_number
 
         def register_node_split(self, in_node, out_node, between_node):
             tuple = (in_node, out_node, between_node)
-            innovation_numbers = self.node_splits.get(tuple, None)
+            innovation_numbers = self._node_splits.get(tuple, None)
             if innovation_numbers is None:
                 leading = self._increment_innovation()
                 trailing = self._increment_innovation()
                 innovation_numbers = (leading, trailing)
-                self.node_splits[tuple] = innovation_numbers
+                self._node_splits[tuple] = innovation_numbers
             return innovation_numbers
+
+        def load(in_stream, decoder=json):
+            asJson = decoder.load(in_stream)
+            ret = Genes.Metaparameters(
+                asJson["c1"],
+                asJson["c2"],
+                asJson["c3"],
+                asJson["new_link_chance"],
+                asJson["bias_link_chance"],
+                asJson["new_link_weight_stdev"],
+                asJson["new_node_chance"],
+                asJson["perturbation_chance"],
+                asJson["perturbation_stdev"],
+                asJson["disable_mutation_chance"],
+                asJson["enable_mutation_chance"],
+            )
+            if "innovation_number" in asJson:
+                ret.innovation_number = asJson["innovation_number"]
+            return ret
+
+        def save(self, out_stream, encoder=json):
+            out = {
+                "innovation_number": self.innovation_number,
+                "c1": self.c1,
+                "c2": self.c2,
+                "c3": self.c3,
+                "new_link_chance": self.new_link_chance,
+                "bias_link_chance": self.bias_link_chance,
+                "new_link_weight_stdev": self.new_link_weight_stdev,
+                "new_node_chance": self.new_node_chance,
+                "perturbation_chance": self.perturbation_chance,
+                "perturbation_stdev": self.perturbation_stdev,
+                "disable_mutation_chance": self.disable_mutation_chance,
+                "enable_mutation_chance": self.enable_mutation_chance,
+            }
+            out_stream.write(encoder.dumps(out))
+            out_stream.flush()
 
     _IN_NODE = 0
     _OUT_NODE = 1
@@ -293,7 +330,7 @@ class Genes:
         out_stream.write(encoder.dumps(asJson))
         out_stream.flush()
 
-    def load(self, in_stream, metaparameters, decoder=json):
+    def load(in_stream, metaparameters, decoder=json):
         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
         asJson = decoder.load(in_stream)
         ret = Genes(asJson["inputCount"], asJson["outputCount"], metaparameters)
@@ -314,4 +351,3 @@ class Genes:
 
     def getFitness(self):
         return self.fitness
-
