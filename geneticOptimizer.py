@@ -76,25 +76,25 @@ class GeneticOptimizer:
             # Autocopy best individual for large species
             if len(species["individuals"]) > 5:
                 speciesOffspring.append(
-                    species["individuals"][len(species["individuals"]) - 1])
+                    species["individuals"][len(species["individuals"]) - 1].clone())
 
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
                     selected = candidates[randint(0, len(candidates) - 1)]
-                    child = selected
+                    child = selected.clone()
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
                         if crossRand < .001:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
-                            child = selected.clone().breed(randMate.clone(), (selected.getFitness() > randMate.getFitness()))
+                            child = child.breed(randMate.clone(), (child.getFitness() > randMate.getFitness()))
                         else:
                             mate = candidates[randint(0, len(candidates) - 1)]
-                            child = selected.clone().breed(mate.clone(), (selected.getFitness() > mate.getFitness()))
+                            child = child.breed(mate.clone(), (child.getFitness() > mate.getFitness()))
                     if connMutateRand < .80:
-                        child = selected.clone().mutate()
+                        child = child.mutate()
                     speciesOffspring.append(child)
 
             for offspring in speciesOffspring:
@@ -227,7 +227,7 @@ class Runner:
         base = []
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
-            self.baseUnit = self.baseUnit.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
+            self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
         maxGen = 10
         populationSize = 100
         for i in range(populationSize):
