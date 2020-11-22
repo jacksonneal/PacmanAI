@@ -222,13 +222,13 @@ class Genes:
                 i += 1
                 j += 1
             elif sci < soi:
-                i += i
+                i += 1
                 if self_more_fit:
                     ret._connections.append(copy.deepcopy(sc))
             else:
                 j += 1
                 if not self_more_fit:
-                    ret._connections.append(copy.deepcopy(soi))
+                    ret._connections.append(copy.deepcopy(so))
         while i < slen:
             if self_more_fit:
                 ret._connections.append(sconnections[i])
@@ -314,3 +314,11 @@ class Genes:
 
     def getFitness(self):
         return self.fitness
+
+m = Genes.Metaparameters()
+f1 = Genes(10, 10, m)
+f2 = f1.clone()
+for _ in range(100):
+    f1.mutate()
+    f2.mutate()
+f3 = f1.breed(f2)
