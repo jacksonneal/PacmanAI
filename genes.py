@@ -222,7 +222,7 @@ class Genes:
                 i += 1
                 j += 1
             elif sci < soi:
-                i += i
+                i += 1
                 if self_more_fit:
                     ret._connections.append(copy.deepcopy(sc))
             else:
@@ -239,7 +239,7 @@ class Genes:
             j += 1
         max_node = 0
         for connection in ret._connections:
-            max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
+            max_node = max([max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE]])
         i = ret._total_nodes()
         while i <= max_node:
             ret._dynamic_nodes.append([])
