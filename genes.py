@@ -23,7 +23,7 @@ class Genes:
 
     class Metaparameters:
         def __init__(self,
-                     c1=1, c2=1, c3=1,
+                     c1=1, c2=1, c3=3,
                      perturbation_chance=0.8,
                      perturbation_stdev=0.1,
                      reset_weight_chance=0.1,
@@ -120,6 +120,7 @@ class Genes:
     _WEIGHT = 2
     _ENABLED = 3
     _INNOV_NUMBER = 4
+    BIAS_INDEX = 0
 
     def __init__(self, num_sensors_or_copy, num_outputs=None, metaparameters=None):
         if isinstance(num_sensors_or_copy, Genes):
@@ -179,19 +180,21 @@ class Genes:
     def _node_by_index(self, index):
         return self._dynamic_nodes[index - self._num_sensors - 1]
 
-    def _total_nodes(self):
+    def total_nodes(self):
         return 1 + self._num_sensors + len(self._dynamic_nodes)
 
-    def _add_connection(self):
-        total_nodes = self._total_nodes()
-        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(0, total_nodes - 1)
-        output_index = util.random.randint(self._num_sensors + 1, total_nodes - 1)
+    def input_node_index(self, input_index):
+        return 1 + input_index
 
+    def output_node_index(self, index):
+        return 1 + self._num_sensors + index    
+
+    def add_connection(self, input_index, output_index):
         incoming = self._node_by_index(output_index)
         for connection_index in incoming:
             connection = self._connections[connection_index]
             if connection[Genes._IN_NODE] == input_index:
-                return
+                return self
 
         innovation_number = self._metaparameters.register_connection(input_index, output_index)
         connection = [input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), True, innovation_number]
@@ -199,7 +202,13 @@ class Genes:
         if len(self._connections) > 0 and innovation_number < self._connections[-1][Genes._INNOV_NUMBER]:
             self._connections_sorted = False
         self._connections.append(connection)
-        pass
+        return self
+
+    def _add_connection(self):
+        total_nodes = self.total_nodes()
+        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(0, total_nodes - 1)
+        output_index = util.random.randint(self._num_sensors + 1, total_nodes - 1)
+        self.add_connection(input_index, output_index)
 
     def _add_node(self):
         if len(self._connections) == 0:
@@ -209,9 +218,9 @@ class Genes:
         in_node, out_node, _a, _b, _c = connection
         new_node = []
         self._dynamic_nodes.append(new_node)
-        leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self._total_nodes() - 1)
-        leading = [in_node, self._total_nodes() - 1, 1, True, leading_innov]
-        trailing = [self._total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
+        leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self.total_nodes() - 1)
+        leading = [in_node, self.total_nodes() - 1, 1, True, leading_innov]
+        trailing = [self.total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
         if len(self._connections) > 0 and leading_innov < self._connections[-1][Genes._INNOV_NUMBER]:
             self._connections_sorted = False
         self._connections.append(leading)
@@ -300,7 +309,7 @@ class Genes:
         max_node = 0
         for connection in ret._connections:
             max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
-        i = ret._total_nodes()
+        i = ret.total_nodes()
         while i <= max_node:
             ret._dynamic_nodes.append([])
             i += 1
@@ -349,7 +358,7 @@ class Genes:
 
     def as_json(self):
         """ returns self as a dict """
-        return {"nodeCount": self._total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
+        return {"nodeCount": self.total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
 
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
@@ -360,7 +369,7 @@ class Genes:
     def load_from_json(json_object, metaparameters):
         """ loads from a dict-like object """
         ret = Genes(json_object["inputCount"], json_object["outputCount"], metaparameters)
-        to_add = json_object["nodeCount"] - ret._total_nodes()
+        to_add = json_object["nodeCount"] - ret.total_nodes()
         for _ in range(to_add):
             ret._dynamic_nodes.append([])
         connections = json_object["connections"]
