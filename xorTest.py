@@ -17,7 +17,7 @@ class XorFitness:
                 ind.setFitness(-error)            
 
 base = Genes(2, 1, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=1))
-population = [base.clone() for i in range(100)]
+population = [base.clone() for i in range(150)]
 optimizer = GeneticOptimizer(population, XorFitness(), 1000)
 optimizer.initialize()
 optimizer.evolve()

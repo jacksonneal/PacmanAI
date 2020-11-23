@@ -24,13 +24,13 @@ class Genes:
     class Metaparameters:
         def __init__(self,
                      c1=1, c2=1, c3=1,
-                     perturbation_chance=0.1,
+                     perturbation_chance=0.8,
                      perturbation_stdev=0.1,
-                     reset_weight_chance=0.5,
-                     new_link_chance=0.1,
-                     bias_link_chance=0.1,
+                     reset_weight_chance=0.1,
+                     new_link_chance=0.3,
+                     bias_link_chance=0.01,
                      new_link_weight_stdev=1,
-                     new_node_chance=0.1,
+                     new_node_chance=0.03,
                      disable_mutation_chance=0.1,
                      enable_mutation_chance=0.1):
             self.innovation_number = 0
@@ -184,7 +184,7 @@ class Genes:
 
     def _add_connection(self):
         total_nodes = self._total_nodes()
-        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(1, total_nodes - 1)
+        input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(0, total_nodes - 1)
         output_index = util.random.randint(self._num_sensors, total_nodes - 1)
 
         incoming = self._node_by_index(output_index)
@@ -241,10 +241,10 @@ class Genes:
             self._add_node()
         if util.flipCoin(self._metaparameters.perturbation_chance):
             self._perturb()
-        if util.flipCoin(self._metaparameters.disable_mutation_chance):
-            self._enable_mutation(False)
-        if util.flipCoin(self._metaparameters.enable_mutation_chance):
-            self._enable_mutation(True)
+        # if util.flipCoin(self._metaparameters.disable_mutation_chance):
+        #     self._enable_mutation(False)
+        # if util.flipCoin(self._metaparameters.enable_mutation_chance):
+        #     self._enable_mutation(True)
         return self
 
     def _sorted_connections(self):
@@ -269,23 +269,38 @@ class Genes:
             soi = so[Genes._INNOV_NUMBER]
             if sci == soi:
                 ret._connections.append(copy.deepcopy(sc if util.flipCoin(0.5) else so))
+                if sc[Genes._ENABLED] == False or so[Genes._ENABLED] == False:
+                    if util.flipCoin(.25):
+                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
                 i += 1
                 j += 1
             elif sci < soi:
                 i += 1
                 if self_more_fit:
                     ret._connections.append(copy.deepcopy(sc))
+                    if sc[Genes._ENABLED] == False:
+                        if util.flipCoin(.25):
+                            ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
             else:
                 j += 1
                 if not self_more_fit:
                     ret._connections.append(copy.deepcopy(so))
+                    if so[Genes._ENABLED] == False:
+                        if util.flipCoin(.25):
+                            ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
         while i < slen:
             if self_more_fit:
                 ret._connections.append(sconnections[i])
+                if sconnections[i][Genes._ENABLED] == False:
+                    if util.flipCoin(.25):
+                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
             i += 1
         while j < olen:
             if not self_more_fit:
                 ret._connections.append(oconnections[j])
+                if oconnections[j][Genes._ENABLED] == False:
+                    if util.flipCoin(.25):
+                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
             j += 1
         max_node = 0
         for connection in ret._connections:

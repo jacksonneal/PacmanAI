@@ -106,8 +106,8 @@ class GeneticOptimizer:
                         else:
                             mate = candidates[randint(0, len(candidates) - 1)]
                             child = child.breed(mate.clone(), (child.getFitness() > mate.getFitness()))
-                    if connMutateRand < .80:
-                        child = child.mutate()
+                    # if connMutateRand < .80:
+                    child = child.mutate()
                     speciesOffspring.append(child)
             allOffspring.extend(speciesOffspring)
 
