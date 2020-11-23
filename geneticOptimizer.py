@@ -198,7 +198,8 @@ class FitnessCalculator:
         self.catchExceptions = catchExceptions
         self.rules = CaptureRules()
         self.prevBest = None
-        self.isRunParallel = True
+        self.isRunParallel = False
+        self.useChamp = False
 
     def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
@@ -208,6 +209,8 @@ class FitnessCalculator:
         # Run a game for each member of the population against the previous best member of the population
         # Cache score as fitness on individual
         self.prevBest = prevBest
+        if self.useChamp:
+            self.prevBest = Genes.load(open("sample_gene.json", "r"), self.prevBest._metaparameters)
         all_inds = []
         for species in population:
             for individual in species["individuals"]:
