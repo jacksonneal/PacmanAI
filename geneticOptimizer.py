@@ -68,6 +68,7 @@ class GeneticOptimizer:
                 all_inds.append(individual)
 
         allOffspring = []
+        allOffspring.append(self.best.clone())
         for species in self.population:
             speciesOffspring = []
             speciesFitnessSum = sum(
