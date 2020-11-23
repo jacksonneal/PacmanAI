@@ -16,7 +16,8 @@ class RandomlyTrue:
 RandomlyTrue.instance = RandomlyTrue()
 
 def random_uniform0(half_range):
-    return np.random.uniform(-half_range, half_range)
+    return np.random.normal(0, half_range)
+    # return np.random.uniform(-half_range, half_range)
 
 class Genes:
 
@@ -193,7 +194,7 @@ class Genes:
                 return
 
         innovation_number = self._metaparameters.register_connection(input_index, output_index)
-        connection = [input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), 1, innovation_number]
+        connection = [input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), True, innovation_number]
         incoming.append(len(self._connections))
         if len(self._connections) > 0 and innovation_number < self._connections[-1][Genes._INNOV_NUMBER]:
             self._connections_sorted = False
