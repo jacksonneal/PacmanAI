@@ -323,8 +323,8 @@ class GenesAgent(CaptureAgent):
             self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         else:
             self.genes = genes
-        for i in range(0, 1000):
-            self.genes.mutate()
+        # for i in range(0, 1000):
+        #     self.genes.mutate()
         self.neurons = None
         self.startingPos = None
         self.maxPathDist = None
