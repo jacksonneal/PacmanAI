@@ -347,6 +347,7 @@ class Genes:
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
+        return ret
 
     def load(in_stream, metaparameters, decoder=json):
         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
