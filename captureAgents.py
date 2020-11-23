@@ -359,14 +359,15 @@ class GenesAgent(CaptureAgent):
             food2 = gameState.getBlueFood()
             for x in range(width):
                 for y in range(height):
+                    coord = (width - x) * height - y - 1
                     if walls[x][y]:
-                        ret[(width - x - 1) * height + y] = 1
+                        ret[coord] = 1
                     elif food[x][y]:
-                        ret[(width - x - 1) * height + y] = 2
+                        ret[coord] = 2
                     elif food2[x][y]:
-                        ret[(width - x - 1) * height + y] = 3
+                        ret[coord] = 3
             for x, y in capsules:
-                ret[(width - x - 1) * height + y] = 4
+                ret[(width - x) * height - y - 1] = 4
         total = width * height
 
         def assignPosition(arrayIndex, agentIndex):
@@ -377,9 +378,10 @@ class GenesAgent(CaptureAgent):
             else:
                 if (self.red):
                     ret[arrayIndex] = position[0]
+                    ret[arrayIndex+1] = position[1]
                 else:
                     ret[arrayIndex] = width - position[0] - 1
-                ret[arrayIndex+1] = position[1]
+                    ret[arrayIndex+1] = height - position[1] - 1
         assignPosition(total, team[0])
         assignPosition(total + 2, team[1])
         assignPosition(total + 4, enemy[0])
@@ -387,7 +389,7 @@ class GenesAgent(CaptureAgent):
         return ret
 
     def chooseAction(self, gameState):
-        if self.startingPos is None: 
+        if self.startingPos is None:
             self.startingPos = gameState.getAgentPosition(self.index)
         self.numCarry = agentState = gameState.data.agentStates[self.index].numCarrying
         curPos = gameState.getAgentPosition(self.index)
@@ -401,7 +403,7 @@ class GenesAgent(CaptureAgent):
             values = {"North": output[0], "South": output[1],
                       "East": output[2], "West": output[3], "Stop": output[4]}
         else:
-            values = {"North": output[0], "South": output[1],
+            values = {"South": output[0], "North": output[1],
                       "East": output[3], "West": output[2], "Stop": output[4]}
         legalActions = gameState.getLegalActions(self.index)
         action = max(legalActions, key=lambda dir: values[dir])
