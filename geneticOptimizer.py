@@ -232,6 +232,9 @@ class FitnessCalculator:
         score = g.state.getScore()
         if score == 0:
             score = agents[0].maxPathDist / 10000
+            score += agents[0].numCarry / 1000
+            if agents[0].numCarry > 0:
+                score -= agents[0].curPathDist / 10000
         else:
             score += 1
         return score
