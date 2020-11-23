@@ -185,7 +185,7 @@ class Genes:
     def _add_connection(self):
         total_nodes = self._total_nodes()
         input_index = 0 if util.flipCoin(self._metaparameters.bias_link_chance) else util.random.randint(0, total_nodes - 1)
-        output_index = util.random.randint(self._num_sensors, total_nodes - 1)
+        output_index = util.random.randint(self._num_sensors + 1, total_nodes - 1)
 
         incoming = self._node_by_index(output_index)
         for connection_index in incoming:
