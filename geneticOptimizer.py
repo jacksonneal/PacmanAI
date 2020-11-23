@@ -68,6 +68,7 @@ class GeneticOptimizer:
                 all_inds.append(individual)
 
         allOffspring = []
+        allOffspring.append(self.best.clone())
         for species in self.population:
             speciesOffspring = []
             speciesFitnessSum = sum(
@@ -119,7 +120,7 @@ class GeneticOptimizer:
         for offspring in allOffspring:
             compatible = False
             for rep in representatives:
-                if compatible == False and offspring.distance(rep[0]) < 3.0:
+                if compatible == False and offspring.distance(rep[0]) < 4.0:
                     compatible = True
                     for species in nextGenPopulation:
                         if species["id"] == rep[1]:
@@ -231,6 +232,9 @@ class FitnessCalculator:
         score = g.state.getScore()
         if score == 0:
             score = agents[0].maxPathDist / 10000
+            score += agents[0].numCarry / 1000
+            if agents[0].numCarry > 0:
+                score -= agents[0].curPathDist / 10000
         else:
             score += 1
         return score
@@ -251,7 +255,7 @@ class Tournament:
 class Runner:
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
-        maxGen = 1000
+        maxGen = 100
         populationSize = 150
         self.load = True
         self.save = True
