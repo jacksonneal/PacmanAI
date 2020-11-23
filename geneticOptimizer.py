@@ -29,6 +29,7 @@ class GeneticOptimizer:
         self.maxGenerations = maxGenerations
         self.best = population[randint(0, len(population) - 1)]
         self.stagnated = False
+        self.selector = Tournament()
 
     def initialize(self):
         """ Prepare for evolution. """
@@ -84,10 +85,16 @@ class GeneticOptimizer:
                 speciesOffspring.append(
                     species["individuals"][len(species["individuals"]) - 1].clone())
 
+            all_inds = []
+            for species in self.population:
+                for individual in species["individuals"]:
+                    all_inds.append(individual)
+
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 50:
                 while len(speciesOffspring) < speciesNumOffspring:
-                    selected = candidates[randint(0, len(candidates) - 1)]
+                    selected = self.selector.select(all_inds, 3, 1)[0]
+                    # selected = candidates[randint(0, len(candidates) - 1)]
                     child = selected.clone()
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
@@ -228,6 +235,18 @@ class FitnessCalculator:
             score += 1
         return score
 
+class Tournament:
+
+    def select(self, individuals, k, n):
+        i = 0
+        selected = []
+        while len(selected) < n:
+            warriors = []
+            while len(warriors) < k:
+                warriors.append(individuals[randint(0, len(individuals) - 1)])
+            warriors.sort(key=lambda ind: ind.getFitness())
+            selected.append(warriors[len(warriors) - 1])
+        return selected
 
 class Runner:
 
