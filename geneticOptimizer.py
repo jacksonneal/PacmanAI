@@ -198,7 +198,7 @@ class FitnessCalculator:
         self.catchExceptions = catchExceptions
         self.rules = CaptureRules()
         self.prevBest = None
-        self.isRunParallel = False
+        self.isRunParallel = True
         self.useChamp = False
 
     def calculateFitness(self, population, prevBest):
@@ -234,12 +234,9 @@ class FitnessCalculator:
         g.run()
         score = g.state.getScore()
         if score == 0:
-            score = agents[0].maxPathDist / 10000
-            score += agents[0].numCarry / 1000
-            if agents[0].numCarry > 0:
-                score -= agents[0].curPathDist / 10000
+            score = (agents[0].fitness + 100000) / 1000000
         else:
-            score += 1
+            score += 100
         return score
 
 class Tournament:
