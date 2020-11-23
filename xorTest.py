@@ -14,11 +14,11 @@ class XorFitness:
                     result = ind.extract_output_values(neurons)[0]
                     diff = result - output
                     error += diff * diff
-                ind.setFitness(-error)                
+                ind.setFitness(-error)            
 
 base = Genes(2, 1, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=1))
 population = [base.clone() for i in range(100)]
-optimizer = GeneticOptimizer(population, XorFitness(), 100)
+optimizer = GeneticOptimizer(population, XorFitness(), 1000)
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()

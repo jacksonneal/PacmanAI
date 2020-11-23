@@ -51,7 +51,7 @@ class GeneticOptimizer:
 
 
         populationFitnessSum = sum(list(map(lambda species: sum(
-            list(map(lambda ind: ind.getFitness(), species["individuals"]))), self.population)))
+            list(map(lambda ind: ind.getFitness(), species["individuals"]))) / len(species["individuals"]), self.population)))
 
         nextGenPopulation = []
         for species in self.population:
@@ -62,11 +62,16 @@ class GeneticOptimizer:
                 "stagnation": species["stagnation"]
             })
 
+        all_inds = []
+        for species in self.population:
+            for individual in species["individuals"]:
+                all_inds.append(individual)
+
         allOffspring = []
         for species in self.population:
             speciesOffspring = []
             speciesFitnessSum = sum(
-                list(map(lambda ind: ind.getFitness(), species["individuals"])))
+                list(map(lambda ind: ind.getFitness(), species["individuals"]))) / len(species["individuals"])
             # Constant number of offspring proportional to species fitness within larger population
             speciesNumOffspring = 0
             if populationFitnessSum == 0:
@@ -85,13 +90,8 @@ class GeneticOptimizer:
                 speciesOffspring.append(
                     species["individuals"][len(species["individuals"]) - 1].clone())
 
-            all_inds = []
-            for species in self.population:
-                for individual in species["individuals"]:
-                    all_inds.append(individual)
-
             # Only non-empty, non-stagnating species may evolve
-            if len(candidates) >= 1 and species["stagnation"] < 50:
+            if len(candidates) >= 1 and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
                     selected = self.selector.select(all_inds, 3, 1)[0]
                     # selected = candidates[randint(0, len(candidates) - 1)]
@@ -222,7 +222,7 @@ class FitnessCalculator:
         else:
             for ind in all_inds:
                 ind.setFitness(self.battle(ind))
-    
+
     def battle(self, individual):
         agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
