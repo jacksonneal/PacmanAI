@@ -19,7 +19,7 @@ class GeneticOptimizer:
         self.population = [{
             "id": 0,
             "individuals": population,
-            "fitness": 0,
+            "fitness": None,
             "stagnation": 0
         }]
         self.speciesCount = 1
@@ -33,6 +33,7 @@ class GeneticOptimizer:
     def initialize(self):
         """ Prepare for evolution. """
         self._calculateFitness(self.population, self.best)
+        self.population[0]["fitness"] = max(list(map(lambda ind: ind.getFitness(), self.population[0]["individuals"])))
 
     def evolve(self):
         """ Run optimization until a termination condition is met. """
@@ -45,10 +46,11 @@ class GeneticOptimizer:
     def _evolveSingle(self):
         """ Execute a single evolution of genetic optimization. """
         representatives = list(map(
-            lambda species: (species["individuals"][randint(0, len(species["individuals"]) - 1)], species), self.population))
+            lambda species: (species["individuals"][randint(0, len(species["individuals"]) - 1)], species["id"]), self.population))
 
-        populationFitnessSum = sum(map(lambda species: sum(
-            map(lambda ind: ind.getFitness(), species["individuals"])), self.population))
+
+        populationFitnessSum = sum(list(map(lambda species: sum(
+            list(map(lambda ind: ind.getFitness(), species["individuals"]))), self.population)))
 
         nextGenPopulation = []
         for species in self.population:
@@ -59,21 +61,24 @@ class GeneticOptimizer:
                 "stagnation": species["stagnation"]
             })
 
+        allOffspring = []
         for species in self.population:
+            speciesOffspring = []
             speciesFitnessSum = sum(
-                map(lambda ind: ind.getFitness(), species["individuals"]))
+                list(map(lambda ind: ind.getFitness(), species["individuals"])))
             # Constant number of offspring proportional to species fitness within larger population
             speciesNumOffspring = 0
             if populationFitnessSum == 0:
                 speciesNumOffspring = len(species["individuals"])
             else:
                 speciesNumOffspring = m.ceil(
-                    speciesFitnessSum / populationFitnessSum) * self.populationSize
+                    speciesFitnessSum / populationFitnessSum * self.populationSize)
             species["individuals"].sort(key=lambda ind: ind.getFitness())
 
-            speciesOffspring = []
             # Eliminate worst individual
-            candidates = species["individuals"][1:]
+            # TODO: eliminate worst individual from population, not from each species
+            # candidates = species["individuals"][1:]
+            candidates = species["individuals"]
             # Autocopy best individual for large species
             if len(species["individuals"]) > 5:
                 speciesOffspring.append(
@@ -97,48 +102,53 @@ class GeneticOptimizer:
                     if connMutateRand < .80:
                         child = child.mutate()
                     speciesOffspring.append(child)
+            allOffspring.extend(speciesOffspring)
 
-            for offspring in speciesOffspring:
-                compatible = False
-                for rep in representatives:
-                    if offspring.distance(rep[0]) < 3.0:
-                        compatible = True
-                        for species in nextGenPopulation:
-                            if species["id"] == rep[1]["id"]:
-                                species["individuals"].append(offspring)
-                        break
-                if not compatible:
-                    newSpecies = {
-                        "id": self.speciesCount,
-                        "individuals": [offspring],
-                        "stagnation": 0,
-                        "fitness": 0
-                    }
-                    self.speciesCount += 1
-                    nextGenPopulation.append(newSpecies)
-                    newRep = (offspring, [offspring])
-                    representatives.append((offspring, newRep))
+        # If a species stagnates, it won't reproduce.  Fill its space with random sample across all species.
+        while len(allOffspring) < self.populationSize:
+            randSpecies = self.population[randint(0, len(self.population) - 1)]
+            allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
+
+        for offspring in allOffspring:
+            compatible = False
+            for rep in representatives:
+                if compatible == False and offspring.distance(rep[0]) < 3.0:
+                    compatible = True
+                    for species in nextGenPopulation:
+                        if species["id"] == rep[1]:
+                            species["individuals"].append(offspring)
+            if compatible == False:
+                newSpecies = {
+                    "id": self.speciesCount,
+                    "individuals": [offspring],
+                    "stagnation": 0,
+                    "fitness": None
+                }
+                self.speciesCount += 1
+                nextGenPopulation.append(newSpecies)
+                newRep = (offspring, newSpecies["id"])
+                representatives.append(newRep)
 
         # Filter out empty species
         nextGenPopulation = list(filter(lambda species: len(
             species["individuals"]), nextGenPopulation))
 
         # Calculate fitness in each new species
-        self._calculateFitness(nextGenPopulation, self.best)
+        self._calculateFitness(nextGenPopulation, self.best)            
 
         # Update fitness and stagnation values
         for species in nextGenPopulation:
             maxFitness = max(
-                map(lambda ind: ind.getFitness(), species["individuals"]))
-            if maxFitness <= species["fitness"]:
+                list(map(lambda ind: ind.getFitness(), species["individuals"])))
+            if species["fitness"] is not None and maxFitness <= species["fitness"]:
                 species["stagnation"] += 1
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
-        if sum(list(map(lambda species: len(species["individuals"]), nextGenPopulation))) == self.populationSize:
+        if sum(list(map(lambda species: len(species["individuals"]), nextGenPopulation))) >= self.populationSize:
             self.population = nextGenPopulation
             self.best = self.getBestIndividual()
-        else: 
+        else:
             self.stagnated = True
 
     def _calculateFitness(self, population, bestInd):
@@ -148,7 +158,8 @@ class GeneticOptimizer:
 
     def _endOfEpoch(self):
         print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
-            [len(species["individuals"]) for species in self.population], " POP_SIZE: ", len(self.population))
+            [len(species["individuals"]) for species in self.population], " POP_SIZE: ", 
+            sum(list(map(lambda species: len(species["individuals"]), self.population))))
         self.best._metaparameters.reset_tracking()
 
     def getPopulation(self):
