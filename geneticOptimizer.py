@@ -221,8 +221,8 @@ class FitnessCalculator:
 class Runner:
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
-        maxGen = 100
-        populationSize = 100
+        maxGen = 1000
+        populationSize = 150
         self.load = True
         self.save = True
         self.fitnessCalculator = FitnessCalculator(
