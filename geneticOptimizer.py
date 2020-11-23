@@ -11,7 +11,7 @@ import json
 
 class GeneticOptimizer:
 
-    def __init__(self, population, fitnessCalculator, maxGenerations, populationSize):
+    def __init__(self, population, fitnessCalculator, maxGenerations):
         """ Initialize the optimizer
         :param population - set of starting genes, all of same initial species
         :param fitnessCalculator - capable of scoring a population of individuals
@@ -25,7 +25,7 @@ class GeneticOptimizer:
         self.speciesCount = 1
         self.fitnessCalculator = fitnessCalculator
         self.generationCount = 0
-        self.populationSize = populationSize
+        self.populationSize = len(population)
         self.maxGenerations = maxGenerations
         self.best = population[randint(0, len(population) - 1)]
         self.stagnated = False
@@ -135,7 +135,7 @@ class GeneticOptimizer:
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
-        if len(nextGenPopulation) == self.populationSize:
+        if sum(list(map(lambda species: len(species["individuals"]), nextGenPopulation))) == self.populationSize:
             self.population = nextGenPopulation
             self.best = self.getBestIndividual()
         else: 
@@ -147,7 +147,7 @@ class GeneticOptimizer:
             population, bestInd)
 
     def _endOfEpoch(self):
-        print("BEST_FITNESS: ", self.best.getFitness(), " SPECIES_SIZE: ", 
+        print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
             [len(species["individuals"]) for species in self.population], " POP_SIZE: ", len(self.population))
         self.best._metaparameters.reset_tracking()
 
@@ -238,7 +238,7 @@ class Runner:
             # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
         while len(base) < populationSize:
             base.append(self.baseUnit.clone())
-        self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen, populationSize)
+        self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen)
 
     def run(self):
         self.optimizer.initialize()
