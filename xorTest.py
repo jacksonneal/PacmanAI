@@ -1,4 +1,4 @@
-from genes import *
+fse = Genes(2, 1, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.4))rom genes import *
 from geneticOptimizer import *
 
 inputs = [[0, 0], [0, 1], [1, 0], [1, 1]]
