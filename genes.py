@@ -23,7 +23,7 @@ class Genes:
 
     class Metaparameters:
         def __init__(self,
-                     c1=1, c2=1, c3=1,
+                     c1=1, c2=1, c3=3,
                      perturbation_chance=0.8,
                      perturbation_stdev=0.1,
                      reset_weight_chance=0.1,

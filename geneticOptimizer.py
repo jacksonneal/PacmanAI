@@ -120,7 +120,7 @@ class GeneticOptimizer:
         for offspring in allOffspring:
             compatible = False
             for rep in representatives:
-                if compatible == False and offspring.distance(rep[0]) < 3.0:
+                if compatible == False and offspring.distance(rep[0]) < 4.0:
                     compatible = True
                     for species in nextGenPopulation:
                         if species["id"] == rep[1]:
@@ -252,7 +252,7 @@ class Tournament:
 class Runner:
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
-        maxGen = 1000
+        maxGen = 100
         populationSize = 150
         self.load = True
         self.save = True
