@@ -6,6 +6,7 @@ from genes import Genes
 from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
 import math as m
 import multiprocessing as mp
+import json
 
 
 class GeneticOptimizer:
@@ -134,7 +135,7 @@ class GeneticOptimizer:
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
-        if len(nextGenPopulation):
+        if len(nextGenPopulation) == self.populationSize:
             self.population = nextGenPopulation
             self.best = self.getBestIndividual()
         else: 
@@ -220,6 +221,8 @@ class FitnessCalculator:
 class Runner:
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
+        maxGen = 1000
+        populationSize = 150
         self.load = True
         self.save = True
         self.fitnessCalculator = FitnessCalculator(
@@ -227,10 +230,13 @@ class Runner:
         base = []
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
-            self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        maxGen = 100
-        populationSize = 100
-        for i in range(populationSize):
+            f = open("sample_population.json", "r")
+            asJson = json.load(f)
+            for ind in asJson:
+                if len(base) < populationSize:
+                    base.append(Genes.load_from_json(ind, self.baseUnit._metaparameters))
+            # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
+        while len(base) < populationSize:
             base.append(self.baseUnit.clone())
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen, populationSize)
 
@@ -238,5 +244,12 @@ class Runner:
         self.optimizer.initialize()
         self.optimizer.evolve()
         if self.save:
+            all_inds = []
+            for species in self.optimizer.getPopulation():
+                for individual in species["individuals"]:
+                    all_inds.append(individual)
+            f = open("sample_population.json", "w")
+            f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
+            f.flush()
             self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
         exit(0)
