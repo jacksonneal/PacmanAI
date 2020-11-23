@@ -319,7 +319,10 @@ class TimeoutAgent(Agent):
 class GenesAgent(CaptureAgent):
 
     def __init__(self, index, genes=None):
-        self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        if genes is None:
+            self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        else:
+            self.genes = genes
         for i in range(0, 1000):
             self.genes.mutate()
         self.neurons = None
