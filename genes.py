@@ -1,3 +1,4 @@
+import math
 from numpy.core.fromnumeric import sort
 from scipy.special import expit as sigmoid
 import numpy as np
@@ -14,6 +15,8 @@ class RandomlyTrue:
 
 RandomlyTrue.instance = RandomlyTrue()
 
+def random_uniform0(half_range):
+    return np.random.uniform(-half_range, half_range)
 
 class Genes:
 
@@ -22,6 +25,7 @@ class Genes:
                      c1=1, c2=1, c3=1,
                      perturbation_chance=0.1,
                      perturbation_stdev=0.1,
+                     reset_weight_chance=0.5,
                      new_link_chance=0.1,
                      bias_link_chance=0.1,
                      new_link_weight_stdev=1,
@@ -29,17 +33,21 @@ class Genes:
                      disable_mutation_chance=0.1,
                      enable_mutation_chance=0.1):
             self.innovation_number = 0
-            self.c1 = c1
-            self.c2 = c2
-            self.c3 = c3
-            self.new_link_chance = new_link_chance
-            self.bias_link_chance = bias_link_chance
-            self.new_link_weight_stdev = new_link_weight_stdev
-            self.new_node_chance = new_node_chance
-            self.perturbation_chance = perturbation_chance
-            self.perturbation_stdev = perturbation_stdev
-            self.disable_mutation_chance = disable_mutation_chance
-            self.enable_mutation_chance = enable_mutation_chance
+
+            def none_or(value, default_value):
+                return default_value if value is None else value
+            self.c1 = none_or(c1, 0.1)
+            self.c2 = none_or(c2, 0.1)
+            self.c3 = none_or(c3, 0.1)
+            self.new_link_chance = none_or(new_link_chance, 0.1)
+            self.bias_link_chance = none_or(bias_link_chance, 0.1)
+            self.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)
+            self.new_node_chance = none_or(new_node_chance, 0.1)
+            self.perturbation_chance = none_or(perturbation_chance, 0.1)
+            self.reset_weight_chance = none_or(reset_weight_chance, 0.5)
+            self.perturbation_stdev = none_or(perturbation_stdev, 0.1)
+            self.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
+            self.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
             self._connections = {}
             self._node_splits = {}
 
@@ -70,22 +78,21 @@ class Genes:
             return innovation_numbers
 
         def load(in_stream, decoder=json):
-            asJson = decoder.load(in_stream)
+            as_json = decoder.load(in_stream)
             ret = Genes.Metaparameters(
-                asJson["c1"],
-                asJson["c2"],
-                asJson["c3"],
-                asJson["new_link_chance"],
-                asJson["bias_link_chance"],
-                asJson["new_link_weight_stdev"],
-                asJson["new_node_chance"],
-                asJson["perturbation_chance"],
-                asJson["perturbation_stdev"],
-                asJson["disable_mutation_chance"],
-                asJson["enable_mutation_chance"],
+                c1=as_json.get("c1"),
+                c2=as_json.get("c2"),
+                c3=as_json.get("c3"),
+                new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+                new_node_chance=as_json.get("new_node_chance"),
+                perturbation_chance=as_json.get("perturbation_chance"),
+                perturbation_stdev=as_json.get("perturbation_stdev"),
+                reset_weight_chance=as_json.get("reset_weight_chance"),
+                disable_mutation_chance=as_json.get("disable_mutation_chance"),
+                enable_mutation_chance=as_json.get("enable_mutation_chance")
             )
-            if "innovation_number" in asJson:
-                ret.innovation_number = asJson["innovation_number"]
+            if "innovation_number" in as_json:
+                ret.innovation_number = as_json["innovation_number"]
             return ret
 
         def save(self, out_stream, encoder=json):
@@ -100,6 +107,7 @@ class Genes:
                 "new_node_chance": self.new_node_chance,
                 "perturbation_chance": self.perturbation_chance,
                 "perturbation_stdev": self.perturbation_stdev,
+                "reset_weight_chance": self.reset_weight_chance,
                 "disable_mutation_chance": self.disable_mutation_chance,
                 "enable_mutation_chance": self.enable_mutation_chance,
             }
@@ -185,7 +193,7 @@ class Genes:
                 return
 
         innovation_number = self._metaparameters.register_connection(input_index, output_index)
-        connection = [input_index, output_index, np.random.normal(0, self._metaparameters.new_link_weight_stdev), 1, innovation_number]
+        connection = [input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), 1, innovation_number]
         incoming.append(len(self._connections))
         if len(self._connections) > 0 and innovation_number < self._connections[-1][Genes._INNOV_NUMBER]:
             self._connections_sorted = False
@@ -211,8 +219,12 @@ class Genes:
         self._node_by_index(out_node).append(len(self._connections) - 1)
 
     def _perturb(self):
+        reset_chance = self._metaparameters.reset_weight_chance
         for connection in self._connections:
-            connection[Genes._WEIGHT] += np.random.normal(0, self._metaparameters.perturbation_stdev)
+            if util.flipCoin(reset_chance):
+                connection[Genes._WEIGHT] = random_uniform0(self._metaparameters.new_link_weight_stdev)
+            else:
+                connection[Genes._WEIGHT] += random_uniform0(self._metaparameters.perturbation_stdev)
 
     def _enable_mutation(self, enable):
         if len(self._connections) == 0:
@@ -330,15 +342,15 @@ class Genes:
 
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
-        asJson = self.as_json()
-        out_stream.write(encoder.dumps(asJson))
+        as_json = self.as_json()
+        out_stream.write(encoder.dumps(as_json))
         out_stream.flush()
 
     def load_from_json(json_object, metaparameters):
         """ loads from a dict-like object """
         ret = Genes(json_object["inputCount"], json_object["outputCount"], metaparameters)
-        toAdd = json_object["nodeCount"] - ret._total_nodes()
-        for _ in range(toAdd):
+        to_add = json_object["nodeCount"] - ret._total_nodes()
+        for _ in range(to_add):
             ret._dynamic_nodes.append([])
         connections = json_object["connections"]
         count = 0
@@ -351,8 +363,8 @@ class Genes:
 
     def load(in_stream, metaparameters, decoder=json):
         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
-        asJson = decoder.load(in_stream)
-        return Genes.load_from_json(asJson, metaparameters)
+        as_json = decoder.load(in_stream)
+        return Genes.load_from_json(as_json, metaparameters)
 
     def setFitness(self, fitness):
         self.fitness = fitness
