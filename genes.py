@@ -32,7 +32,7 @@ class Genes:
                      new_link_weight_stdev=1,
                      new_node_chance=0.03,
                      disable_mutation_chance=0.1,
-                     enable_mutation_chance=0.1):
+                     enable_mutation_chance=0.25):
             self.innovation_number = 0
 
             def none_or(value, default_value):
@@ -262,45 +262,40 @@ class Genes:
         olen = len(oconnections)
         i = 0
         j = 0
+
+        def turn_on_maybe(connection):
+            if not connection[Genes._ENABLED] and util.flipCoin(self._metaparameters.enable_mutation_chance):
+                connection[Genes._ENABLED] = True
+
         while i < slen and j < olen:
             sc = sconnections[i]
             so = oconnections[j]
             sci = sc[Genes._INNOV_NUMBER]
             soi = so[Genes._INNOV_NUMBER]
             if sci == soi:
-                ret._connections.append(copy.deepcopy(sc if util.flipCoin(0.5) else so))
-                if sc[Genes._ENABLED] == False or so[Genes._ENABLED] == False:
-                    if util.flipCoin(.25):
-                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
+                ret._connections.append(copy.copy(sc if util.flipCoin(0.5) else so))
+                turn_on_maybe(ret._connections[-1])
                 i += 1
                 j += 1
             elif sci < soi:
                 i += 1
                 if self_more_fit:
-                    ret._connections.append(copy.deepcopy(sc))
-                    if sc[Genes._ENABLED] == False:
-                        if util.flipCoin(.25):
-                            ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
+                    ret._connections.append(copy.copy(sc))
+                    turn_on_maybe(ret._connections[-1])
             else:
                 j += 1
                 if not self_more_fit:
-                    ret._connections.append(copy.deepcopy(so))
-                    if so[Genes._ENABLED] == False:
-                        if util.flipCoin(.25):
-                            ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
+                    ret._connections.append(copy.copy(so))
+                    turn_on_maybe(ret._connections[-1])
         while i < slen:
             if self_more_fit:
-                ret._connections.append(sconnections[i])
-                if sconnections[i][Genes._ENABLED] == False:
-                    if util.flipCoin(.25):
-                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
+                ret._connections.append(copy.copy(sconnections[i]))
+                turn_on_maybe(ret._connections[-1])
             i += 1
         while j < olen:
             if not self_more_fit:
-                ret._connections.append(oconnections[j])
-                if oconnections[j][Genes._ENABLED] == False:
-                    if util.flipCoin(.25):
-                        ret._connections[len(ret._connections) - 1][Genes._ENABLED] = True 
+                ret._connections.append(copy.copy(oconnections[j]))
+                turn_on_maybe(ret._connections[-1])
             j += 1
         max_node = 0
         for connection in ret._connections:
