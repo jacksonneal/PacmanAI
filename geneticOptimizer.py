@@ -135,7 +135,7 @@ class GeneticOptimizer:
             else:
                 species["fitness"] = maxFitness
                 species["stagnation"] = 0
-        if len(nextGenPopulation):
+        if len(nextGenPopulation) == self.populationSize:
             self.population = nextGenPopulation
             self.best = self.getBestIndividual()
         else: 
