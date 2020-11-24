@@ -78,17 +78,18 @@ class Genes:
                 self._node_splits[tuple] = innovation_numbers
             return innovation_numbers
 
-        def load(in_stream, decoder=json):
-            as_json = decoder.load(in_stream)
+        def load_from_json(as_json):
             ret = Genes.Metaparameters(
                 c1=as_json.get("c1"),
                 c2=as_json.get("c2"),
                 c3=as_json.get("c3"),
-                new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
-                new_node_chance=as_json.get("new_node_chance"),
                 perturbation_chance=as_json.get("perturbation_chance"),
                 perturbation_stdev=as_json.get("perturbation_stdev"),
                 reset_weight_chance=as_json.get("reset_weight_chance"),
+                new_link_chance=as_json.get("new_link_chance"),
+                bias_link_chance=as_json.get("bias_link_chance"),
+                new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+                new_node_chance=as_json.get("new_node_chance"),
                 disable_mutation_chance=as_json.get("disable_mutation_chance"),
                 enable_mutation_chance=as_json.get("enable_mutation_chance")
             )
@@ -96,8 +97,12 @@ class Genes:
                 ret.innovation_number = as_json["innovation_number"]
             return ret
 
-        def save(self, out_stream, encoder=json):
-            out = {
+        def load(in_stream, decoder=json):
+            as_json = decoder.load(in_stream)
+            return Genes.Metaparameters.load_from_json(as_json)
+
+        def as_json(self):
+            return {
                 "innovation_number": self.innovation_number,
                 "c1": self.c1,
                 "c2": self.c2,
@@ -112,6 +117,9 @@ class Genes:
                 "disable_mutation_chance": self.disable_mutation_chance,
                 "enable_mutation_chance": self.enable_mutation_chance,
             }
+
+        def save(self, out_stream, encoder=json):
+            out = self.as_json()
             out_stream.write(encoder.dumps(out))
             out_stream.flush()
 
