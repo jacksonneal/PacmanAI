@@ -1,5 +1,3 @@
-import math
-from numpy.core.fromnumeric import sort
 from scipy.special import expit as sigmoid
 import numpy as np
 import util

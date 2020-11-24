@@ -3,3 +3,7 @@ score
 *.bak
 .vscode
 *.json
+*.pyc
+*.pyd
+*.c
+build
