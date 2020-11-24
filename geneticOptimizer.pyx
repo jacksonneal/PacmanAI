@@ -269,14 +269,16 @@ class Runner:
         base = []
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         if self.load:
+            metaparams = Genes.Metaparameters.load(open("metaparameters.json", "r"))
             f = open("sample_population.json", "r")
             asJson = json.load(f)
             for ind in asJson:
                 if len(base) < populationSize:
-                    base.append(Genes.load_from_json(ind, self.baseUnit._metaparameters))
+                    base.append(Genes.load_from_json(ind, metaparams))
             # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        while len(base) < populationSize:
-            base.append(self.baseUnit.clone())
+        else:
+            while len(base) < populationSize:
+                base.append(self.baseUnit.clone())
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen)
 
     def run(self):
@@ -291,4 +293,5 @@ class Runner:
             f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
             f.flush()
             self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
+            self.optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))
         exit(0)
