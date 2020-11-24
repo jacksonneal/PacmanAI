@@ -22,7 +22,7 @@ for ind in population:
     ind.add_connection(ind.input_node_index(0), ind.output_node_index(0))
     ind.add_connection(ind.input_node_index(1), ind.output_node_index(0))
     ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(0))
-optimizer = GeneticOptimizer(population, XorFitness(), 200)
+optimizer = GeneticOptimizer(population, XorFitness(), 60)
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()

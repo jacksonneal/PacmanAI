@@ -3,6 +3,7 @@ import numpy as np
 import util
 import copy
 import json
+import math
 
 
 class RandomlyTrue:
@@ -170,7 +171,7 @@ class Genes:
                     has_connections = True
                     sum += neurons[in_node] * weight
             if has_connections:
-                neurons[neuron_index] = sigmoid(sum)
+                neurons[neuron_index] = math.tanh(sum)
         
         cdef unsigned long long num_outputs = self._num_outputs
         cdef unsigned long long total_dynamic = len(self._dynamic_nodes)
