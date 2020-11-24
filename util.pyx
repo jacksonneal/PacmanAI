@@ -497,7 +497,7 @@ def getProbability(value, distribution, values):
             total += prob
     return total
 
-def flipCoin( p ):
+def flipCoin( double p ):
     r = random.random()
     return r < p
 

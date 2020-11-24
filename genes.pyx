@@ -14,7 +14,7 @@ class RandomlyTrue:
 
 RandomlyTrue.instance = RandomlyTrue()
 
-def random_uniform0(half_range):
+def random_uniform0(double half_range):
     return np.random.normal(0, half_range)
     # return np.random.uniform(-half_range, half_range)
 
@@ -238,13 +238,16 @@ class Genes:
         new_node.append(len(self._connections) - 2)
         self._node_by_index(out_node).append(len(self._connections) - 1)
 
-    def _perturb(self):
-        reset_chance = self._metaparameters.reset_weight_chance
+    def perturb(self):
+        cdef double reset_chance = self._metaparameters.reset_weight_chance
+        cdef double new_link_weight_stdev = self._metaparameters.new_link_weight_stdev
+        cdef double perturbation_stdev = self._metaparameters.perturbation_stdev
         for connection in self._connections:
             if util.flipCoin(reset_chance):
-                connection[Genes._WEIGHT] = random_uniform0(self._metaparameters.new_link_weight_stdev)
+                connection[Genes._WEIGHT] = random_uniform0(new_link_weight_stdev)
             else:
-                connection[Genes._WEIGHT] += random_uniform0(self._metaparameters.perturbation_stdev)
+                connection[Genes._WEIGHT] += random_uniform0(perturbation_stdev)
+        return self
 
     def _enable_mutation(self, enable):
         if len(self._connections) == 0:
@@ -259,7 +262,7 @@ class Genes:
         if util.flipCoin(self._metaparameters.new_node_chance):
             self._add_node()
         if util.flipCoin(self._metaparameters.perturbation_chance):
-            self._perturb()
+            self.perturb()
         # if util.flipCoin(self._metaparameters.disable_mutation_chance):
         #     self._enable_mutation(False)
         # if util.flipCoin(self._metaparameters.enable_mutation_chance):
