@@ -1,3 +1,4 @@
+#cython: language_level=3
 # game.py
 # -------
 # Licensing Information:  You are free to use or extend these projects for

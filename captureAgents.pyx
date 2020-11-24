@@ -22,6 +22,7 @@ import distanceCalculator
 from util import nearestPoint
 import util
 import numpy as np
+import random
 
 # Note: the following class is not used, but is kept for backwards
 # compatibility with team submissions that try to import it.
