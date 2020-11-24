@@ -149,11 +149,11 @@ class Genes:
         for i in range(self._num_sensors):
             neurons[i + 1] = values[i]
 
-        def feed(node_index):
+        def feed(unsigned long long node_index):
             node = self._dynamic_nodes[node_index]
             neuron_index = node_index + self._num_sensors + 1
             has_connections = False
-            sum = 0
+            cdef double sum = 0
 
             for connection_index in node:
                 in_node, out_node, weight, enabled, innov = self._connections[connection_index]
@@ -163,10 +163,13 @@ class Genes:
                     sum += neurons[in_node] * weight
             if has_connections:
                 neurons[neuron_index] = sigmoid(sum)
+        
+        cdef unsigned long long num_outputs = self._num_outputs
+        cdef unsigned long long total_dynamic = len(self._dynamic_nodes)
 
-        for hidden_node_index in range(self._num_outputs, len(self._dynamic_nodes)):
+        for hidden_node_index in range(num_outputs, total_dynamic):
             feed(hidden_node_index)
-        for output_node_index in range(self._num_outputs):
+        for output_node_index in range(num_outputs):
             feed(output_node_index)
 
         return neurons
