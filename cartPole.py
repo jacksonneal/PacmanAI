@@ -9,22 +9,24 @@ from geneticOptimizer import *
 env = gym.make('CartPole-v0')
 env._max_episode_steps = float("inf")
 
-def run_cart_pole(ind, render, time_limit=2000):
-    fitness = 0
+def run_cart_pole(ind, render, time_limit=500):
     observation = env.reset()
     action_space = env.action_space
     neurons = None
-    for t in range(time_limit):
+    t = 0
+    total_deviation = 0.0
+    while t < time_limit:
         if render:
             env.render()
         neurons = ind.feed_sensor_values(observation, neurons)
         result = ind.extract_output_values(neurons)
         action = 0 if result[0] > result[1] else 1
         observation, reward, done, info = env.step(action)
-        fitness += reward
+        total_deviation += abs(observation[0]) + abs(observation[2])
+        t += 1
         if done:
             break
-    return fitness
+    return -total_deviation / t + t
 
 class CartPoleFitness:
     def calculateFitness(self, population, _):
