@@ -233,11 +233,16 @@ class FitnessCalculator:
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        if score == 0:
-            score = (agents[0].fitness + 100000) / 1000000
+        if score > 0:
+            # Wins are always best
+            return score + 300
+        elif score == 0:
+            # Ties are respectable
+            return score + 200 + (agents[0].fitness + 100000) / 1000000
         else:
-            score += 100
-        return score
+            # Losses get no love
+            return score + 100 + (agents[0].fitness + 100000) / 1000000
+
 
 class Tournament:
 
