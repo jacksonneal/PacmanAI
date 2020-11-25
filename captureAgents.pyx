@@ -400,13 +400,14 @@ class GenesAgent(CaptureAgent):
         if curPathDist > self.maxPathDist:
             self.maxPathDist = curPathDist
         self.prevPosList.append(curPos)
-        if len(self.prevPosList) > 10:
-            # Error if in same spot for ten positions
+        if len(self.prevPosList) > 20:
+            # Error if in same two spots for 20 positions
             pos = self.prevPosList[0]
             allEqual = True
             for p in self.prevPosList:
-                if p[0] != pos[0] or p[1] != pos[1]:
+                if p[0] != pos[0] and p[1] != pos[1]:
                     allEqual = False
+                    break
             if allEqual:
                 raise Exception("Agent idle. Game terminating.")
             self.prevPosList.pop(0)
