@@ -138,6 +138,7 @@ class Genes:
             self._connections = copy.deepcopy(to_copy._connections)
             self._metaparameters = to_copy._metaparameters
             self._connections_sorted = to_copy._connections_sorted
+            self.fitness = copy.deepcopy(to_copy.fitness)
         else:
             self._num_sensors = num_sensors_or_copy
             self._num_outputs = num_outputs
@@ -147,7 +148,7 @@ class Genes:
             self._connections = []
             self._metaparameters = metaparameters
             self._connections_sorted = True
-        self.fitness = []
+            self.fitness = []
 
     def feed_sensor_values(self, values, neurons=None):
         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
