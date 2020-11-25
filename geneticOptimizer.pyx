@@ -1,3 +1,4 @@
+from os import error
 import random
 from random import randint
 from captureAgents import GenesAgent
@@ -216,7 +217,7 @@ class FitnessCalculator:
             for individual in species["individuals"]:
                 all_inds.append(individual)
         if self.isRunParallel:
-            pool = mp.Pool(int(mp.cpu_count() / 2))
+            pool = mp.Pool(int(mp.cpu_count()))
             res = pool.map(self.battle, all_inds)
             pool.close()
             i = 0
@@ -259,6 +260,15 @@ class Tournament:
 
 class Runner:
 
+    def defaultGeneration(populationSize):
+        mapNodes = 16 * 32
+        totalNodes = mapNodes + 8
+        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        for in_index in range(mapNodes, totalNodes):
+            for out_index in range(5):
+                baseUnit.add_connection(baseUnit.input_node_index(in_index), baseUnit.output_node_index(out_index))
+        return [baseUnit.clone().perturb() for _ in range(populationSize)]
+
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
         maxGen = 100
         populationSize = 150
@@ -268,17 +278,19 @@ class Runner:
             layout, gameDisplay, length, muteAgents, catchExceptions)
         base = []
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
-        if self.load:
-            metaparams = Genes.Metaparameters.load(open("metaparameters.json", "r"))
-            f = open("sample_population.json", "r")
-            asJson = json.load(f)
-            for ind in asJson:
-                if len(base) < populationSize:
-                    base.append(Genes.load_from_json(ind, metaparams))
-            # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
-        else:
-            while len(base) < populationSize:
-                base.append(self.baseUnit.clone())
+        try:
+            if self.load:
+                metaparams = Genes.Metaparameters.load(open("metaparameters.json", "r"))
+                f = open("sample_population.json", "r")
+                asJson = json.load(f)
+                for ind in asJson:
+                    if len(base) < populationSize:
+                        base.append(Genes.load_from_json(ind, metaparams))
+                # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
+            else:
+                base = Runner.defaultGeneration(populationSize)
+        except:
+            base = Runner.defaultGeneration(populationSize)
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen)
 
     def run(self):
