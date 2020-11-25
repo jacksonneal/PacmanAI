@@ -273,7 +273,6 @@ class Runner:
         self.fitnessCalculator = FitnessCalculator(
             layout, gameDisplay, length, muteAgents, True)
         base = []
-        self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         try:
             if self.load:
                 metaparams = Genes.Metaparameters.load(open("metaparameters.json", "r"))
@@ -282,7 +281,6 @@ class Runner:
                 for ind in asJson:
                     if len(base) < populationSize:
                         base.append(Genes.load_from_json(ind, metaparams))
-                # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
             else:
                 base = Runner.defaultGeneration(populationSize)
         except:
