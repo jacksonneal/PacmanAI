@@ -405,7 +405,7 @@ class GenesAgent(CaptureAgent):
             pos = self.prevPosList[0]
             allEqual = True
             for p in self.prevPosList:
-                if p[0] != pos[0] and p[1] != pos[1]:
+                if abs(p[0] - pos[0]) > 1 or abs(p[1] - pos[1]) > 1:
                     allEqual = False
                     break
             if allEqual:
