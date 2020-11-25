@@ -171,7 +171,7 @@ class GeneticOptimizer:
         print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
             [len(species["individuals"]) for species in self.population], " POP_SIZE: ", 
             sum(list(map(lambda species: len(species["individuals"]), self.population))),
-            " GPS: ", (time.time() - self.startTime) / self.generationCount)
+            " GPS: ", self.generationCount / (time.time() - self.startTime))
         self.best._metaparameters.reset_tracking()
 
     def getPopulation(self):
