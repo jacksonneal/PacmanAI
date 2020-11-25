@@ -98,7 +98,7 @@ class GeneticOptimizer:
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
-                    selected = self.selector.select(all_inds, 3, 1)[0]
+                    selected = self.selector.select(candidates, 3, 1)[0]
                     # selected = candidates[randint(0, len(candidates) - 1)]
                     child = selected.clone()
                     crossRand = random.uniform(0, 1)
@@ -118,8 +118,9 @@ class GeneticOptimizer:
 
         # If a species stagnates, it won't reproduce.  Fill its space with random sample across all species.
         while len(allOffspring) < self.populationSize:
-            randSpecies = self.population[randint(0, len(self.population) - 1)]
-            allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
+            # randSpecies = self.population[randint(0, len(self.population) - 1)]
+            # allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
+            allOffspring.append(self.selector.select(all_inds, 2, 1))
 
         for offspring in allOffspring:
             compatible = False
