@@ -1,14 +1,14 @@
 from os import error
 import random
 from random import randint
-from captureAgents import GenesAgent
+from captureAgents import GenesAgent, RandomAgent
 from capture import CaptureRules
 from genes import Genes
 from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
 import math as m
 import multiprocessing as mp
 import json
-
+import time
 
 class GeneticOptimizer:
 
@@ -31,19 +31,22 @@ class GeneticOptimizer:
         self.best = population[randint(0, len(population) - 1)]
         self.stagnated = False
         self.selector = Tournament()
+        self.startTime = None
+        self.saveInterval = 50 # Interval at which to save population
 
     def initialize(self):
         """ Prepare for evolution. """
         self._calculateFitness(self.population, self.best)
         self.population[0]["fitness"] = max(list(map(lambda ind: ind.getFitness(), self.population[0]["individuals"])))
+        self.startTime = time.time()
 
     def evolve(self):
         """ Run optimization until a termination condition is met. """
 
         while not self.isTerminated():
             self._evolveSingle()
-            self._endOfEpoch()
             self.generationCount += 1
+            self._endOfEpoch()
 
     def _evolveSingle(self):
         """ Execute a single evolution of genetic optimization. """
@@ -168,8 +171,11 @@ class GeneticOptimizer:
     def _endOfEpoch(self):
         print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
             [len(species["individuals"]) for species in self.population], " POP_SIZE: ", 
-            sum(list(map(lambda species: len(species["individuals"]), self.population))))
+            sum(list(map(lambda species: len(species["individuals"]), self.population))),
+            " GPS: ", self.generationCount / (time.time() - self.startTime))
         self.best._metaparameters.reset_tracking()
+        if self.generationCount % self.saveInterval == 0:
+            Runner.save(self)
 
     def getPopulation(self):
         """ Access all individuals by species. """
@@ -217,7 +223,7 @@ class FitnessCalculator:
             for individual in species["individuals"]:
                 all_inds.append(individual)
         if self.isRunParallel:
-            pool = mp.Pool(int(mp.cpu_count() / 2))
+            pool = mp.Pool(int(mp.cpu_count() - 1))
             res = pool.map(self.battle, all_inds)
             pool.close()
             i = 0
@@ -229,21 +235,14 @@ class FitnessCalculator:
                 ind.setFitness(self.battle(ind))
 
     def battle(self, individual):
-        agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
+        agents = [GenesAgent(0, individual), RandomAgent(1), RandomAgent(2), RandomAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        if score > 0:
-            # Wins are always best
-            return score + 300
-        elif score == 0:
-            # Ties are respectable
-            return score + 200 + (agents[0].fitness + 100000) / 1000000
-        else:
-            # Losses get no love
-            return score + 100 + (agents[0].fitness + 100000) / 1000000
-
+        score = 40 + score + min(agents[0].maxPathDist, 22) / 22
+        assert score > 0
+        return score
 
 class Tournament:
 
@@ -275,9 +274,8 @@ class Runner:
         self.load = True
         self.save = True
         self.fitnessCalculator = FitnessCalculator(
-            layout, gameDisplay, length, muteAgents, catchExceptions)
+            layout, gameDisplay, length, muteAgents, True)
         base = []
-        self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         try:
             if self.load:
                 metaparams = Genes.Metaparameters.load(open("metaparameters.json", "r"))
@@ -286,7 +284,6 @@ class Runner:
                 for ind in asJson:
                     if len(base) < populationSize:
                         base.append(Genes.load_from_json(ind, metaparams))
-                # self.baseUnit = Genes.load(open("sample_gene.json", "r"), self.baseUnit._metaparameters)
             else:
                 base = Runner.defaultGeneration(populationSize)
         except:
@@ -297,13 +294,16 @@ class Runner:
         self.optimizer.initialize()
         self.optimizer.evolve()
         if self.save:
-            all_inds = []
-            for species in self.optimizer.getPopulation():
-                for individual in species["individuals"]:
-                    all_inds.append(individual)
-            f = open("sample_population.json", "w")
-            f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
-            f.flush()
-            self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
-            self.optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))
+            Runner.save(self.optimizer)
         exit(0)
+    
+    def save(optimizer):
+        all_inds = []
+        for species in optimizer.getPopulation():
+            for individual in species["individuals"]:
+                all_inds.append(individual)
+        f = open("sample_population.json", "w")
+        f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
+        f.flush()
+        optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
+        optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))

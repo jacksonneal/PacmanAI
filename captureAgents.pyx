@@ -327,10 +327,9 @@ class GenesAgent(CaptureAgent):
         # for i in range(0, 1000):
         #     self.genes.mutate()
         self.neurons = None
-        self.fitness = 0
         self.startingPos = None
-        self.prevPathDist = 0
-        self.curPathDist = 0
+        self.maxPathDist = 0
+        self.prevPosList = []
         CaptureAgent.__init__(self, index)
 
     def _makeInput(self, gameState):
@@ -392,28 +391,23 @@ class GenesAgent(CaptureAgent):
         return ret
 
     def chooseAction(self, gameState):
-        # Store a fitness as we go.  We promote 3 plays
-        # 1) If not carrying, move towards nearest food
-        # 2) If carrying, staying alive or carrying more
-        # 3) If carrying, move towards starting position
-        self.curPos = gameState.getAgentPosition(self.index)
+        curPos = gameState.getAgentPosition(self.index)
         if self.startingPos is None:
-            self.prevPos = self.curPos
-            self.startingPos = self.curPos
-        self.numCarry = agentState = gameState.data.agentStates[self.index].numCarrying
-        # Compute distance to nearest food
-        if self.numCarry == 0:
-            foodList = self.getFood(gameState).asList()
-            if len(foodList) > 0: 
-                minDistance = min([self.getMazeDistance(self.curPos, food)
-                                for food in foodList])
-                self.fitness -= minDistance
-        if self.numCarry > 0:
-            self.fitness += 10 * self.numCarry # large bonus for picking up extra pills
-            self.curPathDist = self.getMazeDistance(self.curPos, self.startingPos)
-            self.fitness += 20 * (self.prevPathDist - self.curPathDist) # promote capturing
-        self.prevPos = self.curPos
-        self.prevPathDist = self.curPathDist
+            self.startingPos = curPos
+        curPathDist = self.getMazeDistance(curPos, self.startingPos)
+        if curPathDist > self.maxPathDist:
+            self.maxPathDist = curPathDist
+        self.prevPosList.append(curPos)
+        if len(self.prevPosList) > 10:
+            # Error if in same spot for ten positions
+            pos = self.prevPosList[0]
+            allEqual = True
+            for p in self.prevPosList:
+                if p[0] != pos[0] or p[1] != pos[1]:
+                    allEqual = False
+            if allEqual:
+                raise Exception("Agent idle. Game terminating.")
+            self.prevPosList.pop(0)
 
         self.neurons = self.genes.feed_sensor_values(
             self._makeInput(gameState), self.neurons)
