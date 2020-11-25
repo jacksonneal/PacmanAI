@@ -1,10 +1,10 @@
 from os import error
 import random
 from random import randint
-from captureAgents import GenesAgent
+from captureAgents import GenesAgent, RandomAgent
 from capture import CaptureRules
 from genes import Genes
-from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent, RandomAgent
+from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
 import math as m
 import multiprocessing as mp
 import json
@@ -44,8 +44,8 @@ class GeneticOptimizer:
 
         while not self.isTerminated():
             self._evolveSingle()
-            self._endOfEpoch()
             self.generationCount += 1
+            self._endOfEpoch()
 
     def _evolveSingle(self):
         """ Execute a single evolution of genetic optimization. """
@@ -237,16 +237,9 @@ class FitnessCalculator:
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        if score > 0:
-            # Wins are always best
-            return score + 300
-        elif score == 0:
-            # Ties are respectable
-            return score + 200 + (agents[0].fitness + 100000) / 1000000
-        else:
-            # Losses get no love
-            return score + 100 + (agents[0].fitness + 100000) / 1000000
-
+        score = 40 + score + min(agents[0].maxPathDist, 22) / 22
+        assert score > 0
+        return score
 
 class Tournament:
 
@@ -278,7 +271,7 @@ class Runner:
         self.load = True
         self.save = True
         self.fitnessCalculator = FitnessCalculator(
-            layout, gameDisplay, length, muteAgents, catchExceptions)
+            layout, gameDisplay, length, muteAgents, True)
         base = []
         self.baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
         try:
