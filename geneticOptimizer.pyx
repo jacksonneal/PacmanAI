@@ -217,7 +217,7 @@ class FitnessCalculator:
             for individual in species["individuals"]:
                 all_inds.append(individual)
         if self.isRunParallel:
-            pool = mp.Pool(int(mp.cpu_count()))
+            pool = mp.Pool(int(mp.cpu_count() / 2))
             res = pool.map(self.battle, all_inds)
             pool.close()
             i = 0
