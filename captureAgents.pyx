@@ -330,6 +330,8 @@ class GenesAgent(CaptureAgent):
         self.startingPos = None
         self.maxPathDist = 0
         self.prevPosList = []
+        self.numCarried = 0
+        self.prevNumCarrying = 0
         CaptureAgent.__init__(self, index)
 
     def _makeInput(self, gameState):
@@ -408,6 +410,10 @@ class GenesAgent(CaptureAgent):
             if allEqual:
                 raise Exception("Agent idle. Game terminating.")
             self.prevPosList.pop(0)
+        curNumCarrying = gameState.data.agentStates[self.index].numCarrying
+        if curNumCarrying > self.prevNumCarrying:
+            self.numCarried += 1
+        self.prevNumCarrying = curNumCarrying
 
         self.neurons = self.genes.feed_sensor_values(
             self._makeInput(gameState), self.neurons)

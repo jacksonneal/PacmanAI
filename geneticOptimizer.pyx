@@ -118,9 +118,12 @@ class GeneticOptimizer:
 
         # If a species stagnates, it won't reproduce.  Fill its space with random sample across all species.
         while len(allOffspring) < self.populationSize:
-            # randSpecies = self.population[randint(0, len(self.population) - 1)]
-            # allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
-            allOffspring.append(self.selector.select(all_inds, 2, 1)[0])
+            rando = random.uniform(0, 1)
+            if rando < .3:
+                randSpecies = self.population[randint(0, len(self.population) - 1)]
+                allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
+            else: 
+                allOffspring.append(self.selector.select(all_inds, 2, 1)[0])
 
         for offspring in allOffspring:
             compatible = False
@@ -241,7 +244,7 @@ class FitnessCalculator:
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        score = 40 + score + min(agents[0].maxPathDist, 22) / 22
+        score = 40 + score + min(agents[0].maxPathDist, 32) / 32 + min(agents[0].numCarried, 20) / 20
         assert score > 0
         return score
 

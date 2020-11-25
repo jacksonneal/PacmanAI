@@ -406,4 +406,4 @@ class Genes:
             self.fitness.pop(0)
 
     def getFitness(self):
-        return max(self.fitness[-1], sum(self.fitness) / len(self.fitness))
+        return max(self.fitness)
