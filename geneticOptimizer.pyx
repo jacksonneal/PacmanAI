@@ -7,7 +7,7 @@ from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
 import math as m
 import multiprocessing as mp
 import json
-
+import time
 
 class GeneticOptimizer:
 
@@ -30,11 +30,13 @@ class GeneticOptimizer:
         self.best = population[randint(0, len(population) - 1)]
         self.stagnated = False
         self.selector = Tournament()
+        self.startTime = None
 
     def initialize(self):
         """ Prepare for evolution. """
         self._calculateFitness(self.population, self.best)
         self.population[0]["fitness"] = max(list(map(lambda ind: ind.getFitness(), self.population[0]["individuals"])))
+        self.startTime = time.time()
 
     def evolve(self):
         """ Run optimization until a termination condition is met. """
@@ -167,7 +169,8 @@ class GeneticOptimizer:
     def _endOfEpoch(self):
         print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
             [len(species["individuals"]) for species in self.population], " POP_SIZE: ", 
-            sum(list(map(lambda species: len(species["individuals"]), self.population))))
+            sum(list(map(lambda species: len(species["individuals"]), self.population))),
+            " GPS: ", (time.time() - self.startTime) / self.generationCount)
         self.best._metaparameters.reset_tracking()
 
     def getPopulation(self):
