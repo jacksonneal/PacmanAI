@@ -120,7 +120,7 @@ class GeneticOptimizer:
         while len(allOffspring) < self.populationSize:
             # randSpecies = self.population[randint(0, len(self.population) - 1)]
             # allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
-            allOffspring.append(self.selector.select(all_inds, 2, 1))[0]
+            allOffspring.append(self.selector.select(all_inds, 2, 1)[0])
 
         for offspring in allOffspring:
             compatible = False
