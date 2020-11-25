@@ -32,6 +32,7 @@ class GeneticOptimizer:
         self.stagnated = False
         self.selector = Tournament()
         self.startTime = None
+        self.saveInterval = 50 # Interval at which to save population
 
     def initialize(self):
         """ Prepare for evolution. """
@@ -173,6 +174,8 @@ class GeneticOptimizer:
             sum(list(map(lambda species: len(species["individuals"]), self.population))),
             " GPS: ", self.generationCount / (time.time() - self.startTime))
         self.best._metaparameters.reset_tracking()
+        if self.generationCount % self.saveInterval == 0:
+            Runner.save(self)
 
     def getPopulation(self):
         """ Access all individuals by species. """
@@ -291,13 +294,16 @@ class Runner:
         self.optimizer.initialize()
         self.optimizer.evolve()
         if self.save:
-            all_inds = []
-            for species in self.optimizer.getPopulation():
-                for individual in species["individuals"]:
-                    all_inds.append(individual)
-            f = open("sample_population.json", "w")
-            f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
-            f.flush()
-            self.optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
-            self.optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))
+            Runner.save(self.optimizer)
         exit(0)
+    
+    def save(optimizer):
+        all_inds = []
+        for species in optimizer.getPopulation():
+            for individual in species["individuals"]:
+                all_inds.append(individual)
+        f = open("sample_population.json", "w")
+        f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
+        f.flush()
+        optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
+        optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))
