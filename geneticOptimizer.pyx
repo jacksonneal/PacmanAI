@@ -4,7 +4,7 @@ from random import randint
 from captureAgents import GenesAgent
 from capture import CaptureRules
 from genes import Genes
-from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent
+from baselineTeam import OffensiveReflexAgent, DefensiveReflexAgent, RandomAgent
 import math as m
 import multiprocessing as mp
 import json
@@ -232,7 +232,7 @@ class FitnessCalculator:
                 ind.setFitness(self.battle(ind))
 
     def battle(self, individual):
-        agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
+        agents = [GenesAgent(0, individual), RandomAgent(1), RandomAgent(2), RandomAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                 self.length, self.muteAgents, self.catchExceptions)
         g.run()
