@@ -10,6 +10,7 @@ import multiprocessing as mp
 import json
 import time
 
+
 class GeneticOptimizer:
 
     def __init__(self, population, fitnessCalculator, maxGenerations):
@@ -53,7 +54,6 @@ class GeneticOptimizer:
         representatives = list(map(
             lambda species: (species["individuals"][randint(0, len(species["individuals"]) - 1)], species["id"]), self.population))
 
-
         populationFitnessSum = sum(list(map(lambda species: sum(
             list(map(lambda ind: ind.getFitness(), species["individuals"]))) / len(species["individuals"]), self.population)))
 
@@ -75,42 +75,43 @@ class GeneticOptimizer:
         allOffspring.append(self.best.clone())
         for species in self.population:
             speciesOffspring = []
+            individuals = species["individuals"]
             speciesFitnessSum = sum(
-                list(map(lambda ind: ind.getFitness(), species["individuals"]))) / len(species["individuals"])
+                list(map(lambda ind: ind.getFitness(), individuals))) / len(individuals)
             # Constant number of offspring proportional to species fitness within larger population
             speciesNumOffspring = 0
             if populationFitnessSum == 0:
-                speciesNumOffspring = len(species["individuals"])
+                speciesNumOffspring = len(individuals)
             else:
                 speciesNumOffspring = m.ceil(
                     speciesFitnessSum / populationFitnessSum * self.populationSize)
-            species["individuals"].sort(key=lambda ind: ind.getFitness())
+            individuals.sort(key=lambda ind: ind.getFitness())
 
             # Eliminate worst individual
             # TODO: eliminate worst individual from population, not from each species
-            # candidates = species["individuals"][1:]
-            candidates = species["individuals"]
+            # candidates = individuals[(len(individuals) / 4):]
+            candidates = individuals
             # Autocopy best individual for large species
-            if len(species["individuals"]) > 5:
-                speciesOffspring.append(
-                    species["individuals"][len(species["individuals"]) - 1].clone())
+            if len(individuals) > 5:
+                speciesOffspring.append(individuals[-1].clone())
 
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 15:
                 while len(speciesOffspring) < speciesNumOffspring:
                     selected = self.selector.select(candidates, 3, 1)[0]
                     # selected = candidates[randint(0, len(candidates) - 1)]
-                    child = selected.clone()
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
                         if crossRand < .001:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
-                            child = child.breed(randMate.clone(), (child.getFitness() > randMate.getFitness()))
+                            child = selected.breed(randMate, (selected.getFitness() > randMate.getFitness()))
                         else:
                             mate = candidates[randint(0, len(candidates) - 1)]
-                            child = child.breed(mate.clone(), (child.getFitness() > mate.getFitness()))
+                            child = selected.breed(mate, (selected.getFitness() > mate.getFitness()))
+                    else:
+                        child = selected.clone()
                     # if connMutateRand < .80:
                     child = child.mutate()
                     speciesOffspring.append(child)
@@ -122,7 +123,7 @@ class GeneticOptimizer:
             if rando < .3:
                 randSpecies = self.population[randint(0, len(self.population) - 1)]
                 allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
-            else: 
+            else:
                 allOffspring.append(self.selector.select(all_inds, 2, 1)[0])
 
         for offspring in allOffspring:
@@ -150,7 +151,7 @@ class GeneticOptimizer:
             species["individuals"]), nextGenPopulation))
 
         # Calculate fitness in each new species
-        self._calculateFitness(nextGenPopulation, self.best)            
+        self._calculateFitness(nextGenPopulation, self.best)
 
         # Update fitness and stagnation values
         for species in nextGenPopulation:
@@ -173,10 +174,10 @@ class GeneticOptimizer:
             population, bestInd)
 
     def _endOfEpoch(self):
-        print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ", 
-            [len(species["individuals"]) for species in self.population], " POP_SIZE: ", 
-            sum(list(map(lambda species: len(species["individuals"]), self.population))),
-            " GPS: ", self.generationCount / (time.time() - self.startTime))
+        print("BEST_FITNESS: ", self.best.getFitness(), " GEN_COUNT: ", self.generationCount, " SPECIES_SIZE: ",
+              [len(species["individuals"]) for species in self.population], " POP_SIZE: ",
+              sum(list(map(lambda species: len(species["individuals"]), self.population))),
+              " GPS: ", self.generationCount / (time.time() - self.startTime))
         self.best._metaparameters.reset_tracking()
         if self.generationCount % self.saveInterval == 0:
             Runner.save(self)
@@ -241,12 +242,13 @@ class FitnessCalculator:
     def battle(self, individual):
         agents = [GenesAgent(0, individual), RandomAgent(1), RandomAgent(2), RandomAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
-                                self.length, self.muteAgents, self.catchExceptions)
+                               self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
         score = 40 + score + min(agents[0].maxPathDist, 32) / 32 + min(agents[0].numCarried, 20) / 20
         assert score > 0
         return score
+
 
 class Tournament:
 
@@ -260,6 +262,7 @@ class Tournament:
             warriors.sort(key=lambda ind: ind.getFitness())
             selected.append(warriors[len(warriors) - 1])
         return selected
+
 
 class Runner:
 
@@ -300,7 +303,7 @@ class Runner:
         if self.save:
             Runner.save(self.optimizer)
         exit(0)
-    
+
     def save(optimizer):
         all_inds = []
         for species in optimizer.getPopulation():
