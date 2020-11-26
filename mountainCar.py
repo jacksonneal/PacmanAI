@@ -5,14 +5,14 @@ import gym
 from genes import *
 from geneticOptimizer import *
 
+import multiprocessing as mp
 
-env = gym.make('MountainCar-v0')
-env._max_episode_steps = float("inf")
 min_pos = -1.2
 max_pos = 0.6
 diff = max_pos - min_pos
 
-def run_cart_pole(ind, render, time_limit=200):
+
+def run_mountain_car(env, ind, render, time_limit=200):
     fitness = 0
     observation = env.reset()
     action_space = env.action_space
@@ -34,30 +34,40 @@ def run_cart_pole(ind, render, time_limit=200):
 
 
 class MountainCarFitness:
+    def __init__(self):
+        self.environment = gym.make('MountainCar-v0')
+        self.environment._max_episode_steps = float("inf")
+
+    def battle(self, ind):
+        fitness = run_mountain_car(self.environment, ind, False)
+        return fitness
+
     def calculateFitness(self, population, _):
-        count = 0
-        total_fitness = 0
+        all = []
         for list in population:
             for ind in list["individuals"]:
-                fitness = run_cart_pole(ind, False)
-                ind.setFitness(fitness)
-                total_fitness += fitness
-                count += 1
-        print(f'average fitness = {total_fitness / count}')
+                all.append(ind)
+        num_threads = int(mp.cpu_count() - 1)
+        pool = mp.Pool(num_threads)
+        res = pool.map(self.battle, all)
+        for ind, fitness in zip(all, res):
+            ind.setFitness(fitness)
+        print(f"average fitness = {sum(res) / len(res)}")
+        pool.close()
 
 
-base = Genes(2, 3, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.4))
-population = [base.clone() for i in range(150)]
-for ind in population:
-    for output_node_index in range(3):
-        ind.add_connection(ind.input_node_index(0), ind.output_node_index(output_node_index))
-        ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
-        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
-optimizer = GeneticOptimizer(population, MountainCarFitness(), 8)
-optimizer.initialize()
-optimizer.evolve()
-best = optimizer.getBestIndividual()
-population = optimizer.getPopulation()
-fitness = run_cart_pole(best, True, 99999999999999999999999)
-
-env.close()
+if __name__ == "__main__":
+    base = Genes(2, 3, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.8))
+    population = [base.clone() for i in range(150)]
+    for ind in population:
+        for output_node_index in range(3):
+            ind.add_connection(ind.input_node_index(0), ind.output_node_index(output_node_index))
+            ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
+            ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+    fitness = MountainCarFitness()
+    optimizer = GeneticOptimizer(population, fitness, 30)
+    optimizer.initialize()
+    optimizer.evolve()
+    best = optimizer.getBestIndividual()
+    population = optimizer.getPopulation()
+    fitness = run_mountain_car(fitness.environment, best, True, 99999999999999999999999)
