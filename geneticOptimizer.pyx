@@ -91,11 +91,13 @@ class GeneticOptimizer:
             # Eliminate worst individual
             # TODO: eliminate worst individual from population, not from each species
             # candidates = individuals[(len(individuals) / 4):]
-            candidates = individuals[1:]
+            candidates = individuals
             # candidates = individuals
             # Autocopy best individual for large species
             if len(individuals) > 5:
                 speciesOffspring.append(individuals[-1].clone())
+            if len(individuals) > 2:
+                candidates = individuals[1:]
 
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 15:
