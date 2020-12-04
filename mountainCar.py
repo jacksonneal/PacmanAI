@@ -25,12 +25,11 @@ def run_mountain_car(env, ind, render, time_limit=200):
         result = ind.extract_output_values(neurons)
         action = np.argmax(result)
         observation, reward, done, info = env.step(action)
-        position = observation[0]
         max_reached = max(max_reached, observation[0])
         fitness += reward
         if done:
             break
-    return fitness + (max_reached - min_pos) / diff
+    return fitness + (max_reached - min_pos) / diff + time_limit
 
 
 class MountainCarFitness:
@@ -65,7 +64,7 @@ if __name__ == "__main__":
             ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
             ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
     fitness = MountainCarFitness()
-    optimizer = GeneticOptimizer(population, fitness, 30)
+    optimizer = GeneticOptimizer(population, fitness, 100, 1)
     optimizer.initialize()
     optimizer.evolve()
     best = optimizer.getBestIndividual()
