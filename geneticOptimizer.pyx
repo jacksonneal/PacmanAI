@@ -13,7 +13,7 @@ import time
 
 class GeneticOptimizer:
 
-    def __init__(self, population, fitnessCalculator, maxGenerations):
+    def __init__(self, population, fitnessCalculator, maxGenerations, fitnessThreshold=9999999999999):
         """ Initialize the optimizer
         :param population - set of starting genes, all of same initial species
         :param fitnessCalculator - capable of scoring a population of individuals
@@ -29,6 +29,7 @@ class GeneticOptimizer:
         self.generationCount = 0
         self.populationSize = len(population)
         self.maxGenerations = maxGenerations
+        self.fitnessThreshold = fitnessThreshold
         self.best = population[randint(0, len(population) - 1)]
         self.stagnated = False
         self.selector = Tournament()
@@ -90,7 +91,8 @@ class GeneticOptimizer:
             # Eliminate worst individual
             # TODO: eliminate worst individual from population, not from each species
             # candidates = individuals[(len(individuals) / 4):]
-            candidates = individuals
+            candidates = individuals[1:]
+            # candidates = individuals
             # Autocopy best individual for large species
             if len(individuals) > 5:
                 speciesOffspring.append(individuals[-1].clone())
@@ -197,7 +199,7 @@ class GeneticOptimizer:
 
     def isTerminated(self):
         """ Access whether optimization has reached any termination condition. """
-        return self.generationCount >= self.maxGenerations or self.stagnated
+        return self.generationCount >= self.maxGenerations or self.stagnated or self.getBestIndividual().getFitness() >= self.fitnessThreshold
 
 
 class FitnessCalculator:
@@ -245,8 +247,8 @@ class FitnessCalculator:
                                self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        score = 40 + score + min(agents[0].maxPathDist, 32) / 32 + min(agents[0].numCarried, 20) / 20
-        assert score > 0
+        score = score + min(agents[0].maxPathDist, 32) / 32 # + min(agents[0].numCarried, 20) / 20
+        # assert score > 0
         return score
 
 
@@ -269,14 +271,14 @@ class Runner:
     def defaultGeneration(populationSize):
         mapNodes = 16 * 32
         totalNodes = mapNodes + 8
-        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters(new_node_chance=0.3))
         for in_index in range(mapNodes, totalNodes):
             for out_index in range(5):
                 baseUnit.add_connection(baseUnit.input_node_index(in_index), baseUnit.output_node_index(out_index))
         return [baseUnit.clone().perturb() for _ in range(populationSize)]
 
     def __init__(self, layout, gameDisplay, length, muteAgents, catchExceptions):
-        maxGen = 100
+        maxGen = 1000
         populationSize = 150
         self.load = True
         self.save = True
