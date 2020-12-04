@@ -148,7 +148,7 @@ class Genes:
             self._connections = []
             self._metaparameters = metaparameters
             self._connections_sorted = True
-            self.fitness = []
+            self.fitness = 0
 
     def feed_sensor_values(self, values, neurons=None):
         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
@@ -401,9 +401,7 @@ class Genes:
         return Genes.load_from_json(as_json, metaparameters)
 
     def setFitness(self, fitness):
-        self.fitness.append(fitness)
-        if len(self.fitness) > 10:
-            self.fitness.pop(0)
+        self.fitness = fitness
 
     def getFitness(self):
-        return max(self.fitness)
+        return self.fitness
