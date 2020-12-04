@@ -339,7 +339,9 @@ class GenesAgent(CaptureAgent):
         capsules = gameState.getCapsules()
         width = gameState.getWalls().width
         height = gameState.getWalls().height
-
+        # make num food carrying / has swallowed capsules an input?
+        # theoretically the agent could learn this through recurrent connections (i.e. memory), but the probability
+        # of this occuring seems extremely low
         ret = [0] * (8 + width * height)
         if self.red:
             team = gameState.getRedTeamIndices()
@@ -399,7 +401,8 @@ class GenesAgent(CaptureAgent):
         curPathDist = self.getMazeDistance(curPos, self.startingPos)
         if curPathDist > self.maxPathDist:
             self.maxPathDist = curPathDist
-        self.prevPosList.append(curPos)
+        # self.prevPosList.append(curPos)
+        """
         if len(self.prevPosList) > 20:
             # Error if in same two spots for 20 positions
             pos = self.prevPosList[0]
@@ -411,10 +414,13 @@ class GenesAgent(CaptureAgent):
             if allEqual:
                 raise Exception("Agent idle. Game terminating.")
             self.prevPosList.pop(0)
+        """
+        """
         curNumCarrying = gameState.data.agentStates[self.index].numCarrying
         if curNumCarrying > self.prevNumCarrying:
             self.numCarried += 1
         self.prevNumCarrying = curNumCarrying
+        """
 
         self.neurons = self.genes.feed_sensor_values(
             self._makeInput(gameState), self.neurons)
