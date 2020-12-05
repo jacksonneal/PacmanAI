@@ -217,7 +217,7 @@ class FitnessCalculator:
         self.prevBest = None
         self.isRunParallel = True
         self.useChamp = False
-        self.pool = concurrent.futures.ThreadPoolExecutor(3)
+        self.pool = mp.Pool(int(mp.cpu_count() / 2))
 
     def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
@@ -233,23 +233,28 @@ class FitnessCalculator:
         for species in population:
             for individual in species["individuals"]:
                 all_inds.append(individual)
+        battler = Battler(self.prevBest, self.rules, self.layout, self.gameDisplay, self.length, self.muteAgents, self.catchExceptions)
         if self.isRunParallel:
-            futures = list(map(lambda ind: self.pool.submit(self.battle_and_cache, ind), all_inds))
-            concurrent.futures.wait(futures, timeout=None, return_when="ALL_COMPLETED")
-            # pool = mp.Pool(5)
-            # res = pool.map(self.battle, all_inds)
-            # pool.close()
-            # i = 0
-            # while i < len(res):
-            #     all_inds[i].setFitness(res[i])
-            #     i += 1
+            res = self.pool.map(battler.battle, all_inds)
+            i = 0
+            while i < len(res):
+                all_inds[i].setFitness(res[i])
+                i += 1
         else:
             for ind in all_inds:
-                ind.setFitness(self.battle(ind))
-    
-    def battle_and_cache(self, individual):
-        score = self.battle(individual)
-        individual.setFitness(score)
+                ind.setFitness(battler.battle(ind))
+
+# Needed a class without pool as member
+class Battler:
+
+    def __init__(self, prevBest, rules, layout, gameDisplay, length, muteAgents, catchExceptions):
+            self.prevBest = prevBest
+            self.layout = layout
+            self.gameDisplay = gameDisplay
+            self.length = length
+            self.muteAgents = muteAgents
+            self.catchExceptions = catchExceptions
+            self.rules = rules
 
     def battle(self, individual):
         agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
@@ -257,8 +262,7 @@ class FitnessCalculator:
                                self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        score = score + min(agents[0].maxPathDist, 32) / 32 # + min(agents[0].numCarried, 20) / 20
-        # assert score > 0
+        score = score + min(agents[0].maxPathDist, 32) / 32
         return score
 
 
@@ -315,6 +319,7 @@ class Runner:
         self.optimizer.evolve()
         if self.save:
             Runner.save(self.optimizer)
+        self.fitnessCalculator.pool.close()
         exit(0)
 
     def save(optimizer):
