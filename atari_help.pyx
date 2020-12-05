@@ -1,6 +1,6 @@
 import numpy as np
 
-def run_game(env, ind, render, time_limit=2000):
+def run_game(env, ind, render, time_limit=2000, kill_limit = -10):
     fitness = 0
     observation = env.reset()
     neurons = None
@@ -12,7 +12,7 @@ def run_game(env, ind, render, time_limit=2000):
         action = np.argmax(result)
         observation, reward, done, info = env.step(action)
         fitness += reward
-        if done or fitness < -10:
+        if done or fitness < kill_limit:
             break
     env.close()
     print(f"{fitness}")

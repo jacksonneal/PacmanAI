@@ -19,7 +19,7 @@ class Game:
 
     def battle(self, ind):
         fitness = run_game(self.environment, ind, False)
-        return fitness
+        return fitness + 20
 
     def calculateFitness(self, population, _):
         all = []
