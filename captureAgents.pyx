@@ -401,20 +401,18 @@ class GenesAgent(CaptureAgent):
         curPathDist = self.getMazeDistance(curPos, self.startingPos)
         if curPathDist > self.maxPathDist:
             self.maxPathDist = curPathDist
-        # self.prevPosList.append(curPos)
-        """
-        if len(self.prevPosList) > 20:
-            # Error if in same two spots for 20 positions
+        self.prevPosList.append(curPos)
+        if len(self.prevPosList) > 25:
+            # Error if in same two spots for 25 positions
             pos = self.prevPosList[0]
             allEqual = True
             for p in self.prevPosList:
-                if abs(p[0] - pos[0]) > 1 or abs(p[1] - pos[1]) > 1:
+                if p[0] != pos[0] and p[1] != pos[1]:
                     allEqual = False
                     break
             if allEqual:
                 raise Exception("Agent idle. Game terminating.")
             self.prevPosList.pop(0)
-        """
         """
         curNumCarrying = gameState.data.agentStates[self.index].numCarrying
         if curNumCarrying > self.prevNumCarrying:
