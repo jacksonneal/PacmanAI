@@ -272,8 +272,8 @@ class Runner:
 
     def defaultGeneration(populationSize):
         mapNodes = 16 * 32
-        totalNodes = mapNodes + 8
-        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters(new_node_chance=0.3))
+        totalNodes = mapNodes + 8 + 2
+        baseUnit = Genes(16 * 32 + 8 + 2, 5, Genes.Metaparameters(new_node_chance=0.3))
         for in_index in range(mapNodes, totalNodes):
             for out_index in range(5):
                 baseUnit.add_connection(baseUnit.input_node_index(in_index), baseUnit.output_node_index(out_index))
@@ -298,6 +298,7 @@ class Runner:
             else:
                 base = Runner.defaultGeneration(populationSize)
         except:
+            print("Failed to load, defaulting to regeneration!")
             base = Runner.defaultGeneration(populationSize)
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen)
 

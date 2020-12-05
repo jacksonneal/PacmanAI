@@ -321,7 +321,7 @@ class GenesAgent(CaptureAgent):
 
     def __init__(self, index, genes=None):
         if genes is None:
-            self.genes = Genes(16 * 32 + 8, 5, Genes.Metaparameters())
+            self.genes = Genes(16 * 32 + 8 + 2, 5, Genes.Metaparameters())
         else:
             self.genes = genes
         # for i in range(0, 1000):
@@ -342,7 +342,7 @@ class GenesAgent(CaptureAgent):
         # make num food carrying / has swallowed capsules an input?
         # theoretically the agent could learn this through recurrent connections (i.e. memory), but the probability
         # of this occuring seems extremely low
-        ret = [0] * (8 + width * height)
+        ret = [0] * (8 + width * height + 2)
         if self.red:
             team = gameState.getRedTeamIndices()
             enemy = gameState.getBlueTeamIndices()
@@ -392,6 +392,19 @@ class GenesAgent(CaptureAgent):
         assignPosition(total + 2, team[1])
         assignPosition(total + 4, enemy[0])
         assignPosition(total + 6, enemy[1])
+
+        # Last two inputs are whether the other team is scared (0, 1) and num carrying (0, 20)
+        ret[-1] = gameState.data.agentStates[self.index].numCarrying
+        isScary = 0
+        if self.red:
+            otherTeam = gameState.getBlueTeamIndices()
+        else:
+            otherTeam = gameState.getRedTeamIndices()
+        for index in otherTeam:
+            if gameState.data.agentStates[index].scaredTimer > 0:
+                isScary = 1
+                break
+        ret[-2] = isScary
         return ret
 
     def chooseAction(self, gameState):
