@@ -262,7 +262,7 @@ class Battler:
                                self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        score = score + min(agents[0].maxPathDist, 32) / 32
+        score = score + 40 + min(agents[0].maxPathDist, 32) / 32
         return score
 
 
