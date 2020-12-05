@@ -9,6 +9,7 @@ import math as m
 import multiprocessing as mp
 import json
 import time
+import concurrent.futures
 
 
 class GeneticOptimizer:
@@ -216,6 +217,7 @@ class FitnessCalculator:
         self.prevBest = None
         self.isRunParallel = True
         self.useChamp = False
+        self.pool = concurrent.futures.ThreadPoolExecutor(3)
 
     def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
@@ -232,16 +234,22 @@ class FitnessCalculator:
             for individual in species["individuals"]:
                 all_inds.append(individual)
         if self.isRunParallel:
-            pool = mp.Pool(int(mp.cpu_count() - 1))
-            res = pool.map(self.battle, all_inds)
-            pool.close()
-            i = 0
-            while i < len(res):
-                all_inds[i].setFitness(res[i])
-                i += 1
+            futures = list(map(lambda ind: self.pool.submit(self.battle_and_cache, ind), all_inds))
+            concurrent.futures.wait(futures, timeout=None, return_when="ALL_COMPLETED")
+            # pool = mp.Pool(5)
+            # res = pool.map(self.battle, all_inds)
+            # pool.close()
+            # i = 0
+            # while i < len(res):
+            #     all_inds[i].setFitness(res[i])
+            #     i += 1
         else:
             for ind in all_inds:
                 ind.setFitness(self.battle(ind))
+    
+    def battle_and_cache(self, individual):
+        score = self.battle(individual)
+        individual.setFitness(score)
 
     def battle(self, individual):
         agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]

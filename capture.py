@@ -392,7 +392,7 @@ class CaptureRules:
         initState = GameState()
         initState.initialize(layout, len(agents))
         starter = random.randint(0, 1)
-        print(('%s team starts' % ['Red', 'Blue'][starter]))
+        # print(('%s team starts' % ['Red', 'Blue'][starter]))
         game = Game(agents, display, self, startingIndex=starter,
                     muteAgents=muteAgents, catchExceptions=catchExceptions)
         game.state = initState
