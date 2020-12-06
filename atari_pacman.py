@@ -15,11 +15,11 @@ import sys
 
 class Game:
     def __init__(self):
-        self.environment = AtariEnv(game="boxing")
+        self.environment = AtariEnv(game="ms_pacman")
 
     def battle(self, ind):
         fitness = run_game(self.environment, ind, False)
-        return fitness + 20
+        return fitness
 
     def calculateFitness(self, population, _):
         all = []
@@ -35,9 +35,9 @@ class Game:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        fg = open("atari_best.json", "r")
-        fm = open("atari_meta.json", "r")
+    if len(sys.argv) == 2:
+        fg = open("atari_pacman_best.json", "r")
+        fm = open("atari_pacman_meta.json", "r")
         meta = Genes.Metaparameters.load(fm)
         fm.close()
         base = Genes.load(fg, meta)
@@ -48,32 +48,44 @@ if __name__ == "__main__":
 
     else:
         inputs = 128
-        outputs = 4
-        base = Genes(inputs, outputs, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=8, c2=8, c3=0.8))
-        population = [base.clone() for i in range(150)]
-        for ind in population:
-            for output_node_index in range(outputs):
-                for input_node_index in range(inputs):
-                    ind.add_connection(ind.input_node_index(input_node_index), ind.output_node_index(output_node_index))
-                ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+        outputs = 9
+        if len(sys.argv) < 2:
+            base = Genes(inputs, outputs, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, new_node_chance=0.1, c1=2, c2=2, c3=0.6))
+            population = [base.clone() for i in range(150)]
+            #for ind in population:
+            #    for output_node_index in range(outputs):
+            #        for input_node_index in range(inputs):
+            #            ind.add_connection(ind.input_node_index(input_node_index), ind.output_node_index(output_node_index))
+            #        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+        else:
+            population = []
+            f = open("atari_pacman_meta.json", "r")
+            metaparameters = Genes.Metaparameters.load(f)
+            f.close()
+            f = open("atari_pacman_population.json", "r")
+            obj = json.load(f)
+            f.close()
+            population = []
+            for entry in obj:
+                population.append(Genes.load_from_json(entry, metaparameters))
         game = Game()
-        optimizer = GeneticOptimizer(population, game, 100)
+        optimizer = GeneticOptimizer(population, game, 1000)
         optimizer.initialize()
         optimizer.evolve()
         best = optimizer.getBestIndividual()
         population = optimizer.getPopulation()
 
-        f = open("atari_best.json", "w")
+        f = open("atari_pacman_best.json", "w")
         best.save(f)
         f.close()
-        f = open("atari_population.json", "w")
+        f = open("atari_pacman_population.json", "w")
         all_inds = []
         for species in optimizer.getPopulation():
             for individual in species["individuals"]:
                 all_inds.append(individual)
         f.write(json.dumps([ind.as_json() for ind in all_inds]))
         f.close()
-        f = open("atari_meta.json", "w")
+        f = open("atari_pacman_meta.json", "w")
         best._metaparameters.save(f)
         f.close()
 
