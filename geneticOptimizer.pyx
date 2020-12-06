@@ -134,7 +134,7 @@ class GeneticOptimizer:
         for offspring in allOffspring:
             compatible = False
             for rep in representatives:
-                if compatible == False and offspring.distance(rep[0]) < 4.0:
+                if compatible == False and offspring.distance(rep[0]) < 3.5:
                     compatible = True
                     for species in nextGenPopulation:
                         if species["id"] == rep[1]:
