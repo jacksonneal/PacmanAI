@@ -35,7 +35,7 @@ class GeneticOptimizer:
         self.stagnated = False
         self.selector = Tournament()
         self.startTime = None
-        self.saveInterval = 50 # Interval at which to save population
+        self.saveInterval = 25 # Interval at which to save population
 
     def initialize(self):
         """ Prepare for evolution. """
