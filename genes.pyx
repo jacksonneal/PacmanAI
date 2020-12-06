@@ -23,11 +23,11 @@ class Genes:
     class Metaparameters:
         def __init__(self,
                      c1=1, c2=1, c3=3,
-                     perturbation_chance=0.8,
+                     perturbation_chance=0.5,
                      perturbation_stdev=0.1,
                      reset_weight_chance=0.1,
                      new_link_chance=0.3,
-                     bias_link_chance=0.01,
+                     bias_link_chance=0.05,
                      new_link_weight_stdev=1,
                      new_node_chance=0.03,
                      disable_mutation_chance=0.1,
@@ -69,14 +69,13 @@ class Genes:
                 self._connections[pair] = innovation_number
             return innovation_number
 
-        def register_node_split(self, in_node, out_node, between_node):
-            tuple = (in_node, out_node, between_node)
-            innovation_numbers = self._node_splits.get(tuple, None)
+        def register_node_split(self, innovation_split):
+            innovation_numbers = self._node_splits.get(innovation_split, None)
             if innovation_numbers is None:
                 leading = self._increment_innovation()
                 trailing = self._increment_innovation()
                 innovation_numbers = (leading, trailing)
-                self._node_splits[tuple] = innovation_numbers
+                self._node_splits[innovation_split] = innovation_numbers
             return innovation_numbers
 
         def load_from_json(as_json):
@@ -246,10 +245,10 @@ class Genes:
             return
         connection = util.random.choice(self._connections)
         connection[Genes._ENABLED] = False
-        in_node, out_node, _a, _b, _c = connection
+        in_node, out_node, weight, enabled, innovation_number = connection
         new_node = []
         self._dynamic_nodes.append(new_node)
-        leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self.total_nodes() - 1)
+        leading_innov, trailing_innov = self._metaparameters.register_node_split(innovation_number)
         leading = [in_node, self.total_nodes() - 1, 1, True, leading_innov]
         trailing = [self.total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
         if len(self._connections) > 0 and leading_innov < self._connections[-1][Genes._INNOV_NUMBER]:
