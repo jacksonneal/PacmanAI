@@ -69,7 +69,9 @@ import keyboardAgents
 import geneticOptimizer
 
 # If you change these, you won't affect the server, so you can't cheat
-KILL_POINTS = 0
+KILL_POINTS = .05
+FOOD_POINTS = .1
+CAPSULE_POINTS = .15
 SONAR_NOISE_RANGE = 13  # Must be odd
 SONAR_NOISE_VALUES = [i - (SONAR_NOISE_RANGE - 1) /
                       2 for i in range(SONAR_NOISE_RANGE)]
@@ -432,15 +434,16 @@ class CaptureRules:
                     print(
                         'The Red team has returned at least %d of the opponents\' dots.' % foodToWin)
                 else:  # if state.getBlueFood().count() > MIN_FOOD and state.getRedFood().count() > MIN_FOOD:
-                    print('Time is up.')
+                    # print('Time is up.')
                     if state.data.score == 0:
-                        print('Tie game!')
+                        pass
+                        # print('Tie game!')
                     else:
                         winner = 'Red'
                         if state.data.score < 0:
                             winner = 'Blue'
-                        print('The %s team wins by %d points.' %
-                              (winner, abs(state.data.score)))
+                        # print('The %s team wins by %f points.' %
+                            #   (winner, abs(state.data.score)))
 
     def getProgress(self, game):
         blue = 1.0 - (game.state.getBlueFood().count() /
@@ -562,10 +565,17 @@ class AgentRules:
             # go increase the variable for the pacman who ate this
             agents = [state.data.agentStates[agentIndex]
                       for agentIndex in teamIndicesFunc()]
+            i = 0
             for agent in agents:
                 if agent.getPosition() == position:
                     agent.numCarrying += 1
+                    agentIndex = teamIndicesFunc()[i]
+                    score = FOOD_POINTS
+                    if not state.isOnRedTeam(agentIndex):
+                        score = -score
+                    state.data.scoreChange += score
                     break  # the above should only be true for one agent...
+                i += 1
 
             # do all the score and food grid maintainenace
             #state.data.scoreChange += score
@@ -591,6 +601,19 @@ class AgentRules:
                 otherTeam = state.getRedTeamIndices()
             for index in otherTeam:
                 state.data.agentStates[index].scaredTimer = SCARED_TIME
+
+            agents = [state.data.agentStates[agentIndex]
+                      for agentIndex in teamIndicesFunc()]
+            i = 0
+            for agent in agents:
+                if agent.getPosition() == position:
+                    agentIndex = teamIndicesFunc()[i]
+                    score = CAPSULE_POINTS
+                    if not state.isOnRedTeam(agentIndex):
+                        score = -score
+                    state.data.scoreChange += score
+                    break  # the above should only be true for one agent...
+                i += 1
 
     consume = staticmethod(consume)
 
