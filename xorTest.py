@@ -16,13 +16,13 @@ class XorFitness:
                     error += diff * diff
                 ind.setFitness(4 - error)            
 
-base = Genes(2, 1, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.4))
+base = Genes(2, 1, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.4, allow_recurrent=False))
 population = [base.clone() for i in range(150)]
-for ind in population:
-    ind.add_connection(ind.input_node_index(0), ind.output_node_index(0))
-    ind.add_connection(ind.input_node_index(1), ind.output_node_index(0))
-    ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(0))
-optimizer = GeneticOptimizer(population, XorFitness(), 100)
+#for ind in population:
+#    ind.add_connection(ind.input_node_index(0), ind.output_node_index(0))
+#    ind.add_connection(ind.input_node_index(1), ind.output_node_index(0))
+#   ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(0))
+optimizer = GeneticOptimizer(population, XorFitness(), 10000, 3.9)
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()
