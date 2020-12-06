@@ -135,7 +135,7 @@ class InfoPane:
       self.ghostDistanceText.append(t)
 
   def _infoString(self, score, timeleft):
-    return "SCORE: % 4d                         TIME:  % 4d" % (score, timeleft)
+    return "SCORE: % 4f                         TIME:  % 4d" % (score, timeleft)
 
   def updateScore(self, score, timeleft):
     changeText(self.scoreText, self._infoString(score,timeleft))

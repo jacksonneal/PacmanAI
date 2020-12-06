@@ -456,7 +456,7 @@ class GameStateData:
         for x, y in self.capsules:
             map[x][y] = 'o'
 
-        return str(map) + ("\nScore: %d\n" % self.score)
+        return str(map) + ("\nScore: %f\n" % self.score)
 
     def _foodWallStr( self, hasFood, hasWall ):
         if hasFood:
