@@ -15,8 +15,8 @@ class RandomlyTrue:
 RandomlyTrue.instance = RandomlyTrue()
 
 def random_uniform0(double half_range):
-    return np.random.normal(0, half_range)
-    # return np.random.uniform(-half_range, half_range)
+    # return np.random.normal(0, half_range)
+    return np.random.uniform(-half_range, half_range)
 
 class Genes:
 
@@ -31,7 +31,8 @@ class Genes:
                      new_link_weight_stdev=1,
                      new_node_chance=0.03,
                      disable_mutation_chance=0.1,
-                     enable_mutation_chance=0.25):
+                     enable_mutation_chance=0.25,
+                     allow_recurrent=True):
             self.innovation_number = 0
 
             def none_or(value, default_value):
@@ -48,6 +49,7 @@ class Genes:
             self.perturbation_stdev = none_or(perturbation_stdev, 0.1)
             self.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
             self.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
+            self.allow_recurrent = none_or(allow_recurrent, True)
             self._connections = {}
             self._node_splits = {}
 
@@ -90,7 +92,8 @@ class Genes:
                 new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
                 new_node_chance=as_json.get("new_node_chance"),
                 disable_mutation_chance=as_json.get("disable_mutation_chance"),
-                enable_mutation_chance=as_json.get("enable_mutation_chance")
+                enable_mutation_chance=as_json.get("enable_mutation_chance"),
+                allow_recurrent=as_json.get("allow_recurrent")
             )
             if "innovation_number" in as_json:
                 ret.innovation_number = as_json["innovation_number"]
@@ -115,6 +118,7 @@ class Genes:
                 "reset_weight_chance": self.reset_weight_chance,
                 "disable_mutation_chance": self.disable_mutation_chance,
                 "enable_mutation_chance": self.enable_mutation_chance,
+                "allow_recurrent": self.allow_recurrent
             }
 
         def save(self, out_stream, encoder=json):
@@ -198,9 +202,25 @@ class Genes:
         return 1 + input_index
 
     def output_node_index(self, index):
-        return 1 + self._num_sensors + index    
+        return 1 + self._num_sensors + index
+
+    def _is_hidden_node_index(self, index):
+        return index >= 1 + self._num_sensors + self._num_outputs
+
+    def _is_output_node_index(self, index):
+        return index > self._num_sensors and index < 1 + self._num_sensors + self._num_outputs
 
     def add_connection(self, input_index, output_index):
+        if not self._metaparameters.allow_recurrent:
+            def swap():
+                return output_index, input_index
+            if input_index == output_index:
+                return
+            if self._is_output_node_index(input_index):
+                if output_index < input_index or self._is_hidden_node_index(output_index):
+                    input_index, output_index = swap()
+            elif self._is_hidden_node_index(output_index) and output_index < input_index: # both hidden and output is earlier
+                input_index, output_index = swap()
         incoming = self._node_by_index(output_index)
         for connection_index in incoming:
             connection = self._connections[connection_index]
