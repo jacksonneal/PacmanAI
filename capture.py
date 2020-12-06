@@ -602,6 +602,12 @@ class AgentRules:
             for index in otherTeam:
                 state.data.agentStates[index].scaredTimer = SCARED_TIME
 
+            # blue case is the default
+            teamIndicesFunc = state.getBlueTeamIndices
+            if isRed:
+                # switch if its red
+                teamIndicesFunc = state.getRedTeamIndices
+
             agents = [state.data.agentStates[agentIndex]
                       for agentIndex in teamIndicesFunc()]
             i = 0
