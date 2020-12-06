@@ -134,7 +134,7 @@ class GeneticOptimizer:
         for offspring in allOffspring:
             compatible = False
             for rep in representatives:
-                if compatible == False and offspring.distance(rep[0]) < 3.5:
+                if compatible == False and offspring.distance(rep[0]) < 2:
                     compatible = True
                     for species in nextGenPopulation:
                         if species["id"] == rep[1]:
@@ -257,7 +257,7 @@ class Battler:
             self.rules = rules
 
     def battle(self, individual):
-        agents = [GenesAgent(0, individual), GenesAgent(1, self.prevBest), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
+        agents = [GenesAgent(0, individual), DefensiveReflexAgent(1), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
         g = self.rules.newGame(self.layout, agents, self.gameDisplay,
                                self.length, self.muteAgents, self.catchExceptions)
         g.run()
