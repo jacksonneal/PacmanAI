@@ -392,7 +392,7 @@ class Genes:
 
     def as_json(self):
         """ returns self as a dict """
-        return {"nodeCount": self.total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections}
+        return {"nodeCount": self.total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections, "fitness": self.fitness}
 
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
@@ -413,6 +413,7 @@ class Genes:
         for in_node, out_node, weight, enabled, innov in connections:
             ret._node_by_index(out_node).append(count)
             count += 1
+        ret.fitness = json_object.get("fitness", 0)
         return ret
 
     def load(in_stream, metaparameters, decoder=json):

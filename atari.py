@@ -20,44 +20,62 @@ class Game:
     def battle(self, ind):
         fitness = run_game(self.environment, ind, False)
         return fitness + 20
-
-    def calculateFitness(self, population, _):
-        all = []
-        for list in population:
-            for ind in list["individuals"]:
-                all.append(ind)
+    
+    def calculateFitnessHelp(self, all):
         num_threads = int(mp.cpu_count() - 1)
         pool = mp.Pool(num_threads)
         res = pool.map(self.battle, all)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         pool.close()
+        print(np.mean(res))
+
+    def calculateFitness(self, population, _):
+        all = []
+        for list in population:
+            for ind in list["individuals"]:
+                all.append(ind)
+        self.calculateFitnessHelp(all)
+        
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        fg = open("atari_best.json", "r")
-        fm = open("atari_meta.json", "r")
+        fm = open("atari_meta_194.json", "r")
         meta = Genes.Metaparameters.load(fm)
         fm.close()
-        base = Genes.load(fg, meta)
+        fg = open("atari_best_194.json", "r")
+        best = Genes.load(fg, meta)
         fg.close()
         game = Game()
-        run_game(game.environment, base, True, 999999999999999)
+        # game.calculateFitnessHelp(population)
+        # best = max(population, key=lambda ind: ind.getFitness())
+        # fout = open("atari_best_194.json", "w")
+        # best.save(fout)
+        # fout.close()
+        run_game(game.environment, best, True, 999999999999999)
         game.environment.close()
 
     else:
         inputs = 128
         outputs = 4
-        base = Genes(inputs, outputs, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=8, c2=8, c3=0.8))
+        base = Genes(inputs, outputs, Genes.Metaparameters(
+            perturbation_chance=0.5, 
+            perturbation_stdev=0.5, 
+            new_link_weight_stdev=4, 
+            new_node_chance=0.15, 
+            c1=1.7, c2=1.7, c3=1.2, 
+            allow_recurrent=False))
         population = [base.clone() for i in range(150)]
         for ind in population:
-            for output_node_index in range(outputs):
-                for input_node_index in range(inputs):
-                    ind.add_connection(ind.input_node_index(input_node_index), ind.output_node_index(output_node_index))
-                ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+            for _ in range(50):
+                ind.mutate()
+            #for output_node_index in range(outputs):
+            #    for input_node_index in range(inputs):
+            #        ind.add_connection(ind.input_node_index(input_node_index), ind.output_node_index(output_node_index))
+            #    ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
         game = Game()
-        optimizer = GeneticOptimizer(population, game, 100)
+        optimizer = GeneticOptimizer(population, game, 300)
         optimizer.initialize()
         optimizer.evolve()
         best = optimizer.getBestIndividual()

@@ -1,14 +1,14 @@
 import numpy as np
+from numpy.core.fromnumeric import mean
 from numpy.core.numeric import Inf
 import gym
 
 from genes import *
 from geneticOptimizer import *
 from atari_env import *
-from atari_help import *
 
 import multiprocessing as mp
-
+import math
 import json
 
 import sys
@@ -16,12 +16,57 @@ import sys
 class Game:
     def __init__(self):
         self.environment = AtariEnv(game="ms_pacman")
+        self.inited = False
 
-    def battle(self, ind):
-        fitness = run_game(self.environment, ind, False)
+    def battle(self, ind, render=False):
+        env = self.environment
+        fitness = 0
+        observation = env.reset()
+        neurons = None
+        while True:
+            if render:
+                env.render()
+            neurons = ind.feed_sensor_values(observation, neurons)
+            result = ind.extract_output_values(neurons)
+            up = result[0] > 0.5 and result[0] > result[3]
+            right = result[1] > 0.5 and result[1] > result[2]
+            left = result[2] > 0.5
+            down = result[3] > 0.5
+            if up:
+                if right:
+                    action = 5
+                elif left:
+                    action = 6
+                else:
+                    action = 1
+            elif down:
+                if right:
+                    action = 7
+                elif left:
+                    action = 8
+                else:
+                    action = 4
+            elif right:
+                action = 2
+            elif left:
+                action = 3
+            else:
+                action = 0
+            observation, reward, done, info = env.step(action)
+            if reward >= 200:
+                ghosts_eaten = math.floor(reward / 200)
+                reward -= ghosts_eaten * 200
+            fitness += reward
+            if done:
+                break
+        print(fitness, file=sys.stderr)
         return fitness
 
     def calculateFitness(self, population, _):
+        if not self.inited:
+            self.inited = True
+            return
+        sys.stdout.flush()
         all = []
         for list in population:
             for ind in list["individuals"]:
@@ -31,6 +76,8 @@ class Game:
         res = pool.map(self.battle, all)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
+        average = mean(res)
+        print(f"average fitness {average}")
         pool.close()
 
 
@@ -48,21 +95,27 @@ if __name__ == "__main__":
 
     else:
         inputs = 128
-        outputs = 9
+        outputs = 4
         if len(sys.argv) < 2:
-            base = Genes(inputs, outputs, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, new_node_chance=0.1, c1=2, c2=2, c3=0.6))
+            base = Genes(inputs, outputs, Genes.Metaparameters(
+                perturbation_chance=0.5, 
+                perturbation_stdev=0.5, 
+                new_link_weight_stdev=4, 
+                new_node_chance=0.5,
+                new_link_chance=0.5,
+                c1=2.2, c2=2.2, c3=1.2,
+                allow_recurrent=False
+                ))
             population = [base.clone() for i in range(150)]
-            #for ind in population:
-            #    for output_node_index in range(outputs):
-            #        for input_node_index in range(inputs):
-            #            ind.add_connection(ind.input_node_index(input_node_index), ind.output_node_index(output_node_index))
-            #        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+            for ind in population:
+                for _ in range(50):
+                    ind.mutate()
         else:
             population = []
-            f = open("atari_pacman_meta.json", "r")
+            f = open("metaparameters_98.json", "r")
             metaparameters = Genes.Metaparameters.load(f)
             f.close()
-            f = open("atari_pacman_population.json", "r")
+            f = open("sample_population_98.json", "r")
             obj = json.load(f)
             f.close()
             population = []
@@ -89,6 +142,4 @@ if __name__ == "__main__":
         best._metaparameters.save(f)
         f.close()
 
-        environment = AtariEnv(game="boxing")
-        fitness = run_game(environment, best, True, 99999999999999999999999)
-        environment.close()
+        game.battle(best, True)

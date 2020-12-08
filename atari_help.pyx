@@ -1,5 +1,7 @@
 import numpy as np
 
+
+
 def run_game(env, ind, render, time_limit=2000, kill_limit = -10):
     fitness = 0
     observation = env.reset()
@@ -15,5 +17,5 @@ def run_game(env, ind, render, time_limit=2000, kill_limit = -10):
         if done or fitness < kill_limit:
             break
     env.close()
-    print(f"{fitness}")
+    # print(f"{fitness}")
     return fitness
