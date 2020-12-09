@@ -1,9 +1,11 @@
+from numpy.lib.histograms import _ravel_and_check_weights
 from scipy.special import expit as sigmoid
 import numpy as np
 import util
 import copy
 import json
 import math
+import array
 
 
 class RandomlyTrue:
@@ -11,6 +13,24 @@ class RandomlyTrue:
         return util.flipCoin(0.5)
     instance = None
 
+cdef class Connection:
+    cdef unsigned int in_node, out_node
+    cdef float weight
+    cdef int enabled
+    cdef unsigned int innov_number
+
+    def __init__(self, unsigned int in_node, unsigned int out_node, float weight, int enabled, unsigned int innov):
+        self.in_node = in_node
+        self.out_node = out_node
+        self.weight = weight
+        self.enabled = enabled
+        self.innov_number = innov
+
+    def to_json(self):
+        return [self.in_node, self.out_node, self.weight, self.enabled, self.innov_number]
+    
+    def get_innov(self):
+        return self.innov_number
 
 RandomlyTrue.instance = RandomlyTrue()
 
@@ -32,7 +52,8 @@ class Genes:
                      new_node_chance=0.03,
                      disable_mutation_chance=0.1,
                      enable_mutation_chance=0.25,
-                     allow_recurrent=True):
+                     allow_recurrent=True,
+                     mutate_loop=1):
             self.innovation_number = 0
 
             def none_or(value, default_value):
@@ -50,6 +71,7 @@ class Genes:
             self.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
             self.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
             self.allow_recurrent = none_or(allow_recurrent, True)
+            self.mutate_loop = none_or(mutate_loop, 1)
             self._connections = {}
             self._node_splits = {}
 
@@ -93,7 +115,8 @@ class Genes:
                 new_node_chance=as_json.get("new_node_chance"),
                 disable_mutation_chance=as_json.get("disable_mutation_chance"),
                 enable_mutation_chance=as_json.get("enable_mutation_chance"),
-                allow_recurrent=as_json.get("allow_recurrent")
+                allow_recurrent=as_json.get("allow_recurrent"),
+                mutate_loop=as_json.get("mutate_loop")
             )
             if "innovation_number" in as_json:
                 ret.innovation_number = as_json["innovation_number"]
@@ -118,7 +141,8 @@ class Genes:
                 "reset_weight_chance": self.reset_weight_chance,
                 "disable_mutation_chance": self.disable_mutation_chance,
                 "enable_mutation_chance": self.enable_mutation_chance,
-                "allow_recurrent": self.allow_recurrent
+                "allow_recurrent": self.allow_recurrent,
+                "mutate_loop": self.mutate_loop
             }
 
         def save(self, out_stream, encoder=json):
@@ -126,11 +150,6 @@ class Genes:
             out_stream.write(encoder.dumps(out))
             out_stream.flush()
 
-    _IN_NODE = 0
-    _OUT_NODE = 1
-    _WEIGHT = 2
-    _ENABLED = 3
-    _INNOV_NUMBER = 4
     BIAS_INDEX = 0
 
     def __init__(self, num_sensors_or_copy, num_outputs=None, metaparameters=None):
@@ -148,7 +167,7 @@ class Genes:
             self._num_outputs = num_outputs
             self._dynamic_nodes = []
             for _ in range(num_outputs):
-                self._dynamic_nodes.append([])
+                self._dynamic_nodes.append(array.array("I"))
             self._connections = []
             self._metaparameters = metaparameters
             self._connections_sorted = True
@@ -157,9 +176,9 @@ class Genes:
     def feed_sensor_values(self, values, neurons=None):
         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
         if neurons is None:
-            neurons = [0] * (len(self._dynamic_nodes) + self._num_sensors + 1)
+            neurons = [0 for _ in range(self.total_nodes() + 1)]
         assert len(values) == self._num_sensors, "invalid number of inputs"
-        neurons[0] = 1  # BIAS node
+        neurons[0] = 1.0  # BIAS node
         for i in range(self._num_sensors):
             neurons[i + 1] = values[i]
 
@@ -168,13 +187,13 @@ class Genes:
             neuron_index = node_index + self._num_sensors + 1
             has_connections = False
             cdef double sum = 0
-
+            cdef Connection connection = None
             for connection_index in node:
-                in_node, out_node, weight, enabled, innov = self._connections[connection_index]
+                connection = <Connection>self._connections[connection_index]
                 # assert out_node = neuron_index
-                if enabled:
+                if connection.enabled:
                     has_connections = True
-                    sum += neurons[in_node] * weight
+                    sum += neurons[connection.in_node] * connection.weight
             if has_connections:
                 neurons[neuron_index] = math.tanh(sum)
         
@@ -222,16 +241,21 @@ class Genes:
             elif self._is_hidden_node_index(output_index) and output_index < input_index: # both hidden and output is earlier
                 input_index, output_index = swap()
         incoming = self._node_by_index(output_index)
+
+        cdef Connection connection
         for connection_index in incoming:
-            connection = self._connections[connection_index]
-            if connection[Genes._IN_NODE] == input_index:
+            connection = <Connection>self._connections[connection_index]
+            if connection.in_node == input_index:
                 return self
 
         innovation_number = self._metaparameters.register_connection(input_index, output_index)
-        connection = [input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), True, innovation_number]
+        connection = Connection(input_index, output_index, random_uniform0(self._metaparameters.new_link_weight_stdev), True, innovation_number)
         incoming.append(len(self._connections))
-        if len(self._connections) > 0 and innovation_number < self._connections[-1][Genes._INNOV_NUMBER]:
-            self._connections_sorted = False
+        cdef Connection last_connection
+        if len(self._connections) > 0:
+            last_connection = <Connection>self._connections[-1]
+            if innovation_number < last_connection.innov_number:
+                self._connections_sorted = False
         self._connections.append(connection)
         return self
 
@@ -244,46 +268,51 @@ class Genes:
     def _add_node(self):
         if len(self._connections) == 0:
             return
-        connection = util.random.choice(self._connections)
-        connection[Genes._ENABLED] = False
-        in_node, out_node, _a, _b, _c = connection
-        new_node = []
+        cdef Connection connection = <Connection>util.random.choice(self._connections)
+        connection.enabled = False
+        new_node = array.array("I")
         self._dynamic_nodes.append(new_node)
-        leading_innov, trailing_innov = self._metaparameters.register_node_split(in_node, out_node, self.total_nodes() - 1)
-        leading = [in_node, self.total_nodes() - 1, 1, True, leading_innov]
-        trailing = [self.total_nodes() - 1, out_node, connection[Genes._WEIGHT], True, trailing_innov]
-        if len(self._connections) > 0 and leading_innov < self._connections[-1][Genes._INNOV_NUMBER]:
-            self._connections_sorted = False
+        leading_innov, trailing_innov = self._metaparameters.register_node_split(connection.in_node, connection.out_node, self.total_nodes() - 1)
+        leading = Connection(connection.in_node, self.total_nodes() - 1, 1, True, leading_innov)
+        trailing = Connection(self.total_nodes() - 1, connection.out_node, connection.weight, True, trailing_innov)
+        cdef Connection last_connection
+        if len(self._connections) > 0:
+            last_connection = <Connection>(self._connections[-1])
+            if leading_innov < last_connection.innov_number:
+                self._connections_sorted = False
         self._connections.append(leading)
         self._connections.append(trailing)
         new_node.append(len(self._connections) - 2)
-        self._node_by_index(out_node).append(len(self._connections) - 1)
+        self._node_by_index(connection.out_node).append(len(self._connections) - 1)
 
     def perturb(self):
         cdef double reset_chance = self._metaparameters.reset_weight_chance
         cdef double new_link_weight_stdev = self._metaparameters.new_link_weight_stdev
         cdef double perturbation_stdev = self._metaparameters.perturbation_stdev
-        for connection in self._connections:
+        cdef Connection connection
+        for _connection in self._connections:
+            connection = <Connection>_connection
             if util.flipCoin(reset_chance):
-                connection[Genes._WEIGHT] = random_uniform0(new_link_weight_stdev)
+                connection.weight = random_uniform0(new_link_weight_stdev)
             else:
-                connection[Genes._WEIGHT] += random_uniform0(perturbation_stdev)
+                connection.weight += random_uniform0(perturbation_stdev)
         return self
 
     def _enable_mutation(self, enable):
         if len(self._connections) == 0:
             return
-        connection = util.random.choice(self._connections)
-        connection[Genes._ENABLED] = enable
+        cdef Connection connection = <Connection>util.random.choice(self._connections)
+        connection.enabled = enable
 
     def mutate(self):
         """ Mutate the genes in this genome, returns self """
-        if util.flipCoin(self._metaparameters.new_link_chance):
-            self._add_connection()
-        if util.flipCoin(self._metaparameters.new_node_chance):
-            self._add_node()
-        if util.flipCoin(self._metaparameters.perturbation_chance):
-            self.perturb()
+        for _ in range(self._metaparameters.mutate_loop):
+            if util.flipCoin(self._metaparameters.new_link_chance):
+                self._add_connection()
+            if util.flipCoin(self._metaparameters.new_node_chance):
+                self._add_node()
+            if util.flipCoin(self._metaparameters.perturbation_chance):
+                self.perturb()
         # if util.flipCoin(self._metaparameters.disable_mutation_chance):
         #     self._enable_mutation(False)
         # if util.flipCoin(self._metaparameters.enable_mutation_chance):
@@ -293,7 +322,7 @@ class Genes:
     def _sorted_connections(self):
         if self._connections_sorted:
             return self._connections
-        return sorted(self._connections, key=lambda c: c[Genes._INNOV_NUMBER])
+        return sorted(self._connections, key=Connection.get_innov)
 
     def breed(self, other, self_more_fit=RandomlyTrue.instance):
         """ Creates a child from the result of breeding self and other genes, returns new child """
@@ -306,15 +335,16 @@ class Genes:
         i = 0
         j = 0
 
-        def turn_on_maybe(connection):
-            if not connection[Genes._ENABLED] and util.flipCoin(self._metaparameters.enable_mutation_chance):
-                connection[Genes._ENABLED] = True
-
+        def turn_on_maybe(Connection connection):
+            if not connection.enabled and util.flipCoin(self._metaparameters.enable_mutation_chance):
+                connection.enabled = True
+        cdef Connection sc = None
+        cdef Connection so = None
         while i < slen and j < olen:
-            sc = sconnections[i]
-            so = oconnections[j]
-            sci = sc[Genes._INNOV_NUMBER]
-            soi = so[Genes._INNOV_NUMBER]
+            sc = <Connection>sconnections[i]
+            so = <Connection>oconnections[j]
+            sci = sc.innov_number
+            soi = so.innov_number
             if sci == soi:
                 ret._connections.append(copy.copy(sc if util.flipCoin(0.5) else so))
                 turn_on_maybe(ret._connections[-1])
@@ -341,14 +371,17 @@ class Genes:
                 turn_on_maybe(ret._connections[-1])
             j += 1
         max_node = 0
-        for connection in ret._connections:
-            max_node = max(max_node, connection[Genes._IN_NODE], connection[Genes._OUT_NODE])
+        cdef Connection connection
+        for _connection in ret._connections:
+            connection = <Connection>_connection
+            max_node = max(max_node, connection.in_node, connection.out_node)
         i = ret.total_nodes()
         while i <= max_node:
             ret._dynamic_nodes.append([])
             i += 1
-        for index, connection in enumerate(ret._connections):
-            ret._node_by_index(connection[Genes._OUT_NODE]).append(index)
+        for index, _connection in enumerate(ret._connections):
+            connection = <Connection>_connection
+            ret._node_by_index(connection.out_node).append(index)
         return ret
 
     def distance(self, other):
@@ -368,13 +401,14 @@ class Genes:
         shared = 0
         i = 0
         j = 0
+        cdef Connection sc, so
         while i < slen and j < olen:
-            sc = sconnections[i]
-            so = oconnections[j]
-            sci = sc[Genes._INNOV_NUMBER]
-            soi = so[Genes._INNOV_NUMBER]
+            sc = <Connection>sconnections[i]
+            so = <Connection>oconnections[j]
+            sci = sc.innov_number
+            soi = so.innov_number
             if sci == soi:
-                weight_difference += abs(sc[Genes._WEIGHT] - so[Genes._WEIGHT])
+                weight_difference += abs(sc.weight - so.weight)
                 shared += 1
                 i += 1
                 j += 1
@@ -392,7 +426,7 @@ class Genes:
 
     def as_json(self):
         """ returns self as a dict """
-        return {"nodeCount": self.total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": self._connections, "fitness": self.fitness}
+        return {"nodeCount": self.total_nodes(), "inputCount": self._num_sensors, "outputCount": self._num_outputs, "connections": [(<Connection>c).to_json() for c in self._connections], "fitness": self.fitness}
 
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
@@ -406,12 +440,14 @@ class Genes:
         to_add = json_object["nodeCount"] - ret.total_nodes()
         for _ in range(to_add):
             ret._dynamic_nodes.append([])
-        connections = json_object["connections"]
+        connections = [Connection(c[0], c[1], c[2], c[3], c[4]) for c in json_object["connections"]]
         count = 0
         ret._connections = connections
-        connections.sort(key=lambda c: c[Genes._INNOV_NUMBER])
-        for in_node, out_node, weight, enabled, innov in connections:
-            ret._node_by_index(out_node).append(count)
+        connections.sort(key=Connection.get_innov)
+        cdef Connection connection
+        for _connection in connections:
+            connection = <Connection>_connection
+            ret._node_by_index(connection.out_node).append(count)
             count += 1
         ret.fitness = json_object.get("fitness", 0)
         return ret
