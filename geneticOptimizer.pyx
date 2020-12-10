@@ -9,6 +9,7 @@ import math as m
 import multiprocessing as mp
 import json
 import time
+import concurrent.futures
 
 
 class GeneticOptimizer:
@@ -34,7 +35,7 @@ class GeneticOptimizer:
         self.stagnated = False
         self.selector = Tournament()
         self.startTime = None
-        self.saveInterval = 2 # Interval at which to save population
+        self.saveInterval = 25 # Interval at which to save population
 
     def initialize(self):
         """ Prepare for evolution. """
@@ -90,14 +91,14 @@ class GeneticOptimizer:
 
             # Eliminate worst individual
             # TODO: eliminate worst individual from population, not from each species
-            candidates = individuals[(len(individuals) / 4):]
-            # candidates = individuals
+            # candidates = individuals[(len(individuals) / 4):]
+            candidates = individuals
             # candidates = individuals
             # Autocopy best individual for large species
             if len(individuals) > 5:
                 speciesOffspring.append(individuals[-1].clone())
-            # if len(individuals) > 2:
-            #    candidates = individuals[1:]
+            if len(individuals) > 2:
+                candidates = individuals[1:]
 
             # Only non-empty, non-stagnating species may evolve
             if len(candidates) >= 1 and species["stagnation"] < 15:
@@ -184,7 +185,7 @@ class GeneticOptimizer:
               " GPS: ", self.generationCount / (time.time() - self.startTime))
         self.best._metaparameters.reset_tracking()
         if self.generationCount % self.saveInterval == 0:
-            Runner.save(self, self.generationCount)
+            Runner.save(self)
 
     def getPopulation(self):
         """ Access all individuals by species. """
@@ -216,6 +217,7 @@ class FitnessCalculator:
         self.prevBest = None
         self.isRunParallel = True
         self.useChamp = False
+        self.pool = mp.Pool(int(mp.cpu_count() / 2))
 
     def calculateFitness(self, population, prevBest):
         """ Calculate and cache fitness of each individual in the population.  
@@ -231,17 +233,28 @@ class FitnessCalculator:
         for species in population:
             for individual in species["individuals"]:
                 all_inds.append(individual)
+        battler = Battler(self.prevBest, self.rules, self.layout, self.gameDisplay, self.length, self.muteAgents, self.catchExceptions)
         if self.isRunParallel:
-            pool = mp.Pool(int(mp.cpu_count() - 1))
-            res = pool.map(self.battle, all_inds)
-            pool.close()
+            res = self.pool.map(battler.battle, all_inds)
             i = 0
             while i < len(res):
                 all_inds[i].setFitness(res[i])
                 i += 1
         else:
             for ind in all_inds:
-                ind.setFitness(self.battle(ind))
+                ind.setFitness(battler.battle(ind))
+
+# Needed a class without pool as member
+class Battler:
+
+    def __init__(self, prevBest, rules, layout, gameDisplay, length, muteAgents, catchExceptions):
+            self.prevBest = prevBest
+            self.layout = layout
+            self.gameDisplay = gameDisplay
+            self.length = length
+            self.muteAgents = muteAgents
+            self.catchExceptions = catchExceptions
+            self.rules = rules
 
     def battle(self, individual):
         agents = [GenesAgent(0, individual), DefensiveReflexAgent(1), DefensiveReflexAgent(2), DefensiveReflexAgent(3)]
@@ -249,8 +262,7 @@ class FitnessCalculator:
                                self.length, self.muteAgents, self.catchExceptions)
         g.run()
         score = g.state.getScore()
-        score = score + min(agents[0].maxPathDist, 32) / 32 # + min(agents[0].numCarried, 20) / 20
-        # assert score > 0
+        score = score + 40 + min(agents[0].maxPathDist, 40) / 40
         return score
 
 
@@ -272,8 +284,8 @@ class Runner:
 
     def defaultGeneration(populationSize):
         mapNodes = 16 * 32
-        totalNodes = mapNodes + 8
-        baseUnit = Genes(16 * 32 + 8, 5, Genes.Metaparameters(new_node_chance=0.3))
+        totalNodes = mapNodes + 8 + 2
+        baseUnit = Genes(16 * 32 + 8 + 2, 5, Genes.Metaparameters(new_node_chance=0.3))
         for in_index in range(mapNodes, totalNodes):
             for out_index in range(5):
                 baseUnit.add_connection(baseUnit.input_node_index(in_index), baseUnit.output_node_index(out_index))
@@ -298,6 +310,7 @@ class Runner:
             else:
                 base = Runner.defaultGeneration(populationSize)
         except:
+            print("Failed to load, defaulting to regeneration!")
             base = Runner.defaultGeneration(populationSize)
         self.optimizer = GeneticOptimizer(base, self.fitnessCalculator, maxGen)
 
@@ -306,15 +319,16 @@ class Runner:
         self.optimizer.evolve()
         if self.save:
             Runner.save(self.optimizer)
+        self.fitnessCalculator.pool.close()
         exit(0)
 
-    def save(optimizer, number=None):
+    def save(optimizer):
         all_inds = []
         for species in optimizer.getPopulation():
             for individual in species["individuals"]:
                 all_inds.append(individual)
-        f = open("sample_population.json" if number is None else f"sample_population_{number}.json", "w")
+        f = open("sample_population.json", "w")
         f.write(json.dumps(list(map(lambda ind: ind.as_json(), all_inds))))
         f.flush()
-        optimizer.getBestIndividual().save(open("sample_gene.json" if number is None else f"sample_gene_{number}.json", "w"))
-        optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json" if number is None else f"metaparameters_{number}.json", "w"))
+        optimizer.getBestIndividual().save(open("sample_gene.json", "w"))
+        optimizer.getBestIndividual()._metaparameters.save(open("metaparameters.json", "w"))
