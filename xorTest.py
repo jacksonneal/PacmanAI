@@ -26,6 +26,7 @@ optimizer = GeneticOptimizer(population, XorFitness(), 10000, 5.95)
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()
+best_json = best.as_json()
 population = optimizer.getPopulation()
 for input, output in zip(inputs, outputs):
     neurons = best.feed_sensor_values(input)

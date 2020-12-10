@@ -15,11 +15,12 @@ import sys
 
 class Game:
     def __init__(self):
-        self.environment = AtariEnv(game="boxing")
+        self.environment = AtariEnv(game="kung_fu_master")
 
     def battle(self, ind):
-        fitness = run_game(self.environment, ind, False)
-        return fitness + 20
+        fitness = run_game(self.environment, ind, False, time_limit=999999999999)
+        print(f"{fitness}", file=sys.stderr)
+        return fitness
     
     def calculateFitnessHelp(self, all):
         num_threads = int(mp.cpu_count() - 1)
@@ -41,10 +42,10 @@ class Game:
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        fm = open("boxing/metaparameters_300.json", "r")
+        fm = open("atari_meta_194.json", "r")
         meta = Genes.Metaparameters.load(fm)
         fm.close()
-        fg = open("boxing/sample_gene_300.json", "r")
+        fg = open("atari_best_194.json", "r")
         best = Genes.load(fg, meta)
         fg.close()
         game = Game()
@@ -58,13 +59,13 @@ if __name__ == "__main__":
 
     else:
         inputs = 128
-        outputs = 4
+        outputs = 14
         base = Genes(inputs, outputs, Genes.Metaparameters(
             perturbation_chance=0.5, 
             perturbation_stdev=0.5, 
             new_link_weight_stdev=4, 
             new_node_chance=0.15, 
-            c1=1.7, c2=1.7, c3=1.2, 
+            c1=2, c2=2, c3=1.5, 
             allow_recurrent=False))
         population = [base.clone() for i in range(150)]
         for ind in population:
@@ -81,10 +82,10 @@ if __name__ == "__main__":
         best = optimizer.getBestIndividual()
         population = optimizer.getPopulation()
 
-        f = open("atari_best.json", "w")
+        f = open("atari_kung_fu_best.json", "w")
         best.save(f)
         f.close()
-        f = open("atari_population.json", "w")
+        f = open("atari_kung_fu_population.json", "w")
         all_inds = []
         for species in optimizer.getPopulation():
             for individual in species["individuals"]:

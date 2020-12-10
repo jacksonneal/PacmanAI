@@ -58,15 +58,16 @@ class MountainCarFitness:
 if __name__ == "__main__":
     base = Genes(2, 3, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.8))
     population = [base.clone() for i in range(150)]
-    for ind in population:
-        for output_node_index in range(3):
-            ind.add_connection(ind.input_node_index(0), ind.output_node_index(output_node_index))
-            ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
-            ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
+    # for ind in population:
+    #    for output_node_index in range(3):
+    #        ind.add_connection(ind.input_node_index(0), ind.output_node_index(output_node_index))
+    #        ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
+    #        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
     fitness = MountainCarFitness()
     optimizer = GeneticOptimizer(population, fitness, 100, 1)
     optimizer.initialize()
     optimizer.evolve()
     best = optimizer.getBestIndividual()
+    best_json = best.as_json()
     population = optimizer.getPopulation()
     fitness = run_mountain_car(fitness.environment, best, True, 99999999999999999999999)
