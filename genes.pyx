@@ -268,7 +268,14 @@ class Genes:
     def _add_node(self):
         if len(self._connections) == 0:
             return
-        cdef Connection connection = <Connection>util.random.choice(self._connections)
+        cdef Connection connection
+        if self._metaparameters.allow_recurrent:
+            connection = <Connection>util.random.choice(self._connections)
+        else:
+            choices = []
+            for i in range(self._num_outputs):
+                choices.extend(self._dynamic_nodes[i])
+            connection = <Connection>self._connections[util.random.choice(choices)]
         connection.enabled = False
         new_node = array.array("I")
         self._dynamic_nodes.append(new_node)
@@ -377,7 +384,7 @@ class Genes:
             max_node = max(max_node, connection.in_node, connection.out_node)
         i = ret.total_nodes()
         while i <= max_node:
-            ret._dynamic_nodes.append([])
+            ret._dynamic_nodes.append(array.array("I"))
             i += 1
         for index, _connection in enumerate(ret._connections):
             connection = <Connection>_connection
