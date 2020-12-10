@@ -8,3 +8,6 @@ score
 *.c
 *.so
 build
+*.log
+*.xlsx
+*.csv
