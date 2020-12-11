@@ -15,7 +15,7 @@ import sys
 
 class Game:
     def __init__(self):
-        self.environment = AtariEnv(game="ms_pacman")
+        self.environment = AtariEnv(game="asteroids")
         self.inited = False
 
     def battle(self, ind, render=False):
@@ -32,45 +32,38 @@ class Game:
             neurons = ind.feed_sensor_values(observation, neurons)
             result = ind.extract_output_values(neurons)
             up = result[0] > 0.5 and result[0] > result[3]
-            right = result[1] > 0.5 and result[1] > result[2]
-            left = result[2] > 0.5
-            down = result[3] > 0.5
             if up:
-                if right:
-                    action = 5
-                elif left:
+                if result[1] > 0.5 and result[1] > result[2]: # right
                     action = 6
-                else:
-                    action = 1
-            elif down:
-                if right:
+                elif result[2] > 0.5: # left
                     action = 7
-                elif left:
-                    action = 8
                 else:
-                    action = 4
-            elif right:
-                action = 2
-            elif left:
+                    action = 2
+            elif result[3] > 0.5: # down
+                action = 5
+            elif result[1] > 0.5 and result[1] > result[2]: # right
                 action = 3
+            elif result[2] > 0.5: # left
+                action = 4
             else:
                 action = 0
-            t1 = time.time()
+            if result[4] > 0.5: # fire
+                if action == 0:
+                    action = 1
+                else:
+                    action += 6
             observation, reward, done, info = env.step(action)
-            t2 = time.time()
-            # feed_time += (t1 - t0)
-            # game_time += (t2 - t1)
             fitness += reward % 200
             if done:
                 break
-        # print(f"{feed_time}, {game_time}")
         print(fitness, file=sys.stderr)
+        env.close()
         return fitness
 
     def calculateFitness(self, population, _):
         if not self.inited:
             self.inited = True
-            return
+            # return
         sys.stdout.flush()
         all = []
         networks = []
@@ -102,7 +95,7 @@ if __name__ == "__main__":
 
     else:
         inputs = 128
-        outputs = 4
+        outputs = 5
         if len(sys.argv) < 2:
             base = Genes(inputs, outputs, Genes.Metaparameters(
                 perturbation_chance=0.5, 
@@ -112,7 +105,7 @@ if __name__ == "__main__":
                 mutate_loop=6,
                 new_node_chance=0.5,
                 new_link_chance=0.5,
-                c1=2.2, c2=2.2, c3=1.2,
+                c1=2.0, c2=2.0, c3=1.0,
                 allow_recurrent=False
                 ))
             population = [base.clone() for i in range(150)]
@@ -137,17 +130,17 @@ if __name__ == "__main__":
         best = optimizer.getBestIndividual()
         population = optimizer.getPopulation()
 
-        f = open("atari_pacman_best.json", "w")
+        f = open("atari_asteroids_best.json", "w")
         best.save(f)
         f.close()
-        f = open("atari_pacman_population.json", "w")
+        f = open("atari_asteroids_population.json", "w")
         all_inds = []
         for species in optimizer.getPopulation():
             for individual in species["individuals"]:
                 all_inds.append(individual)
         f.write(json.dumps([ind.as_json() for ind in all_inds]))
         f.close()
-        f = open("atari_pacman_meta.json", "w")
+        f = open("atari_asteroids_meta.json", "w")
         best._metaparameters.save(f)
         f.close()
 
