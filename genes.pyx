@@ -165,6 +165,8 @@ cdef class Network:
 
 class Genes:
 
+    BIAS_INDEX = 0
+    
     Metaparameters = Metaparameters
 
     def __init__(self, num_sensors, num_outputs, metaparameters):
