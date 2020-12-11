@@ -899,7 +899,7 @@ struct __pyx_defaults1 {
   PyObject *__pyx_arg_decoder;
 };
 
-/* "genes.pyx":13
+/* "genes.pyx":14
  * import json
  * 
  * cdef class Metaparameters:             # <<<<<<<<<<<<<<
@@ -912,8 +912,8 @@ struct __pyx_obj_5genes_Metaparameters {
 };
 
 
-/* "genes.pyx":106
- *         self.data.reset_tracking()
+/* "genes.pyx":107
+ *     return ret
  * 
  * cdef class Network:             # <<<<<<<<<<<<<<
  *     cdef _Network* data
@@ -1077,13 +1077,6 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml,
                                       PyObject *module, PyObject *globals,
                                       PyObject* code);
 
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
 /* PyFunctionFastCall.proto */
 #if CYTHON_FAST_PYCALL
 #define __Pyx_PyFunction_FastCall(func, args, nargs)\
@@ -1114,50 +1107,9 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
 
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
 /* PyObjectCallMethO.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* PySequenceContains.proto */
-static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
-    int result = PySequence_Contains(seq, item);
-    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
-}
-
-/* GetItemInt.proto */
-#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
-               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
-#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
-    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              int wraparound, int boundscheck);
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
-                                                     int is_list, int wraparound, int boundscheck);
-
-/* ObjectGetItem.proto */
-#if CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
-#else
-#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
 #endif
 
 /* PyObjectCallNoArg.proto */
@@ -1166,6 +1118,19 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
 #else
 #define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
 #endif
+
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
+
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
 
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1205,42 +1170,6 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
-/* SetItemInt.proto */
-#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
-               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
-                                               int is_list, int wraparound, int boundscheck);
-
-/* PyIntBinop.proto */
-#if !CYTHON_COMPILING_IN_PYPY
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace, zerodivision_check)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
-/* ExtTypeTest.proto */
-static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
-
-/* PyObjectSetAttrStr.proto */
-#if CYTHON_USE_TYPE_SLOTS
-#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
-static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
-#else
-#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
-#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
-#endif
-
-/* SliceObject.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(
-        PyObject* obj, Py_ssize_t cstart, Py_ssize_t cstop,
-        PyObject** py_start, PyObject** py_stop, PyObject** py_slice,
-        int has_cstart, int has_cstop, int wraparound);
 
 /* PyDictVersioning.proto */
 #if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
@@ -1289,6 +1218,99 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
+/* PySequenceContains.proto */
+static CYTHON_INLINE int __Pyx_PySequence_ContainsTF(PyObject* item, PyObject* seq, int eq) {
+    int result = PySequence_Contains(seq, item);
+    return unlikely(result < 0) ? result : (result == (eq == Py_EQ));
+}
+
+/* DictGetItem.proto */
+#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
+static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
+#define __Pyx_PyObject_Dict_GetItem(obj, name)\
+    (likely(PyDict_CheckExact(obj)) ?\
+     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
+#else
+#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
+#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
+#endif
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+#else
+#define __Pyx_PyInt_SubtractObjC(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
+#endif
+
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+
+/* RaiseNeedMoreValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+
+/* IterFinish.proto */
+static CYTHON_INLINE int __Pyx_IterFinish(void);
+
+/* UnpackItemEndCheck.proto */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
+/* SliceObject.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(
+        PyObject* obj, Py_ssize_t cstart, Py_ssize_t cstop,
+        PyObject** py_start, PyObject** py_stop, PyObject** py_slice,
+        int has_cstart, int has_cstop, int wraparound);
+
+/* SetItemInt.proto */
+#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
+               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
+static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
+static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
+                                               int is_list, int wraparound, int boundscheck);
+
+/* GetItemInt.proto */
+#define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Fast(o, (Py_ssize_t)i, is_list, wraparound, boundscheck) :\
+    (is_list ? (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL) :\
+               __Pyx_GetItemInt_Generic(o, to_py_func(i))))
+#define __Pyx_GetItemInt_List(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_List_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "list index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+#define __Pyx_GetItemInt_Tuple(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
+    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
+    __Pyx_GetItemInt_Tuple_Fast(o, (Py_ssize_t)i, wraparound, boundscheck) :\
+    (PyErr_SetString(PyExc_IndexError, "tuple index out of range"), (PyObject*)NULL))
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              int wraparound, int boundscheck);
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
+                                                     int is_list, int wraparound, int boundscheck);
+
+/* ObjectGetItem.proto */
+#if CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
+#else
+#define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
+#endif
+
+/* PyIntBinop.proto */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace, int zerodivision_check);
+#else
+#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace, zerodivision_check)\
+    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
+#endif
+
+/* ExtTypeTest.proto */
+static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
+
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
 static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
@@ -1306,28 +1328,14 @@ static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
 #define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
 #endif
 
-/* DictGetItem.proto */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key);
-#define __Pyx_PyObject_Dict_GetItem(obj, name)\
-    (likely(PyDict_CheckExact(obj)) ?\
-     __Pyx_PyDict_GetItem(obj, name) : PyObject_GetItem(obj, name))
+/* PyObjectSetAttrStr.proto */
+#if CYTHON_USE_TYPE_SLOTS
+#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o, n, NULL)
+static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value);
 #else
-#define __Pyx_PyDict_GetItem(d, key) PyObject_GetItem(d, key)
-#define __Pyx_PyObject_Dict_GetItem(obj, name)  PyObject_GetItem(obj, name)
+#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
+#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
 #endif
-
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
-
-/* RaiseNeedMoreValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
-
-/* IterFinish.proto */
-static CYTHON_INLINE int __Pyx_IterFinish(void);
-
-/* UnpackItemEndCheck.proto */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
 
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
@@ -1727,10 +1735,10 @@ static const char __pyx_k_c1[] = "c1";
 static const char __pyx_k_c2[] = "c2";
 static const char __pyx_k_c3[] = "c3";
 static const char __pyx_k_doc[] = "__doc__";
-static const char __pyx_k_end[] = "end";
 static const char __pyx_k_get[] = "get";
 static const char __pyx_k_net[] = "net";
 static const char __pyx_k_ret[] = "ret";
+static const char __pyx_k_base[] = "base";
 static const char __pyx_k_conn[] = "conn";
 static const char __pyx_k_init[] = "__init__";
 static const char __pyx_k_json[] = "json";
@@ -1743,8 +1751,8 @@ static const char __pyx_k_self[] = "self";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_Genes[] = "Genes";
 static const char __pyx_k_array[] = "array";
-static const char __pyx_k_begin[] = "begin";
 static const char __pyx_k_breed[] = "breed";
+static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_clone[] = "clone";
 static const char __pyx_k_dumps[] = "dumps";
 static const char __pyx_k_flush[] = "flush";
@@ -1791,7 +1799,6 @@ static const char __pyx_k_Genes_load[] = "Genes.load";
 static const char __pyx_k_Genes_save[] = "Genes.save";
 static const char __pyx_k_getFitness[] = "getFitness";
 static const char __pyx_k_inputCount[] = "inputCount";
-static const char __pyx_k_num_inputs[] = "num_inputs";
 static const char __pyx_k_out_stream[] = "out_stream";
 static const char __pyx_k_setFitness[] = "setFitness";
 static const char __pyx_k_Genes_breed[] = "Genes.breed";
@@ -1804,6 +1811,7 @@ static const char __pyx_k_mutate_loop[] = "mutate_loop";
 static const char __pyx_k_num_outputs[] = "num_outputs";
 static const char __pyx_k_num_sensors[] = "num_sensors";
 static const char __pyx_k_outputCount[] = "outputCount";
+static const char __pyx_k_total_nodes[] = "total_nodes";
 static const char __pyx_k_Genes___init[] = "Genes.__init__";
 static const char __pyx_k_Genes_mutate[] = "Genes.mutate";
 static const char __pyx_k_output_index[] = "output_index";
@@ -1817,6 +1825,7 @@ static const char __pyx_k_add_connection[] = "add_connection";
 static const char __pyx_k_load_from_json[] = "load_from_json";
 static const char __pyx_k_metaparameters[] = "metaparameters";
 static const char __pyx_k_allow_recurrent[] = "allow_recurrent";
+static const char __pyx_k_get_connections[] = "get_connections";
 static const char __pyx_k_net_connections[] = "net_connections";
 static const char __pyx_k_new_link_chance[] = "new_link_chance";
 static const char __pyx_k_new_node_chance[] = "new_node_chance";
@@ -1824,6 +1833,7 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_Genes_getFitness[] = "Genes.getFitness";
 static const char __pyx_k_Genes_setFitness[] = "Genes.setFitness";
 static const char __pyx_k_bias_link_chance[] = "bias_link_chance";
+static const char __pyx_k_connections_data[] = "connections_data";
 static const char __pyx_k_input_node_index[] = "input_node_index";
 static const char __pyx_k_metaparameters_2[] = "_metaparameters";
 static const char __pyx_k_innovation_number[] = "innovation_number";
@@ -1831,6 +1841,7 @@ static const char __pyx_k_output_node_index[] = "output_node_index";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_feed_sensor_values[] = "feed_sensor_values";
 static const char __pyx_k_perturbation_stdev[] = "perturbation_stdev";
+static const char __pyx_k_load_metaparameters[] = "load_metaparameters";
 static const char __pyx_k_perturbation_chance[] = "perturbation_chance";
 static const char __pyx_k_reset_weight_chance[] = "reset_weight_chance";
 static const char __pyx_k_Genes_add_connection[] = "Genes.add_connection";
@@ -1844,6 +1855,7 @@ static const char __pyx_k_Genes_output_node_index[] = "Genes.output_node_index";
 static const char __pyx_k_disable_mutation_chance[] = "disable_mutation_chance";
 static const char __pyx_k_Genes_feed_sensor_values[] = "Genes.feed_sensor_values";
 static const char __pyx_k_Genes_extract_output_values[] = "Genes.extract_output_values";
+static const char __pyx_k_load_metaparameters_from_json[] = "load_metaparameters_from_json";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_n_s_Genes;
 static PyObject *__pyx_n_s_Genes___init;
@@ -1871,16 +1883,18 @@ static PyObject *__pyx_n_s_add_connection;
 static PyObject *__pyx_n_s_allow_recurrent;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_as_json;
-static PyObject *__pyx_n_s_begin;
+static PyObject *__pyx_n_s_base;
 static PyObject *__pyx_n_s_bias_link_chance;
 static PyObject *__pyx_n_s_breed;
 static PyObject *__pyx_n_s_c1;
 static PyObject *__pyx_n_s_c2;
 static PyObject *__pyx_n_s_c3;
+static PyObject *__pyx_n_s_class;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_clone;
 static PyObject *__pyx_n_s_conn;
 static PyObject *__pyx_n_s_connections;
+static PyObject *__pyx_n_s_connections_data;
 static PyObject *__pyx_n_s_decoder;
 static PyObject *__pyx_n_s_default_value;
 static PyObject *__pyx_n_s_disable_mutation_chance;
@@ -1890,7 +1904,6 @@ static PyObject *__pyx_n_s_dumps;
 static PyObject *__pyx_n_s_enable_mutation_chance;
 static PyObject *__pyx_n_s_enabled;
 static PyObject *__pyx_n_s_encoder;
-static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_extract_output_values;
 static PyObject *__pyx_n_s_f;
 static PyObject *__pyx_n_s_feed_sensor_values;
@@ -1900,6 +1913,7 @@ static PyObject *__pyx_n_s_genes;
 static PyObject *__pyx_kp_s_genes_pyx;
 static PyObject *__pyx_n_s_get;
 static PyObject *__pyx_n_s_getFitness;
+static PyObject *__pyx_n_s_get_connections;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_ignore;
 static PyObject *__pyx_n_s_import;
@@ -1917,6 +1931,8 @@ static PyObject *__pyx_n_s_json;
 static PyObject *__pyx_n_s_json_object;
 static PyObject *__pyx_n_s_load;
 static PyObject *__pyx_n_s_load_from_json;
+static PyObject *__pyx_n_s_load_metaparameters;
+static PyObject *__pyx_n_s_load_metaparameters_from_json;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_meta;
 static PyObject *__pyx_n_s_metaclass;
@@ -1936,7 +1952,6 @@ static PyObject *__pyx_n_s_new_node_chance;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_nodeCount;
 static PyObject *__pyx_n_s_none_or;
-static PyObject *__pyx_n_s_num_inputs;
 static PyObject *__pyx_n_s_num_outputs;
 static PyObject *__pyx_n_s_num_sensors;
 static PyObject *__pyx_n_s_onetwork;
@@ -1964,6 +1979,7 @@ static PyObject *__pyx_n_s_setFitness;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_total_nodes;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_values;
 static PyObject *__pyx_n_s_weight;
@@ -1972,18 +1988,20 @@ static int __pyx_pf_5genes_14Metaparameters___cinit__(struct __pyx_obj_5genes_Me
 static void __pyx_pf_5genes_14Metaparameters_2__dealloc__(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5genes_14Metaparameters_8__init___none_or(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_value, PyObject *__pyx_v_default_value); /* proto */
 static int __pyx_pf_5genes_14Metaparameters_4__init__(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, PyObject *__pyx_v_c1, PyObject *__pyx_v_c2, PyObject *__pyx_v_c3, PyObject *__pyx_v_perturbation_chance, PyObject *__pyx_v_perturbation_stdev, PyObject *__pyx_v_reset_weight_chance, PyObject *__pyx_v_new_link_chance, PyObject *__pyx_v_bias_link_chance, PyObject *__pyx_v_new_link_weight_stdev, PyObject *__pyx_v_new_node_chance, PyObject *__pyx_v_disable_mutation_chance, PyObject *__pyx_v_enable_mutation_chance, PyObject *__pyx_v_allow_recurrent, PyObject *__pyx_v_mutate_loop); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_6load_from_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_as_json); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_8load(struct __pyx_obj_5genes_Metaparameters *__pyx_v_in_stream, PyObject *__pyx_v_decoder); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, PyObject *__pyx_v_out_stream, PyObject *__pyx_v_encoder); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_14reset_tracking(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_16__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes_14Metaparameters_18__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5genes_7Network___cinit__(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_num_sensors, PyObject *__pyx_v_num_outputs); /* proto */
+static PyObject *__pyx_pf_5genes_14Metaparameters_6as_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5genes_14Metaparameters_8save(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, PyObject *__pyx_v_out_stream, PyObject *__pyx_v_encoder); /* proto */
+static PyObject *__pyx_pf_5genes_14Metaparameters_10reset_tracking(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5genes_14Metaparameters_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5genes_14Metaparameters_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5genes_load_metaparameters(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_in_stream, PyObject *__pyx_v_decoder); /* proto */
+static PyObject *__pyx_pf_5genes_2load_metaparameters_from_json(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_as_json); /* proto */
+static int __pyx_pf_5genes_7Network___cinit__(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_num_sensors, PyObject *__pyx_v_num_outputs, PyObject *__pyx_v_total_nodes, PyObject *__pyx_v_connections_data); /* proto */
 static void __pyx_pf_5genes_7Network_2__dealloc__(struct __pyx_obj_5genes_Network *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_values, PyObject *__pyx_v_neurons); /* proto */
-static PyObject *__pyx_pf_5genes_7Network_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Network *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes_7Network_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Network *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5genes_7Network_4extract_output_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_neurons); /* proto */
+static PyObject *__pyx_pf_5genes_7Network_6feed_sensor_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_values, PyObject *__pyx_v_neurons); /* proto */
+static PyObject *__pyx_pf_5genes_7Network_8__reduce__(struct __pyx_obj_5genes_Network *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5genes_7Network_10get_connections(struct __pyx_obj_5genes_Network *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5genes_7Network_12as_json(struct __pyx_obj_5genes_Network *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_num_sensors, PyObject *__pyx_v_num_outputs, PyObject *__pyx_v_metaparameters); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_2setFitness(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_4getFitness(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
@@ -1995,13 +2013,13 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
 static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other, CYTHON_UNUSED PyObject *__pyx_v__ignore); /* proto */
-static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_other); /* proto */
+static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_26as_json(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5genes___defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_5genes_4__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_out_stream, PyObject *__pyx_v_encoder); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_json_object, PyObject *__pyx_v_metaparameters); /* proto */
-static PyObject *__pyx_pf_5genes_2__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
+static PyObject *__pyx_pf_5genes_6__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_in_stream, PyObject *__pyx_v_metaparameters, PyObject *__pyx_v_decoder); /* proto */
 static int __pyx_pf_7cpython_5array_5array___getbuffer__(arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info, CYTHON_UNUSED int __pyx_v_flags); /* proto */
 static void __pyx_pf_7cpython_5array_5array_2__releasebuffer__(CYTHON_UNUSED arrayobject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
@@ -2018,14 +2036,13 @@ static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_3;
 static PyObject *__pyx_k__3;
-static PyObject *__pyx_k__4;
+static PyObject *__pyx_k__6;
 static PyObject *__pyx_tuple_;
+static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
-static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_tuple__9;
-static PyObject *__pyx_tuple__10;
 static PyObject *__pyx_tuple__11;
 static PyObject *__pyx_tuple__13;
 static PyObject *__pyx_tuple__15;
@@ -2033,39 +2050,42 @@ static PyObject *__pyx_tuple__17;
 static PyObject *__pyx_tuple__19;
 static PyObject *__pyx_tuple__21;
 static PyObject *__pyx_tuple__23;
-static PyObject *__pyx_tuple__24;
+static PyObject *__pyx_tuple__25;
 static PyObject *__pyx_tuple__26;
 static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_tuple__32;
 static PyObject *__pyx_tuple__34;
-static PyObject *__pyx_tuple__35;
+static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_tuple__37;
 static PyObject *__pyx_tuple__39;
 static PyObject *__pyx_tuple__41;
 static PyObject *__pyx_tuple__43;
 static PyObject *__pyx_tuple__45;
+static PyObject *__pyx_tuple__47;
 static PyObject *__pyx_codeobj__2;
+static PyObject *__pyx_codeobj__10;
 static PyObject *__pyx_codeobj__12;
 static PyObject *__pyx_codeobj__14;
 static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__18;
 static PyObject *__pyx_codeobj__20;
 static PyObject *__pyx_codeobj__22;
-static PyObject *__pyx_codeobj__25;
+static PyObject *__pyx_codeobj__24;
 static PyObject *__pyx_codeobj__27;
 static PyObject *__pyx_codeobj__29;
 static PyObject *__pyx_codeobj__31;
 static PyObject *__pyx_codeobj__33;
-static PyObject *__pyx_codeobj__36;
+static PyObject *__pyx_codeobj__35;
 static PyObject *__pyx_codeobj__38;
 static PyObject *__pyx_codeobj__40;
 static PyObject *__pyx_codeobj__42;
 static PyObject *__pyx_codeobj__44;
 static PyObject *__pyx_codeobj__46;
+static PyObject *__pyx_codeobj__48;
 /* Late includes */
 
-/* "genes.pyx":17
+/* "genes.pyx":18
  *     cdef _Metaparameters *data
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2094,7 +2114,7 @@ static int __pyx_pf_5genes_14Metaparameters___cinit__(struct __pyx_obj_5genes_Me
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "genes.pyx":18
+  /* "genes.pyx":19
  * 
  *     def __cinit__(self):
  *         self.data = new _Metaparameters()             # <<<<<<<<<<<<<<
@@ -2103,7 +2123,7 @@ static int __pyx_pf_5genes_14Metaparameters___cinit__(struct __pyx_obj_5genes_Me
  */
   __pyx_v_self->data = new _Metaparameters();
 
-  /* "genes.pyx":17
+  /* "genes.pyx":18
  *     cdef _Metaparameters *data
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -2117,7 +2137,7 @@ static int __pyx_pf_5genes_14Metaparameters___cinit__(struct __pyx_obj_5genes_Me
   return __pyx_r;
 }
 
-/* "genes.pyx":20
+/* "genes.pyx":21
  *         self.data = new _Metaparameters()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2140,7 +2160,7 @@ static void __pyx_pf_5genes_14Metaparameters_2__dealloc__(struct __pyx_obj_5gene
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "genes.pyx":21
+  /* "genes.pyx":22
  * 
  *     def __dealloc__(self):
  *         del self.data             # <<<<<<<<<<<<<<
@@ -2149,7 +2169,7 @@ static void __pyx_pf_5genes_14Metaparameters_2__dealloc__(struct __pyx_obj_5gene
  */
   delete __pyx_v_self->data;
 
-  /* "genes.pyx":20
+  /* "genes.pyx":21
  *         self.data = new _Metaparameters()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -2161,7 +2181,7 @@ static void __pyx_pf_5genes_14Metaparameters_2__dealloc__(struct __pyx_obj_5gene
   __Pyx_RefNannyFinishContext();
 }
 
-/* "genes.pyx":23
+/* "genes.pyx":24
  *         del self.data
  * 
  *     def __init__(self,             # <<<<<<<<<<<<<<
@@ -2208,7 +2228,7 @@ static int __pyx_pw_5genes_14Metaparameters_5__init__(PyObject *__pyx_v_self, Py
     values[10] = ((PyObject *)__pyx_float_0_1);
     values[11] = ((PyObject *)__pyx_float_0_25);
 
-    /* "genes.pyx":34
+    /* "genes.pyx":35
  *                      disable_mutation_chance=0.1,
  *                      enable_mutation_chance=0.25,
  *                      allow_recurrent=True,             # <<<<<<<<<<<<<<
@@ -2339,7 +2359,7 @@ static int __pyx_pw_5genes_14Metaparameters_5__init__(PyObject *__pyx_v_self, Py
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 23, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 24, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2392,7 +2412,7 @@ static int __pyx_pw_5genes_14Metaparameters_5__init__(PyObject *__pyx_v_self, Py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 14, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 23, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 14, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 24, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Metaparameters.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2400,7 +2420,7 @@ static int __pyx_pw_5genes_14Metaparameters_5__init__(PyObject *__pyx_v_self, Py
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_5genes_14Metaparameters_4__init__(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self), __pyx_v_c1, __pyx_v_c2, __pyx_v_c3, __pyx_v_perturbation_chance, __pyx_v_perturbation_stdev, __pyx_v_reset_weight_chance, __pyx_v_new_link_chance, __pyx_v_bias_link_chance, __pyx_v_new_link_weight_stdev, __pyx_v_new_node_chance, __pyx_v_disable_mutation_chance, __pyx_v_enable_mutation_chance, __pyx_v_allow_recurrent, __pyx_v_mutate_loop);
 
-  /* "genes.pyx":23
+  /* "genes.pyx":24
  *         del self.data
  * 
  *     def __init__(self,             # <<<<<<<<<<<<<<
@@ -2413,7 +2433,7 @@ static int __pyx_pw_5genes_14Metaparameters_5__init__(PyObject *__pyx_v_self, Py
   return __pyx_r;
 }
 
-/* "genes.pyx":36
+/* "genes.pyx":37
  *                      allow_recurrent=True,
  *                      mutate_loop=1):
  *         def none_or(value, default_value):             # <<<<<<<<<<<<<<
@@ -2456,11 +2476,11 @@ static PyObject *__pyx_pw_5genes_14Metaparameters_8__init___1none_or(PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_default_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("none_or", 1, 2, 2, 1); __PYX_ERR(1, 36, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("none_or", 1, 2, 2, 1); __PYX_ERR(1, 37, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "none_or") < 0)) __PYX_ERR(1, 36, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "none_or") < 0)) __PYX_ERR(1, 37, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2473,7 +2493,7 @@ static PyObject *__pyx_pw_5genes_14Metaparameters_8__init___1none_or(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("none_or", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 36, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("none_or", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 37, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Metaparameters.__init__.none_or", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2493,7 +2513,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_8__init___none_or(CYTHON_UNUSE
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("none_or", 0);
 
-  /* "genes.pyx":37
+  /* "genes.pyx":38
  *                      mutate_loop=1):
  *         def none_or(value, default_value):
  *             return default_value if value is None else value             # <<<<<<<<<<<<<<
@@ -2513,7 +2533,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_8__init___none_or(CYTHON_UNUSE
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":36
+  /* "genes.pyx":37
  *                      allow_recurrent=True,
  *                      mutate_loop=1):
  *         def none_or(value, default_value):             # <<<<<<<<<<<<<<
@@ -2528,7 +2548,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_8__init___none_or(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "genes.pyx":23
+/* "genes.pyx":24
  *         del self.data
  * 
  *     def __init__(self,             # <<<<<<<<<<<<<<
@@ -2549,210 +2569,210 @@ static int __pyx_pf_5genes_14Metaparameters_4__init__(struct __pyx_obj_5genes_Me
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "genes.pyx":36
+  /* "genes.pyx":37
  *                      allow_recurrent=True,
  *                      mutate_loop=1):
  *         def none_or(value, default_value):             # <<<<<<<<<<<<<<
  *             return default_value if value is None else value
  *         self.data.c1 = none_or(c1, 0.1)
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_14Metaparameters_8__init___1none_or, 0, __pyx_n_s_init___locals_none_or, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 36, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_14Metaparameters_8__init___1none_or, 0, __pyx_n_s_init___locals_none_or, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__2)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_none_or = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":38
+  /* "genes.pyx":39
  *         def none_or(value, default_value):
  *             return default_value if value is None else value
  *         self.data.c1 = none_or(c1, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.c2 = none_or(c2, 0.1)
  *         self.data.c3 = none_or(c3, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c1, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 38, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c1, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 38, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 39, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->c1 = __pyx_t_2;
 
-  /* "genes.pyx":39
+  /* "genes.pyx":40
  *             return default_value if value is None else value
  *         self.data.c1 = none_or(c1, 0.1)
  *         self.data.c2 = none_or(c2, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.c3 = none_or(c3, 0.1)
  *         self.data.new_link_chance = none_or(new_link_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c2, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c2, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 39, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->c2 = __pyx_t_2;
 
-  /* "genes.pyx":40
+  /* "genes.pyx":41
  *         self.data.c1 = none_or(c1, 0.1)
  *         self.data.c2 = none_or(c2, 0.1)
  *         self.data.c3 = none_or(c3, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.new_link_chance = none_or(new_link_chance, 0.1)
  *         self.data.bias_link_chance = none_or(bias_link_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c3, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 40, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_c3, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 40, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 41, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->c3 = __pyx_t_2;
 
-  /* "genes.pyx":41
+  /* "genes.pyx":42
  *         self.data.c2 = none_or(c2, 0.1)
  *         self.data.c3 = none_or(c3, 0.1)
  *         self.data.new_link_chance = none_or(new_link_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.bias_link_chance = none_or(bias_link_chance, 0.1)
  *         self.data.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_link_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 41, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_link_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 41, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->new_link_chance = __pyx_t_2;
 
-  /* "genes.pyx":42
+  /* "genes.pyx":43
  *         self.data.c3 = none_or(c3, 0.1)
  *         self.data.new_link_chance = none_or(new_link_chance, 0.1)
  *         self.data.bias_link_chance = none_or(bias_link_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)
  *         self.data.new_node_chance = none_or(new_node_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_bias_link_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 42, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_bias_link_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 42, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 43, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->bias_link_chance = __pyx_t_2;
 
-  /* "genes.pyx":43
+  /* "genes.pyx":44
  *         self.data.new_link_chance = none_or(new_link_chance, 0.1)
  *         self.data.bias_link_chance = none_or(bias_link_chance, 0.1)
  *         self.data.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)             # <<<<<<<<<<<<<<
  *         self.data.new_node_chance = none_or(new_node_chance, 0.1)
  *         self.data.perturbation_chance = none_or(perturbation_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_link_weight_stdev, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_link_weight_stdev, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 43, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->new_link_weight_stdev = __pyx_t_2;
 
-  /* "genes.pyx":44
+  /* "genes.pyx":45
  *         self.data.bias_link_chance = none_or(bias_link_chance, 0.1)
  *         self.data.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)
  *         self.data.new_node_chance = none_or(new_node_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.perturbation_chance = none_or(perturbation_chance, 0.1)
  *         self.data.reset_weight_chance = none_or(reset_weight_chance, 0.5)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_node_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 44, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_new_node_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 44, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->new_node_chance = __pyx_t_2;
 
-  /* "genes.pyx":45
+  /* "genes.pyx":46
  *         self.data.new_link_weight_stdev = none_or(new_link_weight_stdev, 1)
  *         self.data.new_node_chance = none_or(new_node_chance, 0.1)
  *         self.data.perturbation_chance = none_or(perturbation_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.reset_weight_chance = none_or(reset_weight_chance, 0.5)
  *         self.data.perturbation_stdev = none_or(perturbation_stdev, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_perturbation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 45, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_perturbation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 45, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->perturbation_chance = __pyx_t_2;
 
-  /* "genes.pyx":46
+  /* "genes.pyx":47
  *         self.data.new_node_chance = none_or(new_node_chance, 0.1)
  *         self.data.perturbation_chance = none_or(perturbation_chance, 0.1)
  *         self.data.reset_weight_chance = none_or(reset_weight_chance, 0.5)             # <<<<<<<<<<<<<<
  *         self.data.perturbation_stdev = none_or(perturbation_stdev, 0.1)
  *         self.data.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_reset_weight_chance, __pyx_float_0_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 46, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_reset_weight_chance, __pyx_float_0_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 46, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 47, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->reset_weight_chance = __pyx_t_2;
 
-  /* "genes.pyx":47
+  /* "genes.pyx":48
  *         self.data.perturbation_chance = none_or(perturbation_chance, 0.1)
  *         self.data.reset_weight_chance = none_or(reset_weight_chance, 0.5)
  *         self.data.perturbation_stdev = none_or(perturbation_stdev, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
  *         self.data.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_perturbation_stdev, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_perturbation_stdev, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 47, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->perturbation_stdev = __pyx_t_2;
 
-  /* "genes.pyx":48
+  /* "genes.pyx":49
  *         self.data.reset_weight_chance = none_or(reset_weight_chance, 0.5)
  *         self.data.perturbation_stdev = none_or(perturbation_stdev, 0.1)
  *         self.data.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
  *         self.data.allow_recurrent = none_or(allow_recurrent, True)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_disable_mutation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 48, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_disable_mutation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 48, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 49, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->disable_mutation_chance = __pyx_t_2;
 
-  /* "genes.pyx":49
+  /* "genes.pyx":50
  *         self.data.perturbation_stdev = none_or(perturbation_stdev, 0.1)
  *         self.data.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
  *         self.data.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)             # <<<<<<<<<<<<<<
  *         self.data.allow_recurrent = none_or(allow_recurrent, True)
  *         self.data.mutate_loop = none_or(mutate_loop, 1)
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_enable_mutation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 49, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_enable_mutation_chance, __pyx_float_0_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 49, __pyx_L1_error)
+  __pyx_t_2 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_2 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->enable_mutation_chance = __pyx_t_2;
 
-  /* "genes.pyx":50
+  /* "genes.pyx":51
  *         self.data.disable_mutation_chance = none_or(disable_mutation_chance, 0.1)
  *         self.data.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
  *         self.data.allow_recurrent = none_or(allow_recurrent, True)             # <<<<<<<<<<<<<<
  *         self.data.mutate_loop = none_or(mutate_loop, 1)
  *         self.data.innovation_number = 0
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_allow_recurrent, Py_True); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 50, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_allow_recurrent, Py_True); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 50, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_3 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->allow_recurrent = __pyx_t_3;
 
-  /* "genes.pyx":51
+  /* "genes.pyx":52
  *         self.data.enable_mutation_chance = none_or(enable_mutation_chance, 0.1)
  *         self.data.allow_recurrent = none_or(allow_recurrent, True)
  *         self.data.mutate_loop = none_or(mutate_loop, 1)             # <<<<<<<<<<<<<<
  *         self.data.innovation_number = 0
  * 
  */
-  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_mutate_loop, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_5genes_14Metaparameters_8__init___none_or(__pyx_v_none_or, __pyx_v_mutate_loop, __pyx_int_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 51, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->data->mutate_loop = __pyx_t_4;
 
-  /* "genes.pyx":52
+  /* "genes.pyx":53
  *         self.data.allow_recurrent = none_or(allow_recurrent, True)
  *         self.data.mutate_loop = none_or(mutate_loop, 1)
  *         self.data.innovation_number = 0             # <<<<<<<<<<<<<<
  * 
- *     def load_from_json(as_json):
+ *     def as_json(self):
  */
   __pyx_v_self->data->innovation_number = 0;
 
-  /* "genes.pyx":23
+  /* "genes.pyx":24
  *         del self.data
  * 
  *     def __init__(self,             # <<<<<<<<<<<<<<
@@ -2773,663 +2793,8 @@ static int __pyx_pf_5genes_14Metaparameters_4__init__(struct __pyx_obj_5genes_Me
   return __pyx_r;
 }
 
-/* "genes.pyx":54
+/* "genes.pyx":55
  *         self.data.innovation_number = 0
- * 
- *     def load_from_json(as_json):             # <<<<<<<<<<<<<<
- *         ret = Metaparameters(
- *             c1=as_json.get("c1"),
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_7load_from_json(PyObject *__pyx_v_as_json, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_7load_from_json(PyObject *__pyx_v_as_json, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("load_from_json (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_6load_from_json(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_as_json));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5genes_14Metaparameters_6load_from_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_as_json) {
-  struct __pyx_obj_5genes_Metaparameters *__pyx_v_ret = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  unsigned int __pyx_t_7;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("load_from_json", 0);
-
-  /* "genes.pyx":56
- *     def load_from_json(as_json):
- *         ret = Metaparameters(
- *             c1=as_json.get("c1"),             # <<<<<<<<<<<<<<
- *             c2=as_json.get("c2"),
- *             c3=as_json.get("c3"),
- */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(14); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c1) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c1);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c1, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":57
- *         ret = Metaparameters(
- *             c1=as_json.get("c1"),
- *             c2=as_json.get("c2"),             # <<<<<<<<<<<<<<
- *             c3=as_json.get("c3"),
- *             perturbation_chance=as_json.get("perturbation_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 57, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c2);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c2, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":58
- *             c1=as_json.get("c1"),
- *             c2=as_json.get("c2"),
- *             c3=as_json.get("c3"),             # <<<<<<<<<<<<<<
- *             perturbation_chance=as_json.get("perturbation_chance"),
- *             perturbation_stdev=as_json.get("perturbation_stdev"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c3) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c3);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c3, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":59
- *             c2=as_json.get("c2"),
- *             c3=as_json.get("c3"),
- *             perturbation_chance=as_json.get("perturbation_chance"),             # <<<<<<<<<<<<<<
- *             perturbation_stdev=as_json.get("perturbation_stdev"),
- *             reset_weight_chance=as_json.get("reset_weight_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_perturbation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_perturbation_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":60
- *             c3=as_json.get("c3"),
- *             perturbation_chance=as_json.get("perturbation_chance"),
- *             perturbation_stdev=as_json.get("perturbation_stdev"),             # <<<<<<<<<<<<<<
- *             reset_weight_chance=as_json.get("reset_weight_chance"),
- *             new_link_chance=as_json.get("new_link_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_perturbation_stdev) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_perturbation_stdev);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 60, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":61
- *             perturbation_chance=as_json.get("perturbation_chance"),
- *             perturbation_stdev=as_json.get("perturbation_stdev"),
- *             reset_weight_chance=as_json.get("reset_weight_chance"),             # <<<<<<<<<<<<<<
- *             new_link_chance=as_json.get("new_link_chance"),
- *             bias_link_chance=as_json.get("bias_link_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_reset_weight_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_reset_weight_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reset_weight_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":62
- *             perturbation_stdev=as_json.get("perturbation_stdev"),
- *             reset_weight_chance=as_json.get("reset_weight_chance"),
- *             new_link_chance=as_json.get("new_link_chance"),             # <<<<<<<<<<<<<<
- *             bias_link_chance=as_json.get("bias_link_chance"),
- *             new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_link_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_link_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 62, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":63
- *             reset_weight_chance=as_json.get("reset_weight_chance"),
- *             new_link_chance=as_json.get("new_link_chance"),
- *             bias_link_chance=as_json.get("bias_link_chance"),             # <<<<<<<<<<<<<<
- *             new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
- *             new_node_chance=as_json.get("new_node_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_bias_link_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_bias_link_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_bias_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":64
- *             new_link_chance=as_json.get("new_link_chance"),
- *             bias_link_chance=as_json.get("bias_link_chance"),
- *             new_link_weight_stdev=as_json.get("new_link_weight_stdev"),             # <<<<<<<<<<<<<<
- *             new_node_chance=as_json.get("new_node_chance"),
- *             disable_mutation_chance=as_json.get("disable_mutation_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_link_weight_stdev) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_link_weight_stdev);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 64, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_weight_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":65
- *             bias_link_chance=as_json.get("bias_link_chance"),
- *             new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
- *             new_node_chance=as_json.get("new_node_chance"),             # <<<<<<<<<<<<<<
- *             disable_mutation_chance=as_json.get("disable_mutation_chance"),
- *             enable_mutation_chance=as_json.get("enable_mutation_chance"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_node_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_node_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_node_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":66
- *             new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
- *             new_node_chance=as_json.get("new_node_chance"),
- *             disable_mutation_chance=as_json.get("disable_mutation_chance"),             # <<<<<<<<<<<<<<
- *             enable_mutation_chance=as_json.get("enable_mutation_chance"),
- *             allow_recurrent=as_json.get("allow_recurrent"),
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 66, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_disable_mutation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_disable_mutation_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_disable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":67
- *             new_node_chance=as_json.get("new_node_chance"),
- *             disable_mutation_chance=as_json.get("disable_mutation_chance"),
- *             enable_mutation_chance=as_json.get("enable_mutation_chance"),             # <<<<<<<<<<<<<<
- *             allow_recurrent=as_json.get("allow_recurrent"),
- *             mutate_loop=as_json.get("mutate_loop")
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_enable_mutation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_enable_mutation_chance);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_enable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":68
- *             disable_mutation_chance=as_json.get("disable_mutation_chance"),
- *             enable_mutation_chance=as_json.get("enable_mutation_chance"),
- *             allow_recurrent=as_json.get("allow_recurrent"),             # <<<<<<<<<<<<<<
- *             mutate_loop=as_json.get("mutate_loop")
- *         )
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_allow_recurrent) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_allow_recurrent);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 68, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_allow_recurrent, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":69
- *             enable_mutation_chance=as_json.get("enable_mutation_chance"),
- *             allow_recurrent=as_json.get("allow_recurrent"),
- *             mutate_loop=as_json.get("mutate_loop")             # <<<<<<<<<<<<<<
- *         )
- *         if "innovation_number" in as_json:
- */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_as_json), __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_mutate_loop) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_mutate_loop);
-  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 69, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mutate_loop, __pyx_t_2) < 0) __PYX_ERR(1, 56, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "genes.pyx":55
- * 
- *     def load_from_json(as_json):
- *         ret = Metaparameters(             # <<<<<<<<<<<<<<
- *             c1=as_json.get("c1"),
- *             c2=as_json.get("c2"),
- */
-  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Metaparameters), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 55, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_ret = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_2);
-  __pyx_t_2 = 0;
-
-  /* "genes.pyx":71
- *             mutate_loop=as_json.get("mutate_loop")
- *         )
- *         if "innovation_number" in as_json:             # <<<<<<<<<<<<<<
- *             ret.data.innovation_number = as_json["innovation_number"]
- *         return ret
- */
-  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_innovation_number, ((PyObject *)__pyx_v_as_json), Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(1, 71, __pyx_L1_error)
-  __pyx_t_6 = (__pyx_t_5 != 0);
-  if (__pyx_t_6) {
-
-    /* "genes.pyx":72
- *         )
- *         if "innovation_number" in as_json:
- *             ret.data.innovation_number = as_json["innovation_number"]             # <<<<<<<<<<<<<<
- *         return ret
- * 
- */
-    __pyx_t_2 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_as_json), __pyx_n_s_innovation_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 72, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_v_ret->data->innovation_number = __pyx_t_7;
-
-    /* "genes.pyx":71
- *             mutate_loop=as_json.get("mutate_loop")
- *         )
- *         if "innovation_number" in as_json:             # <<<<<<<<<<<<<<
- *             ret.data.innovation_number = as_json["innovation_number"]
- *         return ret
- */
-  }
-
-  /* "genes.pyx":73
- *         if "innovation_number" in as_json:
- *             ret.data.innovation_number = as_json["innovation_number"]
- *         return ret             # <<<<<<<<<<<<<<
- * 
- *     def load(in_stream, decoder=json):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
-  __pyx_r = ((PyObject *)__pyx_v_ret);
-  goto __pyx_L0;
-
-  /* "genes.pyx":54
- *         self.data.innovation_number = 0
- * 
- *     def load_from_json(as_json):             # <<<<<<<<<<<<<<
- *         ret = Metaparameters(
- *             c1=as_json.get("c1"),
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("genes.Metaparameters.load_from_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "genes.pyx":75
- *         return ret
- * 
- *     def load(in_stream, decoder=json):             # <<<<<<<<<<<<<<
- *         as_json = decoder.load(in_stream)
- *         return Metaparameters.load_from_json(as_json)
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_9load(PyObject *__pyx_v_in_stream, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_9load(PyObject *__pyx_v_in_stream, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  PyObject *__pyx_v_decoder = 0;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("load (wrapper)", 0);
-  {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_decoder,0};
-    PyObject* values[1] = {0};
-    values[0] = __pyx_k__3;
-    if (unlikely(__pyx_kwds)) {
-      Py_ssize_t kw_args;
-      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
-      switch (pos_args) {
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-      kw_args = PyDict_Size(__pyx_kwds);
-      switch (pos_args) {
-        case  0:
-        if (kw_args > 0) {
-          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_decoder);
-          if (value) { values[0] = value; kw_args--; }
-        }
-      }
-      if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load") < 0)) __PYX_ERR(1, 75, __pyx_L3_error)
-      }
-    } else {
-      switch (PyTuple_GET_SIZE(__pyx_args)) {
-        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-        CYTHON_FALLTHROUGH;
-        case  0: break;
-        default: goto __pyx_L5_argtuple_error;
-      }
-    }
-    __pyx_v_decoder = values[0];
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("load", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 75, __pyx_L3_error)
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("genes.Metaparameters.load", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_8load(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_in_stream), __pyx_v_decoder);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5genes_14Metaparameters_8load(struct __pyx_obj_5genes_Metaparameters *__pyx_v_in_stream, PyObject *__pyx_v_decoder) {
-  PyObject *__pyx_v_as_json = NULL;
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("load", 0);
-
-  /* "genes.pyx":76
- * 
- *     def load(in_stream, decoder=json):
- *         as_json = decoder.load(in_stream)             # <<<<<<<<<<<<<<
- *         return Metaparameters.load_from_json(as_json)
- * 
- */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_decoder, __pyx_n_s_load); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, ((PyObject *)__pyx_v_in_stream)) : __Pyx_PyObject_CallOneArg(__pyx_t_2, ((PyObject *)__pyx_v_in_stream));
-  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 76, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_as_json = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "genes.pyx":77
- *     def load(in_stream, decoder=json):
- *         as_json = decoder.load(in_stream)
- *         return Metaparameters.load_from_json(as_json)             # <<<<<<<<<<<<<<
- * 
- *     def as_json(self):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5genes_Metaparameters), __pyx_n_s_load_from_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_as_json) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_as_json);
-  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 77, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "genes.pyx":75
- *         return ret
- * 
- *     def load(in_stream, decoder=json):             # <<<<<<<<<<<<<<
- *         as_json = decoder.load(in_stream)
- *         return Metaparameters.load_from_json(as_json)
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("genes.Metaparameters.load", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_as_json);
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "genes.pyx":79
- *         return Metaparameters.load_from_json(as_json)
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
  *         return {
@@ -3437,19 +2802,19 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_8load(struct __pyx_obj_5genes_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_11as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_11as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5genes_14Metaparameters_7as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5genes_14Metaparameters_7as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("as_json (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_10as_json(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5genes_14Metaparameters_6as_json(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
+static PyObject *__pyx_pf_5genes_14Metaparameters_6as_json(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3459,7 +2824,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5ge
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("as_json", 0);
 
-  /* "genes.pyx":80
+  /* "genes.pyx":56
  * 
  *     def as_json(self):
  *         return {             # <<<<<<<<<<<<<<
@@ -3468,193 +2833,193 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5ge
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "genes.pyx":81
+  /* "genes.pyx":57
  *     def as_json(self):
  *         return {
  *             "innovation_number": self.data.innovation_number,             # <<<<<<<<<<<<<<
  *             "c1": self.data.c1,
  *             "c2": self.data.c2,
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->innovation_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->innovation_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_innovation_number, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_innovation_number, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":82
+  /* "genes.pyx":58
  *         return {
  *             "innovation_number": self.data.innovation_number,
  *             "c1": self.data.c1,             # <<<<<<<<<<<<<<
  *             "c2": self.data.c2,
  *             "c3": self.data.c3,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c1, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c1, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":83
+  /* "genes.pyx":59
  *             "innovation_number": self.data.innovation_number,
  *             "c1": self.data.c1,
  *             "c2": self.data.c2,             # <<<<<<<<<<<<<<
  *             "c3": self.data.c3,
  *             "new_link_chance": self.data.new_link_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 83, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c2, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c2, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":84
+  /* "genes.pyx":60
  *             "c1": self.data.c1,
  *             "c2": self.data.c2,
  *             "c3": self.data.c3,             # <<<<<<<<<<<<<<
  *             "new_link_chance": self.data.new_link_chance,
  *             "bias_link_chance": self.data.bias_link_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 84, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->c3); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c3, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c3, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":85
+  /* "genes.pyx":61
  *             "c2": self.data.c2,
  *             "c3": self.data.c3,
  *             "new_link_chance": self.data.new_link_chance,             # <<<<<<<<<<<<<<
  *             "bias_link_chance": self.data.bias_link_chance,
  *             "new_link_weight_stdev": self.data.new_link_weight_stdev,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_link_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 85, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_link_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":86
+  /* "genes.pyx":62
  *             "c3": self.data.c3,
  *             "new_link_chance": self.data.new_link_chance,
  *             "bias_link_chance": self.data.bias_link_chance,             # <<<<<<<<<<<<<<
  *             "new_link_weight_stdev": self.data.new_link_weight_stdev,
  *             "new_node_chance": self.data.new_node_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->bias_link_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 86, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->bias_link_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_bias_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_bias_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":87
+  /* "genes.pyx":63
  *             "new_link_chance": self.data.new_link_chance,
  *             "bias_link_chance": self.data.bias_link_chance,
  *             "new_link_weight_stdev": self.data.new_link_weight_stdev,             # <<<<<<<<<<<<<<
  *             "new_node_chance": self.data.new_node_chance,
  *             "perturbation_chance": self.data.perturbation_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_link_weight_stdev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 87, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_link_weight_stdev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_weight_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_weight_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":88
+  /* "genes.pyx":64
  *             "bias_link_chance": self.data.bias_link_chance,
  *             "new_link_weight_stdev": self.data.new_link_weight_stdev,
  *             "new_node_chance": self.data.new_node_chance,             # <<<<<<<<<<<<<<
  *             "perturbation_chance": self.data.perturbation_chance,
  *             "perturbation_stdev": self.data.perturbation_stdev,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_node_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->new_node_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_node_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_node_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":89
+  /* "genes.pyx":65
  *             "new_link_weight_stdev": self.data.new_link_weight_stdev,
  *             "new_node_chance": self.data.new_node_chance,
  *             "perturbation_chance": self.data.perturbation_chance,             # <<<<<<<<<<<<<<
  *             "perturbation_stdev": self.data.perturbation_stdev,
  *             "reset_weight_chance": self.data.reset_weight_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->perturbation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 89, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->perturbation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":90
+  /* "genes.pyx":66
  *             "new_node_chance": self.data.new_node_chance,
  *             "perturbation_chance": self.data.perturbation_chance,
  *             "perturbation_stdev": self.data.perturbation_stdev,             # <<<<<<<<<<<<<<
  *             "reset_weight_chance": self.data.reset_weight_chance,
  *             "disable_mutation_chance": self.data.disable_mutation_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->perturbation_stdev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->perturbation_stdev); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":91
+  /* "genes.pyx":67
  *             "perturbation_chance": self.data.perturbation_chance,
  *             "perturbation_stdev": self.data.perturbation_stdev,
  *             "reset_weight_chance": self.data.reset_weight_chance,             # <<<<<<<<<<<<<<
  *             "disable_mutation_chance": self.data.disable_mutation_chance,
  *             "enable_mutation_chance": self.data.enable_mutation_chance,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->reset_weight_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->reset_weight_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 67, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reset_weight_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reset_weight_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":92
+  /* "genes.pyx":68
  *             "perturbation_stdev": self.data.perturbation_stdev,
  *             "reset_weight_chance": self.data.reset_weight_chance,
  *             "disable_mutation_chance": self.data.disable_mutation_chance,             # <<<<<<<<<<<<<<
  *             "enable_mutation_chance": self.data.enable_mutation_chance,
  *             "allow_recurrent": self.data.allow_recurrent,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->disable_mutation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 92, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->disable_mutation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_disable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_disable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":93
+  /* "genes.pyx":69
  *             "reset_weight_chance": self.data.reset_weight_chance,
  *             "disable_mutation_chance": self.data.disable_mutation_chance,
  *             "enable_mutation_chance": self.data.enable_mutation_chance,             # <<<<<<<<<<<<<<
  *             "allow_recurrent": self.data.allow_recurrent,
  *             "mutate_loop": self.data.mutate_loop
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->enable_mutation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 93, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_self->data->enable_mutation_chance); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_enable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_enable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":94
+  /* "genes.pyx":70
  *             "disable_mutation_chance": self.data.disable_mutation_chance,
  *             "enable_mutation_chance": self.data.enable_mutation_chance,
  *             "allow_recurrent": self.data.allow_recurrent,             # <<<<<<<<<<<<<<
  *             "mutate_loop": self.data.mutate_loop
  *         }
  */
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->data->allow_recurrent); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 94, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_v_self->data->allow_recurrent); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_allow_recurrent, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_allow_recurrent, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":95
+  /* "genes.pyx":71
  *             "enable_mutation_chance": self.data.enable_mutation_chance,
  *             "allow_recurrent": self.data.allow_recurrent,
  *             "mutate_loop": self.data.mutate_loop             # <<<<<<<<<<<<<<
  *         }
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->mutate_loop); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 95, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->mutate_loop); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mutate_loop, __pyx_t_2) < 0) __PYX_ERR(1, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mutate_loop, __pyx_t_2) < 0) __PYX_ERR(1, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":79
- *         return Metaparameters.load_from_json(as_json)
+  /* "genes.pyx":55
+ *         self.data.innovation_number = 0
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
  *         return {
@@ -3673,7 +3038,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5ge
   return __pyx_r;
 }
 
-/* "genes.pyx":98
+/* "genes.pyx":74
  *         }
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
@@ -3682,8 +3047,8 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_10as_json(struct __pyx_obj_5ge
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_13save(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_13save(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5genes_14Metaparameters_9save(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_5genes_14Metaparameters_9save(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_out_stream = 0;
   PyObject *__pyx_v_encoder = 0;
   int __pyx_lineno = 0;
@@ -3695,7 +3060,7 @@ static PyObject *__pyx_pw_5genes_14Metaparameters_13save(PyObject *__pyx_v_self,
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_out_stream,&__pyx_n_s_encoder,0};
     PyObject* values[2] = {0,0};
-    values[1] = __pyx_k__4;
+    values[1] = __pyx_k__3;
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
@@ -3720,7 +3085,7 @@ static PyObject *__pyx_pw_5genes_14Metaparameters_13save(PyObject *__pyx_v_self,
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "save") < 0)) __PYX_ERR(1, 98, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "save") < 0)) __PYX_ERR(1, 74, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3736,20 +3101,20 @@ static PyObject *__pyx_pw_5genes_14Metaparameters_13save(PyObject *__pyx_v_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("save", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 98, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("save", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 74, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Metaparameters.save", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_12save(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self), __pyx_v_out_stream, __pyx_v_encoder);
+  __pyx_r = __pyx_pf_5genes_14Metaparameters_8save(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self), __pyx_v_out_stream, __pyx_v_encoder);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, PyObject *__pyx_v_out_stream, PyObject *__pyx_v_encoder) {
+static PyObject *__pyx_pf_5genes_14Metaparameters_8save(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, PyObject *__pyx_v_out_stream, PyObject *__pyx_v_encoder) {
   PyObject *__pyx_v_out = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -3763,14 +3128,14 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("save", 0);
 
-  /* "genes.pyx":99
+  /* "genes.pyx":75
  * 
  *     def save(self, out_stream, encoder=json):
  *         out = self.as_json()             # <<<<<<<<<<<<<<
  *         out_stream.write(encoder.dumps(out))
  *         out_stream.flush()
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_as_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_as_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3784,22 +3149,22 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 99, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_out = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":100
+  /* "genes.pyx":76
  *     def save(self, out_stream, encoder=json):
  *         out = self.as_json()
  *         out_stream.write(encoder.dumps(out))             # <<<<<<<<<<<<<<
  *         out_stream.flush()
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_write); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_write); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_encoder, __pyx_n_s_dumps); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_encoder, __pyx_n_s_dumps); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -3813,7 +3178,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   }
   __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_v_out) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_out);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 100, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -3829,19 +3194,19 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 100, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":101
+  /* "genes.pyx":77
  *         out = self.as_json()
  *         out_stream.write(encoder.dumps(out))
  *         out_stream.flush()             # <<<<<<<<<<<<<<
  * 
  *     def reset_tracking(self):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_flush); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 101, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_flush); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3855,12 +3220,12 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 101, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":98
+  /* "genes.pyx":74
  *         }
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
@@ -3886,7 +3251,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
   return __pyx_r;
 }
 
-/* "genes.pyx":103
+/* "genes.pyx":79
  *         out_stream.flush()
  * 
  *     def reset_tracking(self):             # <<<<<<<<<<<<<<
@@ -3895,33 +3260,33 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_12save(struct __pyx_obj_5genes
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_15reset_tracking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_15reset_tracking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5genes_14Metaparameters_11reset_tracking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5genes_14Metaparameters_11reset_tracking(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("reset_tracking (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_14reset_tracking(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5genes_14Metaparameters_10reset_tracking(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_14Metaparameters_14reset_tracking(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
+static PyObject *__pyx_pf_5genes_14Metaparameters_10reset_tracking(struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("reset_tracking", 0);
 
-  /* "genes.pyx":104
+  /* "genes.pyx":80
  * 
  *     def reset_tracking(self):
  *         self.data.reset_tracking()             # <<<<<<<<<<<<<<
  * 
- * cdef class Network:
+ * def load_metaparameters(in_stream, decoder=json):
  */
   __pyx_v_self->data->reset_tracking();
 
-  /* "genes.pyx":103
+  /* "genes.pyx":79
  *         out_stream.flush()
  * 
  *     def reset_tracking(self):             # <<<<<<<<<<<<<<
@@ -3943,19 +3308,19 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_14reset_tracking(struct __pyx_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5genes_14Metaparameters_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5genes_14Metaparameters_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_16__reduce_cython__(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5genes_14Metaparameters_12__reduce_cython__(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_14Metaparameters_16__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
+static PyObject *__pyx_pf_5genes_14Metaparameters_12__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3970,7 +3335,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_16__reduce_cython__(CYTHON_UNU
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4000,19 +3365,19 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_16__reduce_cython__(CYTHON_UNU
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_14Metaparameters_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5genes_14Metaparameters_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5genes_14Metaparameters_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5genes_14Metaparameters_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_14Metaparameters_18__setstate_cython__(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_5genes_14Metaparameters_14__setstate_cython__(((struct __pyx_obj_5genes_Metaparameters *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_14Metaparameters_18__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5genes_14Metaparameters_14__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Metaparameters *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4026,7 +3391,7 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_18__setstate_cython__(CYTHON_U
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4049,12 +3414,678 @@ static PyObject *__pyx_pf_5genes_14Metaparameters_18__setstate_cython__(CYTHON_U
   return __pyx_r;
 }
 
-/* "genes.pyx":109
+/* "genes.pyx":82
+ *         self.data.reset_tracking()
+ * 
+ * def load_metaparameters(in_stream, decoder=json):             # <<<<<<<<<<<<<<
+ *     as_json = decoder.load(in_stream)
+ *     return load_metaparameters_from_json(as_json)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5genes_1load_metaparameters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_5genes_1load_metaparameters = {"load_metaparameters", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_1load_metaparameters, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_5genes_1load_metaparameters(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_in_stream = 0;
+  PyObject *__pyx_v_decoder = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("load_metaparameters (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_in_stream,&__pyx_n_s_decoder,0};
+    PyObject* values[2] = {0,0};
+    values[1] = __pyx_k__6;
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_in_stream)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_decoder);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load_metaparameters") < 0)) __PYX_ERR(1, 82, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_in_stream = values[0];
+    __pyx_v_decoder = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("load_metaparameters", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 82, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("genes.load_metaparameters", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5genes_load_metaparameters(__pyx_self, __pyx_v_in_stream, __pyx_v_decoder);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5genes_load_metaparameters(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_in_stream, PyObject *__pyx_v_decoder) {
+  PyObject *__pyx_v_as_json = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("load_metaparameters", 0);
+
+  /* "genes.pyx":83
+ * 
+ * def load_metaparameters(in_stream, decoder=json):
+ *     as_json = decoder.load(in_stream)             # <<<<<<<<<<<<<<
+ *     return load_metaparameters_from_json(as_json)
+ * 
+ */
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_decoder, __pyx_n_s_load); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 83, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_in_stream) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_in_stream);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 83, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_as_json = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "genes.pyx":84
+ * def load_metaparameters(in_stream, decoder=json):
+ *     as_json = decoder.load(in_stream)
+ *     return load_metaparameters_from_json(as_json)             # <<<<<<<<<<<<<<
+ * 
+ * def load_metaparameters_from_json(as_json):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_load_metaparameters_from_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_as_json) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_as_json);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "genes.pyx":82
+ *         self.data.reset_tracking()
+ * 
+ * def load_metaparameters(in_stream, decoder=json):             # <<<<<<<<<<<<<<
+ *     as_json = decoder.load(in_stream)
+ *     return load_metaparameters_from_json(as_json)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("genes.load_metaparameters", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_as_json);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "genes.pyx":86
+ *     return load_metaparameters_from_json(as_json)
+ * 
+ * def load_metaparameters_from_json(as_json):             # <<<<<<<<<<<<<<
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5genes_3load_metaparameters_from_json(PyObject *__pyx_self, PyObject *__pyx_v_as_json); /*proto*/
+static PyMethodDef __pyx_mdef_5genes_3load_metaparameters_from_json = {"load_metaparameters_from_json", (PyCFunction)__pyx_pw_5genes_3load_metaparameters_from_json, METH_O, 0};
+static PyObject *__pyx_pw_5genes_3load_metaparameters_from_json(PyObject *__pyx_self, PyObject *__pyx_v_as_json) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("load_metaparameters_from_json (wrapper)", 0);
+  __pyx_r = __pyx_pf_5genes_2load_metaparameters_from_json(__pyx_self, ((PyObject *)__pyx_v_as_json));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5genes_2load_metaparameters_from_json(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_as_json) {
+  struct __pyx_obj_5genes_Metaparameters *__pyx_v_ret = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  unsigned int __pyx_t_7;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("load_metaparameters_from_json", 0);
+
+  /* "genes.pyx":88
+ * def load_metaparameters_from_json(as_json):
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),             # <<<<<<<<<<<<<<
+ *         c2=as_json.get("c2"),
+ *         c3=as_json.get("c3"),
+ */
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(14); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c1) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c1);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c1, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":89
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),
+ *         c2=as_json.get("c2"),             # <<<<<<<<<<<<<<
+ *         c3=as_json.get("c3"),
+ *         perturbation_chance=as_json.get("perturbation_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c2);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 89, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c2, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":90
+ *         c1=as_json.get("c1"),
+ *         c2=as_json.get("c2"),
+ *         c3=as_json.get("c3"),             # <<<<<<<<<<<<<<
+ *         perturbation_chance=as_json.get("perturbation_chance"),
+ *         perturbation_stdev=as_json.get("perturbation_stdev"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_c3) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_c3);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 90, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_c3, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":91
+ *         c2=as_json.get("c2"),
+ *         c3=as_json.get("c3"),
+ *         perturbation_chance=as_json.get("perturbation_chance"),             # <<<<<<<<<<<<<<
+ *         perturbation_stdev=as_json.get("perturbation_stdev"),
+ *         reset_weight_chance=as_json.get("reset_weight_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_perturbation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_perturbation_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 91, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":92
+ *         c3=as_json.get("c3"),
+ *         perturbation_chance=as_json.get("perturbation_chance"),
+ *         perturbation_stdev=as_json.get("perturbation_stdev"),             # <<<<<<<<<<<<<<
+ *         reset_weight_chance=as_json.get("reset_weight_chance"),
+ *         new_link_chance=as_json.get("new_link_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_perturbation_stdev) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_perturbation_stdev);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 92, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_perturbation_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":93
+ *         perturbation_chance=as_json.get("perturbation_chance"),
+ *         perturbation_stdev=as_json.get("perturbation_stdev"),
+ *         reset_weight_chance=as_json.get("reset_weight_chance"),             # <<<<<<<<<<<<<<
+ *         new_link_chance=as_json.get("new_link_chance"),
+ *         bias_link_chance=as_json.get("bias_link_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 93, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_reset_weight_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_reset_weight_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 93, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_reset_weight_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":94
+ *         perturbation_stdev=as_json.get("perturbation_stdev"),
+ *         reset_weight_chance=as_json.get("reset_weight_chance"),
+ *         new_link_chance=as_json.get("new_link_chance"),             # <<<<<<<<<<<<<<
+ *         bias_link_chance=as_json.get("bias_link_chance"),
+ *         new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_link_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_link_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":95
+ *         reset_weight_chance=as_json.get("reset_weight_chance"),
+ *         new_link_chance=as_json.get("new_link_chance"),
+ *         bias_link_chance=as_json.get("bias_link_chance"),             # <<<<<<<<<<<<<<
+ *         new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+ *         new_node_chance=as_json.get("new_node_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 95, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_bias_link_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_bias_link_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 95, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_bias_link_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":96
+ *         new_link_chance=as_json.get("new_link_chance"),
+ *         bias_link_chance=as_json.get("bias_link_chance"),
+ *         new_link_weight_stdev=as_json.get("new_link_weight_stdev"),             # <<<<<<<<<<<<<<
+ *         new_node_chance=as_json.get("new_node_chance"),
+ *         disable_mutation_chance=as_json.get("disable_mutation_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_link_weight_stdev) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_link_weight_stdev);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_link_weight_stdev, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":97
+ *         bias_link_chance=as_json.get("bias_link_chance"),
+ *         new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+ *         new_node_chance=as_json.get("new_node_chance"),             # <<<<<<<<<<<<<<
+ *         disable_mutation_chance=as_json.get("disable_mutation_chance"),
+ *         enable_mutation_chance=as_json.get("enable_mutation_chance"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_new_node_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_new_node_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 97, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_new_node_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":98
+ *         new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+ *         new_node_chance=as_json.get("new_node_chance"),
+ *         disable_mutation_chance=as_json.get("disable_mutation_chance"),             # <<<<<<<<<<<<<<
+ *         enable_mutation_chance=as_json.get("enable_mutation_chance"),
+ *         allow_recurrent=as_json.get("allow_recurrent"),
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_disable_mutation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_disable_mutation_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_disable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":99
+ *         new_node_chance=as_json.get("new_node_chance"),
+ *         disable_mutation_chance=as_json.get("disable_mutation_chance"),
+ *         enable_mutation_chance=as_json.get("enable_mutation_chance"),             # <<<<<<<<<<<<<<
+ *         allow_recurrent=as_json.get("allow_recurrent"),
+ *         mutate_loop=as_json.get("mutate_loop")
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_enable_mutation_chance) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_enable_mutation_chance);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_enable_mutation_chance, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":100
+ *         disable_mutation_chance=as_json.get("disable_mutation_chance"),
+ *         enable_mutation_chance=as_json.get("enable_mutation_chance"),
+ *         allow_recurrent=as_json.get("allow_recurrent"),             # <<<<<<<<<<<<<<
+ *         mutate_loop=as_json.get("mutate_loop")
+ *     )
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_allow_recurrent) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_allow_recurrent);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 100, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_allow_recurrent, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":101
+ *         enable_mutation_chance=as_json.get("enable_mutation_chance"),
+ *         allow_recurrent=as_json.get("allow_recurrent"),
+ *         mutate_loop=as_json.get("mutate_loop")             # <<<<<<<<<<<<<<
+ *     )
+ *     if "innovation_number" in as_json:
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_as_json, __pyx_n_s_get); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_n_s_mutate_loop) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_s_mutate_loop);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 101, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_mutate_loop, __pyx_t_2) < 0) __PYX_ERR(1, 88, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":87
+ * 
+ * def load_metaparameters_from_json(as_json):
+ *     ret = Metaparameters(             # <<<<<<<<<<<<<<
+ *         c1=as_json.get("c1"),
+ *         c2=as_json.get("c2"),
+ */
+  __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Metaparameters), __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 87, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_ret = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_2);
+  __pyx_t_2 = 0;
+
+  /* "genes.pyx":103
+ *         mutate_loop=as_json.get("mutate_loop")
+ *     )
+ *     if "innovation_number" in as_json:             # <<<<<<<<<<<<<<
+ *         ret.data.innovation_number = as_json["innovation_number"]
+ *     return ret
+ */
+  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_n_s_innovation_number, __pyx_v_as_json, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(1, 103, __pyx_L1_error)
+  __pyx_t_6 = (__pyx_t_5 != 0);
+  if (__pyx_t_6) {
+
+    /* "genes.pyx":104
+ *     )
+ *     if "innovation_number" in as_json:
+ *         ret.data.innovation_number = as_json["innovation_number"]             # <<<<<<<<<<<<<<
+ *     return ret
+ * 
+ */
+    __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_as_json, __pyx_n_s_innovation_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 104, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 104, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_v_ret->data->innovation_number = __pyx_t_7;
+
+    /* "genes.pyx":103
+ *         mutate_loop=as_json.get("mutate_loop")
+ *     )
+ *     if "innovation_number" in as_json:             # <<<<<<<<<<<<<<
+ *         ret.data.innovation_number = as_json["innovation_number"]
+ *     return ret
+ */
+  }
+
+  /* "genes.pyx":105
+ *     if "innovation_number" in as_json:
+ *         ret.data.innovation_number = as_json["innovation_number"]
+ *     return ret             # <<<<<<<<<<<<<<
+ * 
+ * cdef class Network:
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_ret));
+  __pyx_r = ((PyObject *)__pyx_v_ret);
+  goto __pyx_L0;
+
+  /* "genes.pyx":86
+ *     return load_metaparameters_from_json(as_json)
+ * 
+ * def load_metaparameters_from_json(as_json):             # <<<<<<<<<<<<<<
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("genes.load_metaparameters_from_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_ret);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "genes.pyx":110
  *     cdef _Network* data
  * 
- *     def __cinit__(self, num_sensors, num_outputs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, num_sensors, num_outputs, total_nodes=None, connections_data=None):             # <<<<<<<<<<<<<<
  *         self.data = new _Network(num_sensors, num_outputs)
- * 
+ *         cdef connection_t conn
  */
 
 /* Python wrapper */
@@ -4062,6 +4093,8 @@ static int __pyx_pw_5genes_7Network_1__cinit__(PyObject *__pyx_v_self, PyObject 
 static int __pyx_pw_5genes_7Network_1__cinit__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_num_sensors = 0;
   PyObject *__pyx_v_num_outputs = 0;
+  PyObject *__pyx_v_total_nodes = 0;
+  PyObject *__pyx_v_connections_data = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4069,12 +4102,18 @@ static int __pyx_pw_5genes_7Network_1__cinit__(PyObject *__pyx_v_self, PyObject 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_num_sensors,&__pyx_n_s_num_outputs,0};
-    PyObject* values[2] = {0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_num_sensors,&__pyx_n_s_num_outputs,&__pyx_n_s_total_nodes,&__pyx_n_s_connections_data,0};
+    PyObject* values[4] = {0,0,0,0};
+    values[2] = ((PyObject *)Py_None);
+    values[3] = ((PyObject *)Py_None);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         CYTHON_FALLTHROUGH;
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -4091,85 +4130,386 @@ static int __pyx_pw_5genes_7Network_1__cinit__(PyObject *__pyx_v_self, PyObject 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_outputs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(1, 109, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 2, 4, 1); __PYX_ERR(1, 110, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  2:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_total_nodes);
+          if (value) { values[2] = value; kw_args--; }
+        }
+        CYTHON_FALLTHROUGH;
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_connections_data);
+          if (value) { values[3] = value; kw_args--; }
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 109, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(1, 110, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
-      goto __pyx_L5_argtuple_error;
     } else {
-      values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
-      values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+        CYTHON_FALLTHROUGH;
+        case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
+        CYTHON_FALLTHROUGH;
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
     }
     __pyx_v_num_sensors = values[0];
     __pyx_v_num_outputs = values[1];
+    __pyx_v_total_nodes = values[2];
+    __pyx_v_connections_data = values[3];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 109, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 2, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 110, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Network.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5genes_7Network___cinit__(((struct __pyx_obj_5genes_Network *)__pyx_v_self), __pyx_v_num_sensors, __pyx_v_num_outputs);
+  __pyx_r = __pyx_pf_5genes_7Network___cinit__(((struct __pyx_obj_5genes_Network *)__pyx_v_self), __pyx_v_num_sensors, __pyx_v_num_outputs, __pyx_v_total_nodes, __pyx_v_connections_data);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5genes_7Network___cinit__(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_num_sensors, PyObject *__pyx_v_num_outputs) {
+static int __pyx_pf_5genes_7Network___cinit__(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_num_sensors, PyObject *__pyx_v_num_outputs, PyObject *__pyx_v_total_nodes, PyObject *__pyx_v_connections_data) {
+  connection_t __pyx_v_conn;
+  PyObject *__pyx_v_in_node = NULL;
+  PyObject *__pyx_v_out_node = NULL;
+  PyObject *__pyx_v_weight = NULL;
+  PyObject *__pyx_v_enabled = NULL;
+  PyObject *__pyx_v_innov = NULL;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   unsigned int __pyx_t_1;
   unsigned int __pyx_t_2;
   _Network *__pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  std::vector<std::vector<int> > ::size_type __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  PyObject *(*__pyx_t_10)(PyObject *);
+  PyObject *__pyx_t_11 = NULL;
+  PyObject *__pyx_t_12 = NULL;
+  PyObject *__pyx_t_13 = NULL;
+  PyObject *__pyx_t_14 = NULL;
+  PyObject *__pyx_t_15 = NULL;
+  PyObject *__pyx_t_16 = NULL;
+  PyObject *(*__pyx_t_17)(PyObject *);
+  float __pyx_t_18;
+  bool __pyx_t_19;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "genes.pyx":110
+  /* "genes.pyx":111
  * 
- *     def __cinit__(self, num_sensors, num_outputs):
+ *     def __cinit__(self, num_sensors, num_outputs, total_nodes=None, connections_data=None):
  *         self.data = new _Network(num_sensors, num_outputs)             # <<<<<<<<<<<<<<
- * 
- *     def __dealloc__(self):
+ *         cdef connection_t conn
+ *         if total_nodes is not None:
  */
-  __pyx_t_1 = __Pyx_PyInt_As_unsigned_int(__pyx_v_num_sensors); if (unlikely((__pyx_t_1 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 110, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_unsigned_int(__pyx_v_num_outputs); if (unlikely((__pyx_t_2 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 110, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_unsigned_int(__pyx_v_num_sensors); if (unlikely((__pyx_t_1 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 111, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_unsigned_int(__pyx_v_num_outputs); if (unlikely((__pyx_t_2 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 111, __pyx_L1_error)
   try {
     __pyx_t_3 = new _Network(__pyx_t_1, __pyx_t_2);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 110, __pyx_L1_error)
+    __PYX_ERR(1, 111, __pyx_L1_error)
   }
   __pyx_v_self->data = __pyx_t_3;
 
-  /* "genes.pyx":109
+  /* "genes.pyx":113
+ *         self.data = new _Network(num_sensors, num_outputs)
+ *         cdef connection_t conn
+ *         if total_nodes is not None:             # <<<<<<<<<<<<<<
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+ *             for in_node, out_node, weight, enabled, innov in connections_data:
+ */
+  __pyx_t_4 = (__pyx_v_total_nodes != Py_None);
+  __pyx_t_5 = (__pyx_t_4 != 0);
+  if (__pyx_t_5) {
+
+    /* "genes.pyx":114
+ *         cdef connection_t conn
+ *         if total_nodes is not None:
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)             # <<<<<<<<<<<<<<
+ *             for in_node, out_node, weight, enabled, innov in connections_data:
+ *                 conn.in_node = in_node
+ */
+    __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->input_count()); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_7 = PyNumber_Subtract(__pyx_v_total_nodes, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    __pyx_t_6 = __Pyx_PyInt_SubtractObjC(__pyx_t_7, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __pyx_t_8 = __Pyx_PyInt_As_size_t(__pyx_t_6); if (unlikely((__pyx_t_8 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(1, 114, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    try {
+      __pyx_v_self->data->_dynamic_nodes.resize(__pyx_t_8);
+    } catch(...) {
+      __Pyx_CppExn2PyErr();
+      __PYX_ERR(1, 114, __pyx_L1_error)
+    }
+
+    /* "genes.pyx":115
+ *         if total_nodes is not None:
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+ *             for in_node, out_node, weight, enabled, innov in connections_data:             # <<<<<<<<<<<<<<
+ *                 conn.in_node = in_node
+ *                 conn.out_node = out_node
+ */
+    if (likely(PyList_CheckExact(__pyx_v_connections_data)) || PyTuple_CheckExact(__pyx_v_connections_data)) {
+      __pyx_t_6 = __pyx_v_connections_data; __Pyx_INCREF(__pyx_t_6); __pyx_t_9 = 0;
+      __pyx_t_10 = NULL;
+    } else {
+      __pyx_t_9 = -1; __pyx_t_6 = PyObject_GetIter(__pyx_v_connections_data); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 115, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(1, 115, __pyx_L1_error)
+    }
+    for (;;) {
+      if (likely(!__pyx_t_10)) {
+        if (likely(PyList_CheckExact(__pyx_t_6))) {
+          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_6)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_9); __Pyx_INCREF(__pyx_t_7); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(1, 115, __pyx_L1_error)
+          #else
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 115, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_7);
+          #endif
+        } else {
+          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
+          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_9); __Pyx_INCREF(__pyx_t_7); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(1, 115, __pyx_L1_error)
+          #else
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_6, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 115, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_7);
+          #endif
+        }
+      } else {
+        __pyx_t_7 = __pyx_t_10(__pyx_t_6);
+        if (unlikely(!__pyx_t_7)) {
+          PyObject* exc_type = PyErr_Occurred();
+          if (exc_type) {
+            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+            else __PYX_ERR(1, 115, __pyx_L1_error)
+          }
+          break;
+        }
+        __Pyx_GOTREF(__pyx_t_7);
+      }
+      if ((likely(PyTuple_CheckExact(__pyx_t_7))) || (PyList_CheckExact(__pyx_t_7))) {
+        PyObject* sequence = __pyx_t_7;
+        Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
+        if (unlikely(size != 5)) {
+          if (size > 5) __Pyx_RaiseTooManyValuesError(5);
+          else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
+          __PYX_ERR(1, 115, __pyx_L1_error)
+        }
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        if (likely(PyTuple_CheckExact(sequence))) {
+          __pyx_t_11 = PyTuple_GET_ITEM(sequence, 0); 
+          __pyx_t_12 = PyTuple_GET_ITEM(sequence, 1); 
+          __pyx_t_13 = PyTuple_GET_ITEM(sequence, 2); 
+          __pyx_t_14 = PyTuple_GET_ITEM(sequence, 3); 
+          __pyx_t_15 = PyTuple_GET_ITEM(sequence, 4); 
+        } else {
+          __pyx_t_11 = PyList_GET_ITEM(sequence, 0); 
+          __pyx_t_12 = PyList_GET_ITEM(sequence, 1); 
+          __pyx_t_13 = PyList_GET_ITEM(sequence, 2); 
+          __pyx_t_14 = PyList_GET_ITEM(sequence, 3); 
+          __pyx_t_15 = PyList_GET_ITEM(sequence, 4); 
+        }
+        __Pyx_INCREF(__pyx_t_11);
+        __Pyx_INCREF(__pyx_t_12);
+        __Pyx_INCREF(__pyx_t_13);
+        __Pyx_INCREF(__pyx_t_14);
+        __Pyx_INCREF(__pyx_t_15);
+        #else
+        {
+          Py_ssize_t i;
+          PyObject** temps[5] = {&__pyx_t_11,&__pyx_t_12,&__pyx_t_13,&__pyx_t_14,&__pyx_t_15};
+          for (i=0; i < 5; i++) {
+            PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(1, 115, __pyx_L1_error)
+            __Pyx_GOTREF(item);
+            *(temps[i]) = item;
+          }
+        }
+        #endif
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      } else {
+        Py_ssize_t index = -1;
+        PyObject** temps[5] = {&__pyx_t_11,&__pyx_t_12,&__pyx_t_13,&__pyx_t_14,&__pyx_t_15};
+        __pyx_t_16 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_16)) __PYX_ERR(1, 115, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_16);
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_17 = Py_TYPE(__pyx_t_16)->tp_iternext;
+        for (index=0; index < 5; index++) {
+          PyObject* item = __pyx_t_17(__pyx_t_16); if (unlikely(!item)) goto __pyx_L6_unpacking_failed;
+          __Pyx_GOTREF(item);
+          *(temps[index]) = item;
+        }
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_17(__pyx_t_16), 5) < 0) __PYX_ERR(1, 115, __pyx_L1_error)
+        __pyx_t_17 = NULL;
+        __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+        goto __pyx_L7_unpacking_done;
+        __pyx_L6_unpacking_failed:;
+        __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+        __pyx_t_17 = NULL;
+        if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
+        __PYX_ERR(1, 115, __pyx_L1_error)
+        __pyx_L7_unpacking_done:;
+      }
+      __Pyx_XDECREF_SET(__pyx_v_in_node, __pyx_t_11);
+      __pyx_t_11 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_out_node, __pyx_t_12);
+      __pyx_t_12 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_weight, __pyx_t_13);
+      __pyx_t_13 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_enabled, __pyx_t_14);
+      __pyx_t_14 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_innov, __pyx_t_15);
+      __pyx_t_15 = 0;
+
+      /* "genes.pyx":116
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+ *             for in_node, out_node, weight, enabled, innov in connections_data:
+ *                 conn.in_node = in_node             # <<<<<<<<<<<<<<
+ *                 conn.out_node = out_node
+ *                 conn.weight = weight
+ */
+      __pyx_t_2 = __Pyx_PyInt_As_unsigned_int(__pyx_v_in_node); if (unlikely((__pyx_t_2 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 116, __pyx_L1_error)
+      __pyx_v_conn.in_node = __pyx_t_2;
+
+      /* "genes.pyx":117
+ *             for in_node, out_node, weight, enabled, innov in connections_data:
+ *                 conn.in_node = in_node
+ *                 conn.out_node = out_node             # <<<<<<<<<<<<<<
+ *                 conn.weight = weight
+ *                 conn.enabled = enabled
+ */
+      __pyx_t_2 = __Pyx_PyInt_As_unsigned_int(__pyx_v_out_node); if (unlikely((__pyx_t_2 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 117, __pyx_L1_error)
+      __pyx_v_conn.out_node = __pyx_t_2;
+
+      /* "genes.pyx":118
+ *                 conn.in_node = in_node
+ *                 conn.out_node = out_node
+ *                 conn.weight = weight             # <<<<<<<<<<<<<<
+ *                 conn.enabled = enabled
+ *                 conn.innov_number = innov
+ */
+      __pyx_t_18 = __pyx_PyFloat_AsFloat(__pyx_v_weight); if (unlikely((__pyx_t_18 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 118, __pyx_L1_error)
+      __pyx_v_conn.weight = __pyx_t_18;
+
+      /* "genes.pyx":119
+ *                 conn.out_node = out_node
+ *                 conn.weight = weight
+ *                 conn.enabled = enabled             # <<<<<<<<<<<<<<
+ *                 conn.innov_number = innov
+ *                 self.data._connections.push_back(conn)
+ */
+      __pyx_t_19 = __Pyx_PyObject_IsTrue(__pyx_v_enabled); if (unlikely((__pyx_t_19 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 119, __pyx_L1_error)
+      __pyx_v_conn.enabled = __pyx_t_19;
+
+      /* "genes.pyx":120
+ *                 conn.weight = weight
+ *                 conn.enabled = enabled
+ *                 conn.innov_number = innov             # <<<<<<<<<<<<<<
+ *                 self.data._connections.push_back(conn)
+ *             self.data._synchronize_connections()
+ */
+      __pyx_t_2 = __Pyx_PyInt_As_unsigned_int(__pyx_v_innov); if (unlikely((__pyx_t_2 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 120, __pyx_L1_error)
+      __pyx_v_conn.innov_number = __pyx_t_2;
+
+      /* "genes.pyx":121
+ *                 conn.enabled = enabled
+ *                 conn.innov_number = innov
+ *                 self.data._connections.push_back(conn)             # <<<<<<<<<<<<<<
+ *             self.data._synchronize_connections()
+ * 
+ */
+      try {
+        __pyx_v_self->data->_connections.push_back(__pyx_v_conn);
+      } catch(...) {
+        __Pyx_CppExn2PyErr();
+        __PYX_ERR(1, 121, __pyx_L1_error)
+      }
+
+      /* "genes.pyx":115
+ *         if total_nodes is not None:
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+ *             for in_node, out_node, weight, enabled, innov in connections_data:             # <<<<<<<<<<<<<<
+ *                 conn.in_node = in_node
+ *                 conn.out_node = out_node
+ */
+    }
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+    /* "genes.pyx":122
+ *                 conn.innov_number = innov
+ *                 self.data._connections.push_back(conn)
+ *             self.data._synchronize_connections()             # <<<<<<<<<<<<<<
+ * 
+ *     def __dealloc__(self):
+ */
+    __pyx_v_self->data->_synchronize_connections();
+
+    /* "genes.pyx":113
+ *         self.data = new _Network(num_sensors, num_outputs)
+ *         cdef connection_t conn
+ *         if total_nodes is not None:             # <<<<<<<<<<<<<<
+ *             self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+ *             for in_node, out_node, weight, enabled, innov in connections_data:
+ */
+  }
+
+  /* "genes.pyx":110
  *     cdef _Network* data
  * 
- *     def __cinit__(self, num_sensors, num_outputs):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, num_sensors, num_outputs, total_nodes=None, connections_data=None):             # <<<<<<<<<<<<<<
  *         self.data = new _Network(num_sensors, num_outputs)
- * 
+ *         cdef connection_t conn
  */
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_15);
+  __Pyx_XDECREF(__pyx_t_16);
   __Pyx_AddTraceback("genes.Network.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_in_node);
+  __Pyx_XDECREF(__pyx_v_out_node);
+  __Pyx_XDECREF(__pyx_v_weight);
+  __Pyx_XDECREF(__pyx_v_enabled);
+  __Pyx_XDECREF(__pyx_v_innov);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "genes.pyx":112
- *         self.data = new _Network(num_sensors, num_outputs)
+/* "genes.pyx":124
+ *             self.data._synchronize_connections()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         del self.data
@@ -4191,17 +4531,17 @@ static void __pyx_pf_5genes_7Network_2__dealloc__(struct __pyx_obj_5genes_Networ
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "genes.pyx":113
+  /* "genes.pyx":125
  * 
  *     def __dealloc__(self):
  *         del self.data             # <<<<<<<<<<<<<<
  * 
- *     def feed_sensor_values(self, values, neurons=None):
+ *     def extract_output_values(self, neurons):
  */
   delete __pyx_v_self->data;
 
-  /* "genes.pyx":112
- *         self.data = new _Network(num_sensors, num_outputs)
+  /* "genes.pyx":124
+ *             self.data._synchronize_connections()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
  *         del self.data
@@ -4212,8 +4552,104 @@ static void __pyx_pf_5genes_7Network_2__dealloc__(struct __pyx_obj_5genes_Networ
   __Pyx_RefNannyFinishContext();
 }
 
-/* "genes.pyx":115
+/* "genes.pyx":127
  *         del self.data
+ * 
+ *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
+ *         num_inputs = self.data.input_count() + 1
+ *         num_outputs = self.data.output_count()
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5genes_7Network_5extract_output_values(PyObject *__pyx_v_self, PyObject *__pyx_v_neurons); /*proto*/
+static PyObject *__pyx_pw_5genes_7Network_5extract_output_values(PyObject *__pyx_v_self, PyObject *__pyx_v_neurons) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("extract_output_values (wrapper)", 0);
+  __pyx_r = __pyx_pf_5genes_7Network_4extract_output_values(((struct __pyx_obj_5genes_Network *)__pyx_v_self), ((PyObject *)__pyx_v_neurons));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5genes_7Network_4extract_output_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_neurons) {
+  PyObject *__pyx_v_num_inputs = NULL;
+  PyObject *__pyx_v_num_outputs = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("extract_output_values", 0);
+
+  /* "genes.pyx":128
+ * 
+ *     def extract_output_values(self, neurons):
+ *         num_inputs = self.data.input_count() + 1             # <<<<<<<<<<<<<<
+ *         num_outputs = self.data.output_count()
+ *         return neurons[num_inputs: num_inputs + num_outputs]
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_long((__pyx_v_self->data->input_count() + 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 128, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_num_inputs = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "genes.pyx":129
+ *     def extract_output_values(self, neurons):
+ *         num_inputs = self.data.input_count() + 1
+ *         num_outputs = self.data.output_count()             # <<<<<<<<<<<<<<
+ *         return neurons[num_inputs: num_inputs + num_outputs]
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->output_count()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 129, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_num_outputs = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "genes.pyx":130
+ *         num_inputs = self.data.input_count() + 1
+ *         num_outputs = self.data.output_count()
+ *         return neurons[num_inputs: num_inputs + num_outputs]             # <<<<<<<<<<<<<<
+ * 
+ *     def feed_sensor_values(self, values, neurons=None):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyNumber_Add(__pyx_v_num_inputs, __pyx_v_num_outputs); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_neurons, 0, 0, &__pyx_v_num_inputs, &__pyx_t_1, NULL, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "genes.pyx":127
+ *         del self.data
+ * 
+ *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
+ *         num_inputs = self.data.input_count() + 1
+ *         num_outputs = self.data.output_count()
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("genes.Network.extract_output_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_num_inputs);
+  __Pyx_XDECREF(__pyx_v_num_outputs);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "genes.pyx":132
+ *         return neurons[num_inputs: num_inputs + num_outputs]
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
  *         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
@@ -4221,9 +4657,9 @@ static void __pyx_pf_5genes_7Network_2__dealloc__(struct __pyx_obj_5genes_Networ
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_7Network_5feed_sensor_values(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5genes_7Network_4feed_sensor_values[] = " Run the network with the given input through the given neurons (creates them if not given), returns neuron values ";
-static PyObject *__pyx_pw_5genes_7Network_5feed_sensor_values(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5genes_7Network_7feed_sensor_values(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5genes_7Network_6feed_sensor_values[] = " Run the network with the given input through the given neurons (creates them if not given), returns neuron values ";
+static PyObject *__pyx_pw_5genes_7Network_7feed_sensor_values(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_values = 0;
   PyObject *__pyx_v_neurons = 0;
   int __pyx_lineno = 0;
@@ -4260,7 +4696,7 @@ static PyObject *__pyx_pw_5genes_7Network_5feed_sensor_values(PyObject *__pyx_v_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "feed_sensor_values") < 0)) __PYX_ERR(1, 115, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "feed_sensor_values") < 0)) __PYX_ERR(1, 132, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4276,20 +4712,20 @@ static PyObject *__pyx_pw_5genes_7Network_5feed_sensor_values(PyObject *__pyx_v_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 115, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 132, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Network.feed_sensor_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5genes_7Network_4feed_sensor_values(((struct __pyx_obj_5genes_Network *)__pyx_v_self), __pyx_v_values, __pyx_v_neurons);
+  __pyx_r = __pyx_pf_5genes_7Network_6feed_sensor_values(((struct __pyx_obj_5genes_Network *)__pyx_v_self), __pyx_v_values, __pyx_v_neurons);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_values, PyObject *__pyx_v_neurons) {
+static PyObject *__pyx_pf_5genes_7Network_6feed_sensor_values(struct __pyx_obj_5genes_Network *__pyx_v_self, PyObject *__pyx_v_values, PyObject *__pyx_v_neurons) {
   PyObject *__pyx_v_i = NULL;
   arrayobject *__pyx_v_arr = 0;
   PyObject *__pyx_r = NULL;
@@ -4307,7 +4743,7 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
   __Pyx_RefNannySetupContext("feed_sensor_values", 0);
   __Pyx_INCREF(__pyx_v_neurons);
 
-  /* "genes.pyx":117
+  /* "genes.pyx":134
  *     def feed_sensor_values(self, values, neurons=None):
  *         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
  *         if neurons is None:             # <<<<<<<<<<<<<<
@@ -4318,14 +4754,14 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "genes.pyx":118
+    /* "genes.pyx":135
  *         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
  *         if neurons is None:
  *             neurons = array.array("f", [0] * (self.data.total_neurons() * 1))             # <<<<<<<<<<<<<<
  *         neurons[0] = 1
  *         for i in range(self.data.input_count()):
  */
-    __pyx_t_3 = PyList_New(1 * (((__pyx_v_self->data->total_neurons() * 1)<0) ? 0:(__pyx_v_self->data->total_neurons() * 1))); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 118, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1 * (((__pyx_v_self->data->total_neurons() * 1)<0) ? 0:(__pyx_v_self->data->total_neurons() * 1))); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     { Py_ssize_t __pyx_temp;
       for (__pyx_temp=0; __pyx_temp < (__pyx_v_self->data->total_neurons() * 1); __pyx_temp++) {
@@ -4334,7 +4770,7 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
         PyList_SET_ITEM(__pyx_t_3, __pyx_temp, __pyx_int_0);
       }
     }
-    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 118, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_INCREF(__pyx_n_s_f);
     __Pyx_GIVEREF(__pyx_n_s_f);
@@ -4342,13 +4778,13 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7cpython_5array_array), __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 118, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_7cpython_5array_array), __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 135, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF_SET(__pyx_v_neurons, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "genes.pyx":117
+    /* "genes.pyx":134
  *     def feed_sensor_values(self, values, neurons=None):
  *         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
  *         if neurons is None:             # <<<<<<<<<<<<<<
@@ -4357,34 +4793,34 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
  */
   }
 
-  /* "genes.pyx":119
+  /* "genes.pyx":136
  *         if neurons is None:
  *             neurons = array.array("f", [0] * (self.data.total_neurons() * 1))
  *         neurons[0] = 1             # <<<<<<<<<<<<<<
  *         for i in range(self.data.input_count()):
  *             neurons[i + 1] = values[i]
  */
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_neurons, 0, __pyx_int_1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 119, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_neurons, 0, __pyx_int_1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(1, 136, __pyx_L1_error)
 
-  /* "genes.pyx":120
+  /* "genes.pyx":137
  *             neurons = array.array("f", [0] * (self.data.total_neurons() * 1))
  *         neurons[0] = 1
  *         for i in range(self.data.input_count()):             # <<<<<<<<<<<<<<
  *             neurons[i + 1] = values[i]
  *         cdef array.array arr = <array.array?>neurons
  */
-  __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->input_count()); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->input_count()); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
     __pyx_t_3 = __pyx_t_4; __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 120, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 137, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 120, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 137, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   for (;;) {
@@ -4392,17 +4828,17 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 120, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 137, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 120, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 137, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 120, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_4); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(1, 137, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 120, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 137, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -4412,7 +4848,7 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 120, __pyx_L1_error)
+          else __PYX_ERR(1, 137, __pyx_L1_error)
         }
         break;
       }
@@ -4421,22 +4857,22 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
     __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "genes.pyx":121
+    /* "genes.pyx":138
  *         neurons[0] = 1
  *         for i in range(self.data.input_count()):
  *             neurons[i + 1] = values[i]             # <<<<<<<<<<<<<<
  *         cdef array.array arr = <array.array?>neurons
  *         self.data.feed_sensor_values(arr.data.as_floats)
  */
-    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_values, __pyx_v_i); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 121, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_values, __pyx_v_i); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 138, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 121, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 138, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely(PyObject_SetItem(__pyx_v_neurons, __pyx_t_7, __pyx_t_4) < 0)) __PYX_ERR(1, 121, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_v_neurons, __pyx_t_7, __pyx_t_4) < 0)) __PYX_ERR(1, 138, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "genes.pyx":120
+    /* "genes.pyx":137
  *             neurons = array.array("f", [0] * (self.data.total_neurons() * 1))
  *         neurons[0] = 1
  *         for i in range(self.data.input_count()):             # <<<<<<<<<<<<<<
@@ -4446,20 +4882,20 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "genes.pyx":122
+  /* "genes.pyx":139
  *         for i in range(self.data.input_count()):
  *             neurons[i + 1] = values[i]
  *         cdef array.array arr = <array.array?>neurons             # <<<<<<<<<<<<<<
  *         self.data.feed_sensor_values(arr.data.as_floats)
  *         return neurons
  */
-  if (!(likely(__Pyx_TypeTest(__pyx_v_neurons, __pyx_ptype_7cpython_5array_array)))) __PYX_ERR(1, 122, __pyx_L1_error)
+  if (!(likely(__Pyx_TypeTest(__pyx_v_neurons, __pyx_ptype_7cpython_5array_array)))) __PYX_ERR(1, 139, __pyx_L1_error)
   __pyx_t_3 = __pyx_v_neurons;
   __Pyx_INCREF(__pyx_t_3);
   __pyx_v_arr = ((arrayobject *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "genes.pyx":123
+  /* "genes.pyx":140
  *             neurons[i + 1] = values[i]
  *         cdef array.array arr = <array.array?>neurons
  *         self.data.feed_sensor_values(arr.data.as_floats)             # <<<<<<<<<<<<<<
@@ -4468,20 +4904,20 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
  */
   __pyx_v_self->data->feed_sensor_values(__pyx_v_arr->data.as_floats);
 
-  /* "genes.pyx":124
+  /* "genes.pyx":141
  *         cdef array.array arr = <array.array?>neurons
  *         self.data.feed_sensor_values(arr.data.as_floats)
  *         return neurons             # <<<<<<<<<<<<<<
  * 
- * class Genes:
+ *     def __reduce__(self):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_neurons);
   __pyx_r = __pyx_v_neurons;
   goto __pyx_L0;
 
-  /* "genes.pyx":115
- *         del self.data
+  /* "genes.pyx":132
+ *         return neurons[num_inputs: num_inputs + num_outputs]
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
  *         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
@@ -4504,120 +4940,445 @@ static PyObject *__pyx_pf_5genes_7Network_4feed_sensor_values(struct __pyx_obj_5
   return __pyx_r;
 }
 
-/* "(tree fragment)":1
- * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
+/* "genes.pyx":143
+ *         return neurons
+ * 
+ *     def __reduce__(self):             # <<<<<<<<<<<<<<
+ *         return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_7Network_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5genes_7Network_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5genes_7Network_9__reduce__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5genes_7Network_9__reduce__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_7Network_6__reduce_cython__(((struct __pyx_obj_5genes_Network *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("__reduce__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_5genes_7Network_8__reduce__(((struct __pyx_obj_5genes_Network *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_7Network_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Network *__pyx_v_self) {
+static PyObject *__pyx_pf_5genes_7Network_8__reduce__(struct __pyx_obj_5genes_Network *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__reduce_cython__", 0);
+  __Pyx_RefNannySetupContext("__reduce__", 0);
 
-  /* "(tree fragment)":2
- * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+  /* "genes.pyx":144
+ * 
+ *     def __reduce__(self):
+ *         return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))             # <<<<<<<<<<<<<<
+ * 
+ *     def get_connections(self):
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_class); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->input_count()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->output_count()); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->total_neurons()); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_connections); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_5 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_6 = PyTuple_New(4); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_5);
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_6);
+  __pyx_t_1 = 0;
+  __pyx_t_6 = 0;
+  __pyx_r = __pyx_t_5;
+  __pyx_t_5 = 0;
+  goto __pyx_L0;
 
-  /* "(tree fragment)":1
- * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
+  /* "genes.pyx":143
+ *         return neurons
+ * 
+ *     def __reduce__(self):             # <<<<<<<<<<<<<<
+ *         return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))
+ * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("genes.Network.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("genes.Network.__reduce__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
+  __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "(tree fragment)":3
- * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+/* "genes.pyx":146
+ *         return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))
+ * 
+ *     def get_connections(self):             # <<<<<<<<<<<<<<
+ *         connections = []
+ *         net_connections = &self.data._connections
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5genes_7Network_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5genes_7Network_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5genes_7Network_11get_connections(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5genes_7Network_11get_connections(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5genes_7Network_8__setstate_cython__(((struct __pyx_obj_5genes_Network *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __Pyx_RefNannySetupContext("get_connections (wrapper)", 0);
+  __pyx_r = __pyx_pf_5genes_7Network_10get_connections(((struct __pyx_obj_5genes_Network *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_7Network_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5genes_Network *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5genes_7Network_10get_connections(struct __pyx_obj_5genes_Network *__pyx_v_self) {
+  PyObject *__pyx_v_connections = NULL;
+  std::vector<connection_t>  *__pyx_v_net_connections;
+  std::vector<connection_t> ::iterator __pyx_v_begin;
+  std::vector<connection_t> ::iterator __pyx_v_end;
+  connection_t __pyx_v_conn;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__setstate_cython__", 0);
+  __Pyx_RefNannySetupContext("get_connections", 0);
 
-  /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+  /* "genes.pyx":147
+ * 
+ *     def get_connections(self):
+ *         connections = []             # <<<<<<<<<<<<<<
+ *         net_connections = &self.data._connections
+ *         begin = net_connections.begin()
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_v_connections = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "(tree fragment)":3
- * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+  /* "genes.pyx":148
+ *     def get_connections(self):
+ *         connections = []
+ *         net_connections = &self.data._connections             # <<<<<<<<<<<<<<
+ *         begin = net_connections.begin()
+ *         end = net_connections.end()
+ */
+  __pyx_v_net_connections = (&__pyx_v_self->data->_connections);
+
+  /* "genes.pyx":149
+ *         connections = []
+ *         net_connections = &self.data._connections
+ *         begin = net_connections.begin()             # <<<<<<<<<<<<<<
+ *         end = net_connections.end()
+ *         while begin != end:
+ */
+  __pyx_v_begin = __pyx_v_net_connections->begin();
+
+  /* "genes.pyx":150
+ *         net_connections = &self.data._connections
+ *         begin = net_connections.begin()
+ *         end = net_connections.end()             # <<<<<<<<<<<<<<
+ *         while begin != end:
+ *             conn = deref(begin)
+ */
+  __pyx_v_end = __pyx_v_net_connections->end();
+
+  /* "genes.pyx":151
+ *         begin = net_connections.begin()
+ *         end = net_connections.end()
+ *         while begin != end:             # <<<<<<<<<<<<<<
+ *             conn = deref(begin)
+ *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
+ */
+  while (1) {
+    __pyx_t_2 = ((__pyx_v_begin != __pyx_v_end) != 0);
+    if (!__pyx_t_2) break;
+
+    /* "genes.pyx":152
+ *         end = net_connections.end()
+ *         while begin != end:
+ *             conn = deref(begin)             # <<<<<<<<<<<<<<
+ *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
+ *             inc(begin)
+ */
+    __pyx_v_conn = (*__pyx_v_begin);
+
+    /* "genes.pyx":153
+ *         while begin != end:
+ *             conn = deref(begin)
+ *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])             # <<<<<<<<<<<<<<
+ *             inc(begin)
+ *         return connections
+ */
+    __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.in_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.out_node); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_conn.weight); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_conn.enabled); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.innov_number); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyList_SET_ITEM(__pyx_t_7, 1, __pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyList_SET_ITEM(__pyx_t_7, 2, __pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_5);
+    PyList_SET_ITEM(__pyx_t_7, 3, __pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_6);
+    PyList_SET_ITEM(__pyx_t_7, 4, __pyx_t_6);
+    __pyx_t_1 = 0;
+    __pyx_t_3 = 0;
+    __pyx_t_4 = 0;
+    __pyx_t_5 = 0;
+    __pyx_t_6 = 0;
+    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_connections, __pyx_t_7); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(1, 153, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "genes.pyx":154
+ *             conn = deref(begin)
+ *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
+ *             inc(begin)             # <<<<<<<<<<<<<<
+ *         return connections
+ * 
+ */
+    (void)((++__pyx_v_begin));
+  }
+
+  /* "genes.pyx":155
+ *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
+ *             inc(begin)
+ *         return connections             # <<<<<<<<<<<<<<
+ * 
+ *     def as_json(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_connections);
+  __pyx_r = __pyx_v_connections;
+  goto __pyx_L0;
+
+  /* "genes.pyx":146
+ *         return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))
+ * 
+ *     def get_connections(self):             # <<<<<<<<<<<<<<
+ *         connections = []
+ *         net_connections = &self.data._connections
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("genes.Network.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("genes.Network.get_connections", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_connections);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "genes.pyx":130
+/* "genes.pyx":157
+ *         return connections
+ * 
+ *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
+ *         return {
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5genes_7Network_13as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_5genes_7Network_12as_json[] = " returns self as a dict ";
+static PyObject *__pyx_pw_5genes_7Network_13as_json(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("as_json (wrapper)", 0);
+  __pyx_r = __pyx_pf_5genes_7Network_12as_json(((struct __pyx_obj_5genes_Network *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5genes_7Network_12as_json(struct __pyx_obj_5genes_Network *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("as_json", 0);
+
+  /* "genes.pyx":159
+ *     def as_json(self):
+ *         """ returns self as a dict """
+ *         return {             # <<<<<<<<<<<<<<
+ *             "nodeCount": self.data.total_neurons(),
+ *             "inputCount": self.data.input_count(),
+ */
+  __Pyx_XDECREF(__pyx_r);
+
+  /* "genes.pyx":160
+ *         """ returns self as a dict """
+ *         return {
+ *             "nodeCount": self.data.total_neurons(),             # <<<<<<<<<<<<<<
+ *             "inputCount": self.data.input_count(),
+ *             "outputCount": self.data.output_count(),
+ */
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->total_neurons()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_nodeCount, __pyx_t_2) < 0) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":161
+ *         return {
+ *             "nodeCount": self.data.total_neurons(),
+ *             "inputCount": self.data.input_count(),             # <<<<<<<<<<<<<<
+ *             "outputCount": self.data.output_count(),
+ *             "connections": self.get_connections()
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->input_count()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 161, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_inputCount, __pyx_t_2) < 0) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":162
+ *             "nodeCount": self.data.total_neurons(),
+ *             "inputCount": self.data.input_count(),
+ *             "outputCount": self.data.output_count(),             # <<<<<<<<<<<<<<
+ *             "connections": self.get_connections()
+ *         }
+ */
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_self->data->output_count()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 162, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_outputCount, __pyx_t_2) < 0) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":163
+ *             "inputCount": self.data.input_count(),
+ *             "outputCount": self.data.output_count(),
+ *             "connections": self.get_connections()             # <<<<<<<<<<<<<<
+ *         }
+ * 
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_connections); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 163, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_connections, __pyx_t_2) < 0) __PYX_ERR(1, 160, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "genes.pyx":157
+ *         return connections
+ * 
+ *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
+ *         return {
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("genes.Network.as_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "genes.pyx":170
  *     Metaparameters = Metaparameters
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):             # <<<<<<<<<<<<<<
@@ -4666,23 +5427,23 @@ static PyObject *__pyx_pw_5genes_5Genes_1__init__(PyObject *__pyx_self, PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_sensors)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 1); __PYX_ERR(1, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 1); __PYX_ERR(1, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_outputs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 2); __PYX_ERR(1, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 2); __PYX_ERR(1, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_metaparameters)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 3); __PYX_ERR(1, 130, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, 3); __PYX_ERR(1, 170, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 130, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(1, 170, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -4699,7 +5460,7 @@ static PyObject *__pyx_pw_5genes_5Genes_1__init__(PyObject *__pyx_self, PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 130, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 170, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4724,7 +5485,7 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "genes.pyx":131
+  /* "genes.pyx":171
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):
  *         if num_sensors is not None:             # <<<<<<<<<<<<<<
@@ -4735,14 +5496,14 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "genes.pyx":132
+    /* "genes.pyx":172
  *     def __init__(self, num_sensors, num_outputs, metaparameters):
  *         if num_sensors is not None:
  *             self.network = Network(num_sensors, num_outputs)             # <<<<<<<<<<<<<<
  *         else:
  *             self.network = Network(0, 0)
  */
-    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 132, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 172, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_num_sensors);
     __Pyx_GIVEREF(__pyx_v_num_sensors);
@@ -4750,13 +5511,13 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
     __Pyx_INCREF(__pyx_v_num_outputs);
     __Pyx_GIVEREF(__pyx_v_num_outputs);
     PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_num_outputs);
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Network), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 132, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Network), __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 172, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_network, __pyx_t_4) < 0) __PYX_ERR(1, 132, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_network, __pyx_t_4) < 0) __PYX_ERR(1, 172, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "genes.pyx":131
+    /* "genes.pyx":171
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):
  *         if num_sensors is not None:             # <<<<<<<<<<<<<<
@@ -4766,7 +5527,7 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
     goto __pyx_L3;
   }
 
-  /* "genes.pyx":134
+  /* "genes.pyx":174
  *             self.network = Network(num_sensors, num_outputs)
  *         else:
  *             self.network = Network(0, 0)             # <<<<<<<<<<<<<<
@@ -4774,32 +5535,32 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
  *         self.fitness = 0
  */
   /*else*/ {
-    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Network), __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 134, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_5genes_Network), __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_network, __pyx_t_4) < 0) __PYX_ERR(1, 134, __pyx_L1_error)
+    if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_network, __pyx_t_4) < 0) __PYX_ERR(1, 174, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __pyx_L3:;
 
-  /* "genes.pyx":135
+  /* "genes.pyx":175
  *         else:
  *             self.network = Network(0, 0)
  *         self._metaparameters = metaparameters             # <<<<<<<<<<<<<<
  *         self.fitness = 0
  * 
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2, __pyx_v_metaparameters) < 0) __PYX_ERR(1, 135, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2, __pyx_v_metaparameters) < 0) __PYX_ERR(1, 175, __pyx_L1_error)
 
-  /* "genes.pyx":136
+  /* "genes.pyx":176
  *             self.network = Network(0, 0)
  *         self._metaparameters = metaparameters
  *         self.fitness = 0             # <<<<<<<<<<<<<<
  * 
  *     def setFitness(self, value):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_fitness, __pyx_int_0) < 0) __PYX_ERR(1, 136, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_fitness, __pyx_int_0) < 0) __PYX_ERR(1, 176, __pyx_L1_error)
 
-  /* "genes.pyx":130
+  /* "genes.pyx":170
  *     Metaparameters = Metaparameters
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):             # <<<<<<<<<<<<<<
@@ -4821,7 +5582,7 @@ static PyObject *__pyx_pf_5genes_5Genes___init__(CYTHON_UNUSED PyObject *__pyx_s
   return __pyx_r;
 }
 
-/* "genes.pyx":138
+/* "genes.pyx":178
  *         self.fitness = 0
  * 
  *     def setFitness(self, value):             # <<<<<<<<<<<<<<
@@ -4864,11 +5625,11 @@ static PyObject *__pyx_pw_5genes_5Genes_3setFitness(PyObject *__pyx_self, PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_value)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setFitness", 1, 2, 2, 1); __PYX_ERR(1, 138, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setFitness", 1, 2, 2, 1); __PYX_ERR(1, 178, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setFitness") < 0)) __PYX_ERR(1, 138, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setFitness") < 0)) __PYX_ERR(1, 178, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4881,7 +5642,7 @@ static PyObject *__pyx_pw_5genes_5Genes_3setFitness(PyObject *__pyx_self, PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("setFitness", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 138, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("setFitness", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 178, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.setFitness", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4902,16 +5663,16 @@ static PyObject *__pyx_pf_5genes_5Genes_2setFitness(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("setFitness", 0);
 
-  /* "genes.pyx":139
+  /* "genes.pyx":179
  * 
  *     def setFitness(self, value):
  *         self.fitness = value             # <<<<<<<<<<<<<<
  * 
  *     def getFitness(self):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_fitness, __pyx_v_value) < 0) __PYX_ERR(1, 139, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_fitness, __pyx_v_value) < 0) __PYX_ERR(1, 179, __pyx_L1_error)
 
-  /* "genes.pyx":138
+  /* "genes.pyx":178
  *         self.fitness = 0
  * 
  *     def setFitness(self, value):             # <<<<<<<<<<<<<<
@@ -4931,7 +5692,7 @@ static PyObject *__pyx_pf_5genes_5Genes_2setFitness(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "genes.pyx":141
+/* "genes.pyx":181
  *         self.fitness = value
  * 
  *     def getFitness(self):             # <<<<<<<<<<<<<<
@@ -4962,7 +5723,7 @@ static PyObject *__pyx_pf_5genes_5Genes_4getFitness(CYTHON_UNUSED PyObject *__py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("getFitness", 0);
 
-  /* "genes.pyx":142
+  /* "genes.pyx":182
  * 
  *     def getFitness(self):
  *         return self.fitness             # <<<<<<<<<<<<<<
@@ -4970,13 +5731,13 @@ static PyObject *__pyx_pf_5genes_5Genes_4getFitness(CYTHON_UNUSED PyObject *__py
  *     def input_node_index(self, input_index):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 142, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 182, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":141
+  /* "genes.pyx":181
  *         self.fitness = value
  * 
  *     def getFitness(self):             # <<<<<<<<<<<<<<
@@ -4995,7 +5756,7 @@ static PyObject *__pyx_pf_5genes_5Genes_4getFitness(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "genes.pyx":144
+/* "genes.pyx":184
  *         return self.fitness
  * 
  *     def input_node_index(self, input_index):             # <<<<<<<<<<<<<<
@@ -5038,11 +5799,11 @@ static PyObject *__pyx_pw_5genes_5Genes_7input_node_index(PyObject *__pyx_self, 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_input_index)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("input_node_index", 1, 2, 2, 1); __PYX_ERR(1, 144, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("input_node_index", 1, 2, 2, 1); __PYX_ERR(1, 184, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "input_node_index") < 0)) __PYX_ERR(1, 144, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "input_node_index") < 0)) __PYX_ERR(1, 184, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5055,7 +5816,7 @@ static PyObject *__pyx_pw_5genes_5Genes_7input_node_index(PyObject *__pyx_self, 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("input_node_index", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 144, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("input_node_index", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 184, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.input_node_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5080,14 +5841,14 @@ static PyObject *__pyx_pf_5genes_5Genes_6input_node_index(CYTHON_UNUSED PyObject
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("input_node_index", 0);
 
-  /* "genes.pyx":145
+  /* "genes.pyx":185
  * 
  *     def input_node_index(self, input_index):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         return deref(network.data).input_node_index(input_index)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 145, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5095,7 +5856,7 @@ static PyObject *__pyx_pf_5genes_5Genes_6input_node_index(CYTHON_UNUSED PyObject
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":146
+  /* "genes.pyx":186
  *     def input_node_index(self, input_index):
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).input_node_index(input_index)             # <<<<<<<<<<<<<<
@@ -5103,14 +5864,14 @@ static PyObject *__pyx_pf_5genes_5Genes_6input_node_index(CYTHON_UNUSED PyObject
  *     def output_node_index(self, index):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_input_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 146, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int((*__pyx_v_network->data).input_node_index(__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 146, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_input_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 186, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int((*__pyx_v_network->data).input_node_index(__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":144
+  /* "genes.pyx":184
  *         return self.fitness
  * 
  *     def input_node_index(self, input_index):             # <<<<<<<<<<<<<<
@@ -5131,7 +5892,7 @@ static PyObject *__pyx_pf_5genes_5Genes_6input_node_index(CYTHON_UNUSED PyObject
   return __pyx_r;
 }
 
-/* "genes.pyx":148
+/* "genes.pyx":188
  *         return deref(network.data).input_node_index(input_index)
  * 
  *     def output_node_index(self, index):             # <<<<<<<<<<<<<<
@@ -5174,11 +5935,11 @@ static PyObject *__pyx_pw_5genes_5Genes_9output_node_index(PyObject *__pyx_self,
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_index)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("output_node_index", 1, 2, 2, 1); __PYX_ERR(1, 148, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("output_node_index", 1, 2, 2, 1); __PYX_ERR(1, 188, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "output_node_index") < 0)) __PYX_ERR(1, 148, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "output_node_index") < 0)) __PYX_ERR(1, 188, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5191,7 +5952,7 @@ static PyObject *__pyx_pw_5genes_5Genes_9output_node_index(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("output_node_index", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 148, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("output_node_index", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 188, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.output_node_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5216,14 +5977,14 @@ static PyObject *__pyx_pf_5genes_5Genes_8output_node_index(CYTHON_UNUSED PyObjec
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("output_node_index", 0);
 
-  /* "genes.pyx":149
+  /* "genes.pyx":189
  * 
  *     def output_node_index(self, index):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         return deref(network.data).output_node_index(index)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 149, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 189, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5231,7 +5992,7 @@ static PyObject *__pyx_pf_5genes_5Genes_8output_node_index(CYTHON_UNUSED PyObjec
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":150
+  /* "genes.pyx":190
  *     def output_node_index(self, index):
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).output_node_index(index)             # <<<<<<<<<<<<<<
@@ -5239,14 +6000,14 @@ static PyObject *__pyx_pf_5genes_5Genes_8output_node_index(CYTHON_UNUSED PyObjec
  *     def feed_sensor_values(self, values, neurons=None):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 150, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int((*__pyx_v_network->data).output_node_index(__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 150, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 190, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int((*__pyx_v_network->data).output_node_index(__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":148
+  /* "genes.pyx":188
  *         return deref(network.data).input_node_index(input_index)
  * 
  *     def output_node_index(self, index):             # <<<<<<<<<<<<<<
@@ -5267,7 +6028,7 @@ static PyObject *__pyx_pf_5genes_5Genes_8output_node_index(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "genes.pyx":152
+/* "genes.pyx":192
  *         return deref(network.data).output_node_index(index)
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
@@ -5314,7 +6075,7 @@ static PyObject *__pyx_pw_5genes_5Genes_11feed_sensor_values(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_values)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 2, 3, 1); __PYX_ERR(1, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 2, 3, 1); __PYX_ERR(1, 192, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -5324,7 +6085,7 @@ static PyObject *__pyx_pw_5genes_5Genes_11feed_sensor_values(PyObject *__pyx_sel
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "feed_sensor_values") < 0)) __PYX_ERR(1, 152, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "feed_sensor_values") < 0)) __PYX_ERR(1, 192, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5342,7 +6103,7 @@ static PyObject *__pyx_pw_5genes_5Genes_11feed_sensor_values(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 152, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("feed_sensor_values", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 192, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.feed_sensor_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5369,14 +6130,14 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("feed_sensor_values", 0);
 
-  /* "genes.pyx":153
+  /* "genes.pyx":193
  * 
  *     def feed_sensor_values(self, values, neurons=None):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         return network.feed_sensor_values(values, neurons)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 153, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5384,7 +6145,7 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":154
+  /* "genes.pyx":194
  *     def feed_sensor_values(self, values, neurons=None):
  *         cdef Network network = <Network>self.network
  *         return network.feed_sensor_values(values, neurons)             # <<<<<<<<<<<<<<
@@ -5392,7 +6153,7 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
  *     def extract_output_values(self, neurons):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_network), __pyx_n_s_feed_sensor_values); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 154, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_network), __pyx_n_s_feed_sensor_values); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -5409,7 +6170,7 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_values, __pyx_v_neurons};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 154, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 194, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else
@@ -5417,13 +6178,13 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[3] = {__pyx_t_3, __pyx_v_values, __pyx_v_neurons};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 154, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 194, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_2);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 154, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -5434,7 +6195,7 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
     __Pyx_INCREF(__pyx_v_neurons);
     __Pyx_GIVEREF(__pyx_v_neurons);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_v_neurons);
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 154, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 194, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -5443,7 +6204,7 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":152
+  /* "genes.pyx":192
  *         return deref(network.data).output_node_index(index)
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
@@ -5466,12 +6227,12 @@ static PyObject *__pyx_pf_5genes_5Genes_10feed_sensor_values(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "genes.pyx":156
+/* "genes.pyx":196
  *         return network.feed_sensor_values(values, neurons)
  * 
  *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1
+ *         return network.extract_output_values(neurons)
  */
 
 /* Python wrapper */
@@ -5509,11 +6270,11 @@ static PyObject *__pyx_pw_5genes_5Genes_13extract_output_values(PyObject *__pyx_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_neurons)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("extract_output_values", 1, 2, 2, 1); __PYX_ERR(1, 156, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("extract_output_values", 1, 2, 2, 1); __PYX_ERR(1, 196, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract_output_values") < 0)) __PYX_ERR(1, 156, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "extract_output_values") < 0)) __PYX_ERR(1, 196, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -5526,7 +6287,7 @@ static PyObject *__pyx_pw_5genes_5Genes_13extract_output_values(PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("extract_output_values", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 156, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("extract_output_values", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 196, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.extract_output_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5541,25 +6302,24 @@ static PyObject *__pyx_pw_5genes_5Genes_13extract_output_values(PyObject *__pyx_
 
 static PyObject *__pyx_pf_5genes_5Genes_12extract_output_values(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_neurons) {
   struct __pyx_obj_5genes_Network *__pyx_v_network = 0;
-  PyObject *__pyx_v_num_inputs = NULL;
-  PyObject *__pyx_v_num_outputs = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("extract_output_values", 0);
 
-  /* "genes.pyx":157
+  /* "genes.pyx":197
  * 
  *     def extract_output_values(self, neurons):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
- *         num_inputs = deref(network.data).input_count() + 1
- *         num_outputs = deref(network.data).output_count()
+ *         return network.extract_output_values(neurons)
+ * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 157, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5567,71 +6327,58 @@ static PyObject *__pyx_pf_5genes_5Genes_12extract_output_values(CYTHON_UNUSED Py
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":158
+  /* "genes.pyx":198
  *     def extract_output_values(self, neurons):
  *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1             # <<<<<<<<<<<<<<
- *         num_outputs = deref(network.data).output_count()
- *         return neurons[num_inputs: num_inputs + num_outputs]
- */
-  __pyx_t_2 = __Pyx_PyInt_From_long(((*__pyx_v_network->data).input_count() + 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 158, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_v_num_inputs = __pyx_t_2;
-  __pyx_t_2 = 0;
-
-  /* "genes.pyx":159
- *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1
- *         num_outputs = deref(network.data).output_count()             # <<<<<<<<<<<<<<
- *         return neurons[num_inputs: num_inputs + num_outputs]
- * 
- */
-  __pyx_t_2 = __Pyx_PyInt_From_unsigned_int((*__pyx_v_network->data).output_count()); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_v_num_outputs = __pyx_t_2;
-  __pyx_t_2 = 0;
-
-  /* "genes.pyx":160
- *         num_inputs = deref(network.data).input_count() + 1
- *         num_outputs = deref(network.data).output_count()
- *         return neurons[num_inputs: num_inputs + num_outputs]             # <<<<<<<<<<<<<<
+ *         return network.extract_output_values(neurons)             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyNumber_Add(__pyx_v_num_inputs, __pyx_v_num_outputs); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 160, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_neurons, 0, 0, &__pyx_v_num_inputs, &__pyx_t_2, NULL, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 160, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_network), __pyx_n_s_extract_output_values); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_3, __pyx_v_neurons) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_v_neurons);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 198, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":156
+  /* "genes.pyx":196
  *         return network.feed_sensor_values(values, neurons)
  * 
  *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1
+ *         return network.extract_output_values(neurons)
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_AddTraceback("genes.Genes.extract_output_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_network);
-  __Pyx_XDECREF(__pyx_v_num_inputs);
-  __Pyx_XDECREF(__pyx_v_num_outputs);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "genes.pyx":163
+/* "genes.pyx":201
  * 
  * 
  *     def add_connection(self, input_index, output_index):             # <<<<<<<<<<<<<<
@@ -5677,17 +6424,17 @@ static PyObject *__pyx_pw_5genes_5Genes_15add_connection(PyObject *__pyx_self, P
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_input_index)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, 1); __PYX_ERR(1, 163, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, 1); __PYX_ERR(1, 201, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_output_index)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, 2); __PYX_ERR(1, 163, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, 2); __PYX_ERR(1, 201, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_connection") < 0)) __PYX_ERR(1, 163, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "add_connection") < 0)) __PYX_ERR(1, 201, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -5702,7 +6449,7 @@ static PyObject *__pyx_pw_5genes_5Genes_15add_connection(PyObject *__pyx_self, P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 163, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("add_connection", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 201, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.add_connection", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5729,14 +6476,14 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_connection", 0);
 
-  /* "genes.pyx":164
+  /* "genes.pyx":202
  * 
  *     def add_connection(self, input_index, output_index):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 164, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5744,14 +6491,14 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":165
+  /* "genes.pyx":203
  *     def add_connection(self, input_index, output_index):
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters             # <<<<<<<<<<<<<<
  * 
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 165, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -5759,7 +6506,7 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
   __pyx_v_meta = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":167
+  /* "genes.pyx":205
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  * 
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))             # <<<<<<<<<<<<<<
@@ -5767,15 +6514,15 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
  *     def perturb(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_input_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 167, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_v_output_index); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 167, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyBool_FromLong((*__pyx_v_network->data).add_connection(__pyx_t_3, __pyx_t_4, (*__pyx_v_meta->data))); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 167, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_unsigned_int(__pyx_v_input_index); if (unlikely((__pyx_t_3 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 205, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_unsigned_int(__pyx_v_output_index); if (unlikely((__pyx_t_4 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 205, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((*__pyx_v_network->data).add_connection(__pyx_t_3, __pyx_t_4, (*__pyx_v_meta->data))); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":163
+  /* "genes.pyx":201
  * 
  * 
  *     def add_connection(self, input_index, output_index):             # <<<<<<<<<<<<<<
@@ -5797,7 +6544,7 @@ static PyObject *__pyx_pf_5genes_5Genes_14add_connection(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "genes.pyx":169
+/* "genes.pyx":207
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))
  * 
  *     def perturb(self):             # <<<<<<<<<<<<<<
@@ -5831,14 +6578,14 @@ static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("perturb", 0);
 
-  /* "genes.pyx":170
+  /* "genes.pyx":208
  * 
  *     def perturb(self):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         deref(network.data).perturb(deref(meta.data))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 170, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5846,14 +6593,14 @@ static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":171
+  /* "genes.pyx":209
  *     def perturb(self):
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters             # <<<<<<<<<<<<<<
  *         deref(network.data).perturb(deref(meta.data))
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 171, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -5861,7 +6608,7 @@ static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_meta = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":172
+  /* "genes.pyx":210
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         deref(network.data).perturb(deref(meta.data))             # <<<<<<<<<<<<<<
@@ -5870,7 +6617,7 @@ static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_
  */
   (*__pyx_v_network->data).perturb((*__pyx_v_meta->data));
 
-  /* "genes.pyx":169
+  /* "genes.pyx":207
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))
  * 
  *     def perturb(self):             # <<<<<<<<<<<<<<
@@ -5894,7 +6641,7 @@ static PyObject *__pyx_pf_5genes_5Genes_16perturb(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "genes.pyx":174
+/* "genes.pyx":212
  *         deref(network.data).perturb(deref(meta.data))
  * 
  *     def mutate(self):             # <<<<<<<<<<<<<<
@@ -5928,14 +6675,14 @@ static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("mutate", 0);
 
-  /* "genes.pyx":175
+  /* "genes.pyx":213
  * 
  *     def mutate(self):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         return deref(network.data).mutate(deref(meta.data))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 175, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 213, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -5943,14 +6690,14 @@ static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":176
+  /* "genes.pyx":214
  *     def mutate(self):
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters             # <<<<<<<<<<<<<<
  *         return deref(network.data).mutate(deref(meta.data))
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 176, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 214, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -5958,7 +6705,7 @@ static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_v_meta = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":177
+  /* "genes.pyx":215
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         return deref(network.data).mutate(deref(meta.data))             # <<<<<<<<<<<<<<
@@ -5966,13 +6713,13 @@ static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_s
  *     def breed(self, other, _ignore=False):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((*__pyx_v_network->data).mutate((*__pyx_v_meta->data))); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 177, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((*__pyx_v_network->data).mutate((*__pyx_v_meta->data))); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":174
+  /* "genes.pyx":212
  *         deref(network.data).perturb(deref(meta.data))
  * 
  *     def mutate(self):             # <<<<<<<<<<<<<<
@@ -5994,7 +6741,7 @@ static PyObject *__pyx_pf_5genes_5Genes_18mutate(CYTHON_UNUSED PyObject *__pyx_s
   return __pyx_r;
 }
 
-/* "genes.pyx":179
+/* "genes.pyx":217
  *         return deref(network.data).mutate(deref(meta.data))
  * 
  *     def breed(self, other, _ignore=False):             # <<<<<<<<<<<<<<
@@ -6041,7 +6788,7 @@ static PyObject *__pyx_pw_5genes_5Genes_21breed(PyObject *__pyx_self, PyObject *
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("breed", 0, 2, 3, 1); __PYX_ERR(1, 179, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("breed", 0, 2, 3, 1); __PYX_ERR(1, 217, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -6051,7 +6798,7 @@ static PyObject *__pyx_pw_5genes_5Genes_21breed(PyObject *__pyx_self, PyObject *
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "breed") < 0)) __PYX_ERR(1, 179, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "breed") < 0)) __PYX_ERR(1, 217, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6069,7 +6816,7 @@ static PyObject *__pyx_pw_5genes_5Genes_21breed(PyObject *__pyx_self, PyObject *
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("breed", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 179, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("breed", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 217, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.breed", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6104,14 +6851,14 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("breed", 0);
 
-  /* "genes.pyx":180
+  /* "genes.pyx":218
  * 
  *     def breed(self, other, _ignore=False):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         cdef Network onetwork = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 180, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 218, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6119,14 +6866,14 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":181
+  /* "genes.pyx":219
  *     def breed(self, other, _ignore=False):
  *         cdef Network network = <Network>self.network
  *         cdef Network onetwork = <Network>self.network             # <<<<<<<<<<<<<<
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         ret = Genes(None, None, self._metaparameters)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 181, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -6134,14 +6881,14 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_onetwork = ((struct __pyx_obj_5genes_Network *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":182
+  /* "genes.pyx":220
  *         cdef Network network = <Network>self.network
  *         cdef Network onetwork = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters             # <<<<<<<<<<<<<<
  *         ret = Genes(None, None, self._metaparameters)
  *         net = breed(deref(network.data), deref(onetwork.data), self.fitness, other.fitness, deref(meta.data))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 182, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6149,16 +6896,16 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_meta = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":183
+  /* "genes.pyx":221
  *         cdef Network onetwork = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         ret = Genes(None, None, self._metaparameters)             # <<<<<<<<<<<<<<
  *         net = breed(deref(network.data), deref(onetwork.data), self.fitness, other.fitness, deref(meta.data))
  *         cdef Network rnetwork = <Network>ret.network
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Genes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 183, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_Genes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 183, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -6175,7 +6922,7 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, Py_None, Py_None, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6184,14 +6931,14 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, Py_None, Py_None, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 183, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6205,7 +6952,7 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 183, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -6213,31 +6960,31 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_ret = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":184
+  /* "genes.pyx":222
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         ret = Genes(None, None, self._metaparameters)
  *         net = breed(deref(network.data), deref(onetwork.data), self.fitness, other.fitness, deref(meta.data))             # <<<<<<<<<<<<<<
  *         cdef Network rnetwork = <Network>ret.network
  *         deref(rnetwork.data).move_from(net)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 184, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 184, __pyx_L1_error)
+  __pyx_t_7 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_7 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 222, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_fitness); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 184, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_fitness); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_8 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 184, __pyx_L1_error)
+  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_8 == (double)-1) && PyErr_Occurred())) __PYX_ERR(1, 222, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_net = breed((*__pyx_v_network->data), (*__pyx_v_onetwork->data), __pyx_t_7, __pyx_t_8, (*__pyx_v_meta->data));
 
-  /* "genes.pyx":185
+  /* "genes.pyx":223
  *         ret = Genes(None, None, self._metaparameters)
  *         net = breed(deref(network.data), deref(onetwork.data), self.fitness, other.fitness, deref(meta.data))
  *         cdef Network rnetwork = <Network>ret.network             # <<<<<<<<<<<<<<
  *         deref(rnetwork.data).move_from(net)
  *         return ret
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 185, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 223, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -6245,7 +6992,7 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_rnetwork = ((struct __pyx_obj_5genes_Network *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":186
+  /* "genes.pyx":224
  *         net = breed(deref(network.data), deref(onetwork.data), self.fitness, other.fitness, deref(meta.data))
  *         cdef Network rnetwork = <Network>ret.network
  *         deref(rnetwork.data).move_from(net)             # <<<<<<<<<<<<<<
@@ -6254,7 +7001,7 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
  */
   (*__pyx_v_rnetwork->data).move_from(__pyx_v_net);
 
-  /* "genes.pyx":187
+  /* "genes.pyx":225
  *         cdef Network rnetwork = <Network>ret.network
  *         deref(rnetwork.data).move_from(net)
  *         return ret             # <<<<<<<<<<<<<<
@@ -6266,7 +7013,7 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "genes.pyx":179
+  /* "genes.pyx":217
  *         return deref(network.data).mutate(deref(meta.data))
  * 
  *     def breed(self, other, _ignore=False):             # <<<<<<<<<<<<<<
@@ -6294,12 +7041,12 @@ static PyObject *__pyx_pf_5genes_5Genes_20breed(CYTHON_UNUSED PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "genes.pyx":189
+/* "genes.pyx":227
  *         return ret
  * 
  *     def distance(self, other):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  */
 
 /* Python wrapper */
@@ -6307,7 +7054,7 @@ static PyObject *__pyx_pw_5genes_5Genes_23distance(PyObject *__pyx_self, PyObjec
 static PyMethodDef __pyx_mdef_5genes_5Genes_23distance = {"distance", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_5Genes_23distance, METH_VARARGS|METH_KEYWORDS, 0};
 static PyObject *__pyx_pw_5genes_5Genes_23distance(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
-  CYTHON_UNUSED PyObject *__pyx_v_other = 0;
+  PyObject *__pyx_v_other = 0;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -6337,11 +7084,11 @@ static PyObject *__pyx_pw_5genes_5Genes_23distance(PyObject *__pyx_self, PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_other)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("distance", 1, 2, 2, 1); __PYX_ERR(1, 189, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("distance", 1, 2, 2, 1); __PYX_ERR(1, 227, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "distance") < 0)) __PYX_ERR(1, 189, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "distance") < 0)) __PYX_ERR(1, 227, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -6354,7 +7101,7 @@ static PyObject *__pyx_pw_5genes_5Genes_23distance(PyObject *__pyx_self, PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("distance", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 189, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("distance", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 227, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.distance", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6367,7 +7114,7 @@ static PyObject *__pyx_pw_5genes_5Genes_23distance(PyObject *__pyx_self, PyObjec
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_other) {
+static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
   struct __pyx_obj_5genes_Network *__pyx_v_network = 0;
   struct __pyx_obj_5genes_Network *__pyx_v_onetwork = 0;
   struct __pyx_obj_5genes_Metaparameters *__pyx_v_meta = 0;
@@ -6380,14 +7127,14 @@ static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("distance", 0);
 
-  /* "genes.pyx":190
+  /* "genes.pyx":228
  * 
  *     def distance(self, other):
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 190, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 228, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6395,14 +7142,14 @@ static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":191
+  /* "genes.pyx":229
  *     def distance(self, other):
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network             # <<<<<<<<<<<<<<
+ *         cdef Network onetwork = <Network>other.network             # <<<<<<<<<<<<<<
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 191, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 229, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -6410,14 +7157,14 @@ static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx
   __pyx_v_onetwork = ((struct __pyx_obj_5genes_Network *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":192
+  /* "genes.pyx":230
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters             # <<<<<<<<<<<<<<
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6425,26 +7172,26 @@ static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx
   __pyx_v_meta = ((struct __pyx_obj_5genes_Metaparameters *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":193
- *         cdef Network onetwork = <Network>self.network
+  /* "genes.pyx":231
+ *         cdef Network onetwork = <Network>other.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))             # <<<<<<<<<<<<<<
  * 
  *     def clone(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyFloat_FromDouble(distance((*__pyx_v_network->data), (*__pyx_v_onetwork->data), (*__pyx_v_meta->data))); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 193, __pyx_L1_error)
+  __pyx_t_2 = PyFloat_FromDouble(distance((*__pyx_v_network->data), (*__pyx_v_onetwork->data), (*__pyx_v_meta->data))); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":189
+  /* "genes.pyx":227
  *         return ret
  * 
  *     def distance(self, other):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  */
 
   /* function exit code */
@@ -6462,7 +7209,7 @@ static PyObject *__pyx_pf_5genes_5Genes_22distance(CYTHON_UNUSED PyObject *__pyx
   return __pyx_r;
 }
 
-/* "genes.pyx":195
+/* "genes.pyx":233
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
@@ -6501,16 +7248,16 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("clone", 0);
 
-  /* "genes.pyx":196
+  /* "genes.pyx":234
  * 
  *     def clone(self):
  *         ret = Genes(None, None, self._metaparameters)             # <<<<<<<<<<<<<<
  *         cdef Network rnetwork = <Network>ret.network
  *         cdef Network network = <Network>self.network
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 196, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 196, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_metaparameters_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -6527,7 +7274,7 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, Py_None, Py_None, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6536,14 +7283,14 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_4, Py_None, Py_None, __pyx_t_3};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 196, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3+__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 234, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -6557,7 +7304,7 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 196, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 234, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
@@ -6565,14 +7312,14 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_ret = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":197
+  /* "genes.pyx":235
  *     def clone(self):
  *         ret = Genes(None, None, self._metaparameters)
  *         cdef Network rnetwork = <Network>ret.network             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         deref(rnetwork.data).copy_from(deref(network.data))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6580,14 +7327,14 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_rnetwork = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":198
+  /* "genes.pyx":236
  *         ret = Genes(None, None, self._metaparameters)
  *         cdef Network rnetwork = <Network>ret.network
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
  *         deref(rnetwork.data).copy_from(deref(network.data))
  *         return ret
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 198, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
   __Pyx_INCREF(__pyx_t_1);
@@ -6595,7 +7342,7 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":199
+  /* "genes.pyx":237
  *         cdef Network rnetwork = <Network>ret.network
  *         cdef Network network = <Network>self.network
  *         deref(rnetwork.data).copy_from(deref(network.data))             # <<<<<<<<<<<<<<
@@ -6604,7 +7351,7 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
  */
   (*__pyx_v_rnetwork->data).copy_from((*__pyx_v_network->data));
 
-  /* "genes.pyx":200
+  /* "genes.pyx":238
  *         cdef Network network = <Network>self.network
  *         deref(rnetwork.data).copy_from(deref(network.data))
  *         return ret             # <<<<<<<<<<<<<<
@@ -6616,7 +7363,7 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "genes.pyx":195
+  /* "genes.pyx":233
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
@@ -6642,17 +7389,18 @@ static PyObject *__pyx_pf_5genes_5Genes_24clone(CYTHON_UNUSED PyObject *__pyx_se
   return __pyx_r;
 }
 
-/* "genes.pyx":202
+/* "genes.pyx":240
  *         return ret
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network
- *         connections = []
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_5genes_5Genes_27as_json(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
-static PyMethodDef __pyx_mdef_5genes_5Genes_27as_json = {"as_json", (PyCFunction)__pyx_pw_5genes_5Genes_27as_json, METH_O, 0};
+static char __pyx_doc_5genes_5Genes_26as_json[] = " returns self as a dict ";
+static PyMethodDef __pyx_mdef_5genes_5Genes_27as_json = {"as_json", (PyCFunction)__pyx_pw_5genes_5Genes_27as_json, METH_O, __pyx_doc_5genes_5Genes_26as_json};
 static PyObject *__pyx_pw_5genes_5Genes_27as_json(PyObject *__pyx_self, PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
@@ -6666,34 +7414,25 @@ static PyObject *__pyx_pw_5genes_5Genes_27as_json(PyObject *__pyx_self, PyObject
 
 static PyObject *__pyx_pf_5genes_5Genes_26as_json(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self) {
   struct __pyx_obj_5genes_Network *__pyx_v_network = 0;
-  PyObject *__pyx_v_connections = NULL;
-  std::vector<connection_t>  *__pyx_v_net_connections;
-  std::vector<connection_t> ::iterator __pyx_v_begin;
-  std::vector<connection_t> ::iterator __pyx_v_end;
-  connection_t __pyx_v_conn;
+  PyObject *__pyx_v_base = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  int __pyx_t_8;
+  PyObject *__pyx_t_3 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("as_json", 0);
 
-  /* "genes.pyx":203
- * 
+  /* "genes.pyx":242
  *     def as_json(self):
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network             # <<<<<<<<<<<<<<
- *         connections = []
- *         net_connections = &deref(network.data)._connections
+ *         base = network.as_json()
+ *         base["fitness"] = self.fitness
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 203, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -6701,218 +7440,89 @@ static PyObject *__pyx_pf_5genes_5Genes_26as_json(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":204
- *     def as_json(self):
+  /* "genes.pyx":243
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network
- *         connections = []             # <<<<<<<<<<<<<<
- *         net_connections = &deref(network.data)._connections
- *         begin = net_connections.begin()
+ *         base = network.as_json()             # <<<<<<<<<<<<<<
+ *         base["fitness"] = self.fitness
+ *         return base
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 204, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_network), __pyx_n_s_as_json); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 243, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_v_connections = ((PyObject*)__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_base = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":205
+  /* "genes.pyx":244
  *         cdef Network network = <Network>self.network
- *         connections = []
- *         net_connections = &deref(network.data)._connections             # <<<<<<<<<<<<<<
- *         begin = net_connections.begin()
- *         end = net_connections.end()
- */
-  __pyx_v_net_connections = (&(*__pyx_v_network->data)._connections);
-
-  /* "genes.pyx":206
- *         connections = []
- *         net_connections = &deref(network.data)._connections
- *         begin = net_connections.begin()             # <<<<<<<<<<<<<<
- *         end = net_connections.end()
- *         while begin != end:
- */
-  __pyx_v_begin = __pyx_v_net_connections->begin();
-
-  /* "genes.pyx":207
- *         net_connections = &deref(network.data)._connections
- *         begin = net_connections.begin()
- *         end = net_connections.end()             # <<<<<<<<<<<<<<
- *         while begin != end:
- *             conn = deref(begin)
- */
-  __pyx_v_end = __pyx_v_net_connections->end();
-
-  /* "genes.pyx":208
- *         begin = net_connections.begin()
- *         end = net_connections.end()
- *         while begin != end:             # <<<<<<<<<<<<<<
- *             conn = deref(begin)
- *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
- */
-  while (1) {
-    __pyx_t_3 = ((__pyx_v_begin != __pyx_v_end) != 0);
-    if (!__pyx_t_3) break;
-
-    /* "genes.pyx":209
- *         end = net_connections.end()
- *         while begin != end:
- *             conn = deref(begin)             # <<<<<<<<<<<<<<
- *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
- *             inc(begin)
- */
-    __pyx_v_conn = (*__pyx_v_begin);
-
-    /* "genes.pyx":210
- *         while begin != end:
- *             conn = deref(begin)
- *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])             # <<<<<<<<<<<<<<
- *             inc(begin)
- *         """ returns self as a dict """
- */
-    __pyx_t_2 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.in_node); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.out_node); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_v_conn.weight); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_conn.enabled); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_conn.innov_number); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_2);
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyList_SET_ITEM(__pyx_t_7, 1, __pyx_t_1);
-    __Pyx_GIVEREF(__pyx_t_4);
-    PyList_SET_ITEM(__pyx_t_7, 2, __pyx_t_4);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyList_SET_ITEM(__pyx_t_7, 3, __pyx_t_5);
-    __Pyx_GIVEREF(__pyx_t_6);
-    PyList_SET_ITEM(__pyx_t_7, 4, __pyx_t_6);
-    __pyx_t_2 = 0;
-    __pyx_t_1 = 0;
-    __pyx_t_4 = 0;
-    __pyx_t_5 = 0;
-    __pyx_t_6 = 0;
-    __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_connections, __pyx_t_7); if (unlikely(__pyx_t_8 == ((int)-1))) __PYX_ERR(1, 210, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-
-    /* "genes.pyx":211
- *             conn = deref(begin)
- *             connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
- *             inc(begin)             # <<<<<<<<<<<<<<
- *         """ returns self as a dict """
- *         return {
- */
-    (void)((++__pyx_v_begin));
-  }
-
-  /* "genes.pyx":213
- *             inc(begin)
- *         """ returns self as a dict """
- *         return {             # <<<<<<<<<<<<<<
- *             "nodeCount": network.data.total_neurons(),
- *             "inputCount": network.data.input_count(),
- */
-  __Pyx_XDECREF(__pyx_r);
-
-  /* "genes.pyx":214
- *         """ returns self as a dict """
- *         return {
- *             "nodeCount": network.data.total_neurons(),             # <<<<<<<<<<<<<<
- *             "inputCount": network.data.input_count(),
- *             "outputCount": network.data.output_count(),
- */
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_network->data->total_neurons()); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_nodeCount, __pyx_t_6) < 0) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-  /* "genes.pyx":215
- *         return {
- *             "nodeCount": network.data.total_neurons(),
- *             "inputCount": network.data.input_count(),             # <<<<<<<<<<<<<<
- *             "outputCount": network.data.output_count(),
- *             "connections": connections,
- */
-  __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_network->data->input_count()); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 215, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_inputCount, __pyx_t_6) < 0) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-  /* "genes.pyx":216
- *             "nodeCount": network.data.total_neurons(),
- *             "inputCount": network.data.input_count(),
- *             "outputCount": network.data.output_count(),             # <<<<<<<<<<<<<<
- *             "connections": connections,
- *             "fitness": self.fitness
- */
-  __pyx_t_6 = __Pyx_PyInt_From_unsigned_int(__pyx_v_network->data->output_count()); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 216, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_outputCount, __pyx_t_6) < 0) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-
-  /* "genes.pyx":217
- *             "inputCount": network.data.input_count(),
- *             "outputCount": network.data.output_count(),
- *             "connections": connections,             # <<<<<<<<<<<<<<
- *             "fitness": self.fitness
- *         }
- */
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_connections, __pyx_v_connections) < 0) __PYX_ERR(1, 214, __pyx_L1_error)
-
-  /* "genes.pyx":218
- *             "outputCount": network.data.output_count(),
- *             "connections": connections,
- *             "fitness": self.fitness             # <<<<<<<<<<<<<<
- *         }
+ *         base = network.as_json()
+ *         base["fitness"] = self.fitness             # <<<<<<<<<<<<<<
+ *         return base
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 218, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_fitness, __pyx_t_6) < 0) __PYX_ERR(1, 214, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_r = __pyx_t_7;
-  __pyx_t_7 = 0;
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_fitness); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (unlikely(PyObject_SetItem(__pyx_v_base, __pyx_n_s_fitness, __pyx_t_2) < 0)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "genes.pyx":245
+ *         base = network.as_json()
+ *         base["fitness"] = self.fitness
+ *         return base             # <<<<<<<<<<<<<<
+ * 
+ *     def save(self, out_stream, encoder=json):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_base);
+  __pyx_r = __pyx_v_base;
   goto __pyx_L0;
 
-  /* "genes.pyx":202
+  /* "genes.pyx":240
  *         return ret
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network
- *         connections = []
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_AddTraceback("genes.Genes.as_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_network);
-  __Pyx_XDECREF(__pyx_v_connections);
+  __Pyx_XDECREF(__pyx_v_base);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "genes.pyx":221
- *         }
+/* "genes.pyx":247
+ *         return base
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
  *         as_json = self.as_json()
  */
 
-static PyObject *__pyx_pf_5genes___defaults__(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_5genes_4__defaults__(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6922,12 +7532,12 @@ static PyObject *__pyx_pf_5genes___defaults__(CYTHON_UNUSED PyObject *__pyx_self
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 221, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__Pyx_CyFunction_Defaults(__pyx_defaults, __pyx_self)->__pyx_arg_encoder);
   __Pyx_GIVEREF(__Pyx_CyFunction_Defaults(__pyx_defaults, __pyx_self)->__pyx_arg_encoder);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __Pyx_CyFunction_Defaults(__pyx_defaults, __pyx_self)->__pyx_arg_encoder);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -6992,7 +7602,7 @@ static PyObject *__pyx_pw_5genes_5Genes_29save(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_out_stream)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("save", 0, 2, 3, 1); __PYX_ERR(1, 221, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("save", 0, 2, 3, 1); __PYX_ERR(1, 247, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -7002,7 +7612,7 @@ static PyObject *__pyx_pw_5genes_5Genes_29save(PyObject *__pyx_self, PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "save") < 0)) __PYX_ERR(1, 221, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "save") < 0)) __PYX_ERR(1, 247, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7020,7 +7630,7 @@ static PyObject *__pyx_pw_5genes_5Genes_29save(PyObject *__pyx_self, PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("save", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 221, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("save", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 247, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.save", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7047,14 +7657,14 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("save", 0);
 
-  /* "genes.pyx":223
+  /* "genes.pyx":249
  *     def save(self, out_stream, encoder=json):
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
  *         as_json = self.as_json()             # <<<<<<<<<<<<<<
  *         out_stream.write(encoder.dumps(as_json))
  *         out_stream.flush()
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_as_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 223, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_as_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 249, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7068,22 +7678,22 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 223, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 249, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_as_json = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":224
+  /* "genes.pyx":250
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
  *         as_json = self.as_json()
  *         out_stream.write(encoder.dumps(as_json))             # <<<<<<<<<<<<<<
  *         out_stream.flush()
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_write); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_write); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_encoder, __pyx_n_s_dumps); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 224, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_encoder, __pyx_n_s_dumps); if (unlikely(!__pyx_t_4)) __PYX_ERR(1, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -7097,7 +7707,7 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_v_as_json) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_as_json);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 224, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -7113,19 +7723,19 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 224, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":225
+  /* "genes.pyx":251
  *         as_json = self.as_json()
  *         out_stream.write(encoder.dumps(as_json))
  *         out_stream.flush()             # <<<<<<<<<<<<<<
  * 
  *     def load_from_json(json_object, metaparameters):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_flush); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 225, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_out_stream, __pyx_n_s_flush); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7139,13 +7749,13 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 225, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":221
- *         }
+  /* "genes.pyx":247
+ *         return base
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
@@ -7170,7 +7780,7 @@ static PyObject *__pyx_pf_5genes_5Genes_28save(CYTHON_UNUSED PyObject *__pyx_sel
   return __pyx_r;
 }
 
-/* "genes.pyx":227
+/* "genes.pyx":253
  *         out_stream.flush()
  * 
  *     def load_from_json(json_object, metaparameters):             # <<<<<<<<<<<<<<
@@ -7214,11 +7824,11 @@ static PyObject *__pyx_pw_5genes_5Genes_31load_from_json(PyObject *__pyx_self, P
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_metaparameters)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("load_from_json", 1, 2, 2, 1); __PYX_ERR(1, 227, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("load_from_json", 1, 2, 2, 1); __PYX_ERR(1, 253, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load_from_json") < 0)) __PYX_ERR(1, 227, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load_from_json") < 0)) __PYX_ERR(1, 253, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -7231,7 +7841,7 @@ static PyObject *__pyx_pw_5genes_5Genes_31load_from_json(PyObject *__pyx_self, P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("load_from_json", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 227, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("load_from_json", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 253, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.load_from_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7261,8 +7871,8 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   PyObject *__pyx_t_3 = NULL;
   int __pyx_t_4;
   PyObject *__pyx_t_5 = NULL;
-  std::vector<connection_t> ::size_type __pyx_t_6;
-  unsigned int __pyx_t_7;
+  unsigned int __pyx_t_6;
+  std::vector<std::vector<int> > ::size_type __pyx_t_7;
   Py_ssize_t __pyx_t_8;
   PyObject *(*__pyx_t_9)(PyObject *);
   PyObject *__pyx_t_10 = NULL;
@@ -7277,14 +7887,14 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("load_from_json", 0);
 
-  /* "genes.pyx":229
+  /* "genes.pyx":255
  *     def load_from_json(json_object, metaparameters):
  *         """ loads from a dict-like object """
  *         ret = Genes(0, 0, metaparameters)             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>ret.network
  *         net_connections = &deref(network.data)._connections
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 229, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -7301,7 +7911,7 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_3, __pyx_int_0, __pyx_int_0, __pyx_v_metaparameters};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 3+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 3+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 255, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -7309,13 +7919,13 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
     PyObject *__pyx_temp[4] = {__pyx_t_3, __pyx_int_0, __pyx_int_0, __pyx_v_metaparameters};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 3+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_4, 3+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 255, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(3+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 229, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(3+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 255, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_3); __pyx_t_3 = NULL;
@@ -7329,7 +7939,7 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
     __Pyx_INCREF(__pyx_v_metaparameters);
     __Pyx_GIVEREF(__pyx_v_metaparameters);
     PyTuple_SET_ITEM(__pyx_t_5, 2+__pyx_t_4, __pyx_v_metaparameters);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 229, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 255, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -7337,14 +7947,14 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   __pyx_v_ret = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":230
+  /* "genes.pyx":256
  *         """ loads from a dict-like object """
  *         ret = Genes(0, 0, metaparameters)
  *         cdef Network network = <Network>ret.network             # <<<<<<<<<<<<<<
  *         net_connections = &deref(network.data)._connections
- *         net_connections.resize(json_object["nodeCount"])
+ *         network.data._num_inputs = json_object["inputCount"]
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 230, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ret, __pyx_n_s_network); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = __pyx_t_1;
   __Pyx_INCREF(__pyx_t_2);
@@ -7352,131 +7962,140 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   __pyx_v_network = ((struct __pyx_obj_5genes_Network *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "genes.pyx":231
+  /* "genes.pyx":257
  *         ret = Genes(0, 0, metaparameters)
  *         cdef Network network = <Network>ret.network
  *         net_connections = &deref(network.data)._connections             # <<<<<<<<<<<<<<
- *         net_connections.resize(json_object["nodeCount"])
  *         network.data._num_inputs = json_object["inputCount"]
+ *         network.data._num_outputs = json_object["outputCount"]
  */
   __pyx_v_net_connections = (&(*__pyx_v_network->data)._connections);
 
-  /* "genes.pyx":232
+  /* "genes.pyx":258
  *         cdef Network network = <Network>ret.network
  *         net_connections = &deref(network.data)._connections
- *         net_connections.resize(json_object["nodeCount"])             # <<<<<<<<<<<<<<
- *         network.data._num_inputs = json_object["inputCount"]
- *         network.data._num_outputs = json_object["outputCount"]
- */
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_nodeCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 232, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyInt_As_size_t(__pyx_t_2); if (unlikely((__pyx_t_6 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(1, 232, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  try {
-    __pyx_v_net_connections->resize(__pyx_t_6);
-  } catch(...) {
-    __Pyx_CppExn2PyErr();
-    __PYX_ERR(1, 232, __pyx_L1_error)
-  }
-
-  /* "genes.pyx":233
- *         net_connections = &deref(network.data)._connections
- *         net_connections.resize(json_object["nodeCount"])
  *         network.data._num_inputs = json_object["inputCount"]             # <<<<<<<<<<<<<<
  *         network.data._num_outputs = json_object["outputCount"]
- *         cdef connection_t conn
+ *         network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)
  */
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_inputCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_inputCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 258, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 233, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 258, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_network->data->_num_inputs = __pyx_t_7;
+  __pyx_v_network->data->_num_inputs = __pyx_t_6;
 
-  /* "genes.pyx":234
- *         net_connections.resize(json_object["nodeCount"])
+  /* "genes.pyx":259
+ *         net_connections = &deref(network.data)._connections
  *         network.data._num_inputs = json_object["inputCount"]
  *         network.data._num_outputs = json_object["outputCount"]             # <<<<<<<<<<<<<<
+ *         network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)
+ *         cdef connection_t conn
+ */
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_outputCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 259, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_network->data->_num_outputs = __pyx_t_6;
+
+  /* "genes.pyx":260
+ *         network.data._num_inputs = json_object["inputCount"]
+ *         network.data._num_outputs = json_object["outputCount"]
+ *         network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)             # <<<<<<<<<<<<<<
  *         cdef connection_t conn
  *         for in_node, out_node, weight, enabled, innov in json_object["connections"]:
  */
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_outputCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 234, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_nodeCount); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 260, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_t_2); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 234, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_int(__pyx_v_network->data->input_count()); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 260, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_5 = PyNumber_Subtract(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 260, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_network->data->_num_outputs = __pyx_t_7;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_t_5, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 260, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_7 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(1, 260, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  try {
+    __pyx_v_network->data->_dynamic_nodes.resize(__pyx_t_7);
+  } catch(...) {
+    __Pyx_CppExn2PyErr();
+    __PYX_ERR(1, 260, __pyx_L1_error)
+  }
 
-  /* "genes.pyx":236
- *         network.data._num_outputs = json_object["outputCount"]
+  /* "genes.pyx":262
+ *         network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)
  *         cdef connection_t conn
  *         for in_node, out_node, weight, enabled, innov in json_object["connections"]:             # <<<<<<<<<<<<<<
  *             conn.in_node = in_node
  *             conn.out_node = out_node
  */
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_connections); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-    __pyx_t_1 = __pyx_t_2; __Pyx_INCREF(__pyx_t_1); __pyx_t_8 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Dict_GetItem(__pyx_v_json_object, __pyx_n_s_connections); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_5 = __pyx_t_1; __Pyx_INCREF(__pyx_t_5); __pyx_t_8 = 0;
     __pyx_t_9 = NULL;
   } else {
-    __pyx_t_8 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 236, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 236, __pyx_L1_error)
+    __pyx_t_8 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 262, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_9 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_9)) __PYX_ERR(1, 262, __pyx_L1_error)
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
     if (likely(!__pyx_t_9)) {
-      if (likely(PyList_CheckExact(__pyx_t_1))) {
-        if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_1)) break;
+      if (likely(PyList_CheckExact(__pyx_t_5))) {
+        if (__pyx_t_8 >= PyList_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 236, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 262, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
-        if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        if (__pyx_t_8 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_8); __Pyx_INCREF(__pyx_t_2); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 236, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(1, 262, __pyx_L1_error)
         #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 236, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_5, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 262, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
     } else {
-      __pyx_t_2 = __pyx_t_9(__pyx_t_1);
-      if (unlikely(!__pyx_t_2)) {
+      __pyx_t_1 = __pyx_t_9(__pyx_t_5);
+      if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(1, 236, __pyx_L1_error)
+          else __PYX_ERR(1, 262, __pyx_L1_error)
         }
         break;
       }
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_GOTREF(__pyx_t_1);
     }
-    if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
-      PyObject* sequence = __pyx_t_2;
+    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
+      PyObject* sequence = __pyx_t_1;
       Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
       if (unlikely(size != 5)) {
         if (size > 5) __Pyx_RaiseTooManyValuesError(5);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(1, 236, __pyx_L1_error)
+        __PYX_ERR(1, 262, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 0); 
+        __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
         __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
         __pyx_t_10 = PyTuple_GET_ITEM(sequence, 2); 
         __pyx_t_11 = PyTuple_GET_ITEM(sequence, 3); 
         __pyx_t_12 = PyTuple_GET_ITEM(sequence, 4); 
       } else {
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 0); 
+        __pyx_t_2 = PyList_GET_ITEM(sequence, 0); 
         __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
         __pyx_t_10 = PyList_GET_ITEM(sequence, 2); 
         __pyx_t_11 = PyList_GET_ITEM(sequence, 3); 
         __pyx_t_12 = PyList_GET_ITEM(sequence, 4); 
       }
-      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_10);
       __Pyx_INCREF(__pyx_t_11);
@@ -7484,28 +8103,28 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
       #else
       {
         Py_ssize_t i;
-        PyObject** temps[5] = {&__pyx_t_5,&__pyx_t_3,&__pyx_t_10,&__pyx_t_11,&__pyx_t_12};
+        PyObject** temps[5] = {&__pyx_t_2,&__pyx_t_3,&__pyx_t_10,&__pyx_t_11,&__pyx_t_12};
         for (i=0; i < 5; i++) {
-          PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(1, 236, __pyx_L1_error)
+          PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(1, 262, __pyx_L1_error)
           __Pyx_GOTREF(item);
           *(temps[i]) = item;
         }
       }
       #endif
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      PyObject** temps[5] = {&__pyx_t_5,&__pyx_t_3,&__pyx_t_10,&__pyx_t_11,&__pyx_t_12};
-      __pyx_t_13 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_13)) __PYX_ERR(1, 236, __pyx_L1_error)
+      PyObject** temps[5] = {&__pyx_t_2,&__pyx_t_3,&__pyx_t_10,&__pyx_t_11,&__pyx_t_12};
+      __pyx_t_13 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(1, 262, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_13);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_14 = Py_TYPE(__pyx_t_13)->tp_iternext;
       for (index=0; index < 5; index++) {
         PyObject* item = __pyx_t_14(__pyx_t_13); if (unlikely(!item)) goto __pyx_L5_unpacking_failed;
         __Pyx_GOTREF(item);
         *(temps[index]) = item;
       }
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_13), 5) < 0) __PYX_ERR(1, 236, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_13), 5) < 0) __PYX_ERR(1, 262, __pyx_L1_error)
       __pyx_t_14 = NULL;
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       goto __pyx_L6_unpacking_done;
@@ -7513,11 +8132,11 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
       __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
       __pyx_t_14 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(1, 236, __pyx_L1_error)
+      __PYX_ERR(1, 262, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
-    __Pyx_XDECREF_SET(__pyx_v_in_node, __pyx_t_5);
-    __pyx_t_5 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_in_node, __pyx_t_2);
+    __pyx_t_2 = 0;
     __Pyx_XDECREF_SET(__pyx_v_out_node, __pyx_t_3);
     __pyx_t_3 = 0;
     __Pyx_XDECREF_SET(__pyx_v_weight, __pyx_t_10);
@@ -7527,57 +8146,57 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
     __Pyx_XDECREF_SET(__pyx_v_innov, __pyx_t_12);
     __pyx_t_12 = 0;
 
-    /* "genes.pyx":237
+    /* "genes.pyx":263
  *         cdef connection_t conn
  *         for in_node, out_node, weight, enabled, innov in json_object["connections"]:
  *             conn.in_node = in_node             # <<<<<<<<<<<<<<
  *             conn.out_node = out_node
  *             conn.weight = weight
  */
-    __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_v_in_node); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 237, __pyx_L1_error)
-    __pyx_v_conn.in_node = __pyx_t_7;
+    __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_v_in_node); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 263, __pyx_L1_error)
+    __pyx_v_conn.in_node = __pyx_t_6;
 
-    /* "genes.pyx":238
+    /* "genes.pyx":264
  *         for in_node, out_node, weight, enabled, innov in json_object["connections"]:
  *             conn.in_node = in_node
  *             conn.out_node = out_node             # <<<<<<<<<<<<<<
  *             conn.weight = weight
  *             conn.enabled = enabled
  */
-    __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_v_out_node); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 238, __pyx_L1_error)
-    __pyx_v_conn.out_node = __pyx_t_7;
+    __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_v_out_node); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 264, __pyx_L1_error)
+    __pyx_v_conn.out_node = __pyx_t_6;
 
-    /* "genes.pyx":239
+    /* "genes.pyx":265
  *             conn.in_node = in_node
  *             conn.out_node = out_node
  *             conn.weight = weight             # <<<<<<<<<<<<<<
  *             conn.enabled = enabled
  *             conn.innov_number = innov
  */
-    __pyx_t_15 = __pyx_PyFloat_AsFloat(__pyx_v_weight); if (unlikely((__pyx_t_15 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 239, __pyx_L1_error)
+    __pyx_t_15 = __pyx_PyFloat_AsFloat(__pyx_v_weight); if (unlikely((__pyx_t_15 == (float)-1) && PyErr_Occurred())) __PYX_ERR(1, 265, __pyx_L1_error)
     __pyx_v_conn.weight = __pyx_t_15;
 
-    /* "genes.pyx":240
+    /* "genes.pyx":266
  *             conn.out_node = out_node
  *             conn.weight = weight
  *             conn.enabled = enabled             # <<<<<<<<<<<<<<
  *             conn.innov_number = innov
  *             net_connections.push_back(conn)
  */
-    __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_v_enabled); if (unlikely((__pyx_t_16 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 240, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_v_enabled); if (unlikely((__pyx_t_16 == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(1, 266, __pyx_L1_error)
     __pyx_v_conn.enabled = __pyx_t_16;
 
-    /* "genes.pyx":241
+    /* "genes.pyx":267
  *             conn.weight = weight
  *             conn.enabled = enabled
  *             conn.innov_number = innov             # <<<<<<<<<<<<<<
  *             net_connections.push_back(conn)
  *         network.data._synchronize_connections()
  */
-    __pyx_t_7 = __Pyx_PyInt_As_unsigned_int(__pyx_v_innov); if (unlikely((__pyx_t_7 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 241, __pyx_L1_error)
-    __pyx_v_conn.innov_number = __pyx_t_7;
+    __pyx_t_6 = __Pyx_PyInt_As_unsigned_int(__pyx_v_innov); if (unlikely((__pyx_t_6 == (unsigned int)-1) && PyErr_Occurred())) __PYX_ERR(1, 267, __pyx_L1_error)
+    __pyx_v_conn.innov_number = __pyx_t_6;
 
-    /* "genes.pyx":242
+    /* "genes.pyx":268
  *             conn.enabled = enabled
  *             conn.innov_number = innov
  *             net_connections.push_back(conn)             # <<<<<<<<<<<<<<
@@ -7588,20 +8207,20 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
       __pyx_v_net_connections->push_back(__pyx_v_conn);
     } catch(...) {
       __Pyx_CppExn2PyErr();
-      __PYX_ERR(1, 242, __pyx_L1_error)
+      __PYX_ERR(1, 268, __pyx_L1_error)
     }
 
-    /* "genes.pyx":236
- *         network.data._num_outputs = json_object["outputCount"]
+    /* "genes.pyx":262
+ *         network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)
  *         cdef connection_t conn
  *         for in_node, out_node, weight, enabled, innov in json_object["connections"]:             # <<<<<<<<<<<<<<
  *             conn.in_node = in_node
  *             conn.out_node = out_node
  */
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "genes.pyx":243
+  /* "genes.pyx":269
  *             conn.innov_number = innov
  *             net_connections.push_back(conn)
  *         network.data._synchronize_connections()             # <<<<<<<<<<<<<<
@@ -7610,22 +8229,22 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
  */
   __pyx_v_network->data->_synchronize_connections();
 
-  /* "genes.pyx":244
+  /* "genes.pyx":270
  *             net_connections.push_back(conn)
  *         network.data._synchronize_connections()
  *         ret.fitness = json_object.get("fitness", 0)             # <<<<<<<<<<<<<<
  *         return ret
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_json_object, __pyx_n_s_get); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 244, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_json_object, __pyx_n_s_get); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 270, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 270, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 244, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_ret, __pyx_n_s_fitness, __pyx_t_1) < 0) __PYX_ERR(1, 270, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_ret, __pyx_n_s_fitness, __pyx_t_2) < 0) __PYX_ERR(1, 244, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":245
+  /* "genes.pyx":271
  *         network.data._synchronize_connections()
  *         ret.fitness = json_object.get("fitness", 0)
  *         return ret             # <<<<<<<<<<<<<<
@@ -7637,7 +8256,7 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   __pyx_r = __pyx_v_ret;
   goto __pyx_L0;
 
-  /* "genes.pyx":227
+  /* "genes.pyx":253
  *         out_stream.flush()
  * 
  *     def load_from_json(json_object, metaparameters):             # <<<<<<<<<<<<<<
@@ -7670,15 +8289,15 @@ static PyObject *__pyx_pf_5genes_5Genes_30load_from_json(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "genes.pyx":247
+/* "genes.pyx":273
  *         return ret
  * 
  *     def load(in_stream, metaparameters, decoder=json):             # <<<<<<<<<<<<<<
+ * 
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
- *         as_json = decoder.load(in_stream)
  */
 
-static PyObject *__pyx_pf_5genes_2__defaults__(CYTHON_UNUSED PyObject *__pyx_self) {
+static PyObject *__pyx_pf_5genes_6__defaults__(CYTHON_UNUSED PyObject *__pyx_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7688,12 +8307,12 @@ static PyObject *__pyx_pf_5genes_2__defaults__(CYTHON_UNUSED PyObject *__pyx_sel
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_decoder);
   __Pyx_GIVEREF(__Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_decoder);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_self)->__pyx_arg_decoder);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -7758,7 +8377,7 @@ static PyObject *__pyx_pw_5genes_5Genes_33load(PyObject *__pyx_self, PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_metaparameters)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("load", 0, 2, 3, 1); __PYX_ERR(1, 247, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("load", 0, 2, 3, 1); __PYX_ERR(1, 273, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -7768,7 +8387,7 @@ static PyObject *__pyx_pw_5genes_5Genes_33load(PyObject *__pyx_self, PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load") < 0)) __PYX_ERR(1, 247, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "load") < 0)) __PYX_ERR(1, 273, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7786,7 +8405,7 @@ static PyObject *__pyx_pw_5genes_5Genes_33load(PyObject *__pyx_self, PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("load", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 247, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("load", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 273, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("genes.Genes.load", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7813,14 +8432,14 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("load", 0);
 
-  /* "genes.pyx":249
- *     def load(in_stream, metaparameters, decoder=json):
+  /* "genes.pyx":276
+ * 
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
  *         as_json = decoder.load(in_stream)             # <<<<<<<<<<<<<<
  *         return Genes.load_from_json(as_json, metaparameters)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_decoder, __pyx_n_s_load); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 249, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_decoder, __pyx_n_s_load); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 276, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -7834,13 +8453,13 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_in_stream) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_in_stream);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 249, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 276, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_as_json = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":250
+  /* "genes.pyx":277
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
  *         as_json = decoder.load(in_stream)
  *         return Genes.load_from_json(as_json, metaparameters)             # <<<<<<<<<<<<<<
@@ -7848,9 +8467,9 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 250, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Genes); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_load_from_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 250, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_load_from_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 277, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -7868,7 +8487,7 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_v_as_json, __pyx_v_metaparameters};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 250, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 277, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
@@ -7876,13 +8495,13 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
     PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_v_as_json, __pyx_v_metaparameters};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 250, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_4, 2+__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 277, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else
   #endif
   {
-    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 250, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(2+__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 277, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     if (__pyx_t_2) {
       __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2); __pyx_t_2 = NULL;
@@ -7893,7 +8512,7 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
     __Pyx_INCREF(__pyx_v_metaparameters);
     __Pyx_GIVEREF(__pyx_v_metaparameters);
     PyTuple_SET_ITEM(__pyx_t_5, 1+__pyx_t_4, __pyx_v_metaparameters);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 250, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 277, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -7902,12 +8521,12 @@ static PyObject *__pyx_pf_5genes_5Genes_32load(CYTHON_UNUSED PyObject *__pyx_sel
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "genes.pyx":247
+  /* "genes.pyx":273
  *         return ret
  * 
  *     def load(in_stream, metaparameters, decoder=json):             # <<<<<<<<<<<<<<
+ * 
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
- *         as_json = decoder.load(in_stream)
  */
 
   /* function exit code */
@@ -8610,13 +9229,11 @@ static void __pyx_tp_dealloc_5genes_Metaparameters(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_5genes_Metaparameters[] = {
-  {"load_from_json", (PyCFunction)__pyx_pw_5genes_14Metaparameters_7load_from_json, METH_NOARGS, 0},
-  {"load", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_14Metaparameters_9load, METH_VARARGS|METH_KEYWORDS, 0},
-  {"as_json", (PyCFunction)__pyx_pw_5genes_14Metaparameters_11as_json, METH_NOARGS, 0},
-  {"save", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_14Metaparameters_13save, METH_VARARGS|METH_KEYWORDS, 0},
-  {"reset_tracking", (PyCFunction)__pyx_pw_5genes_14Metaparameters_15reset_tracking, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5genes_14Metaparameters_17__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5genes_14Metaparameters_19__setstate_cython__, METH_O, 0},
+  {"as_json", (PyCFunction)__pyx_pw_5genes_14Metaparameters_7as_json, METH_NOARGS, 0},
+  {"save", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_14Metaparameters_9save, METH_VARARGS|METH_KEYWORDS, 0},
+  {"reset_tracking", (PyCFunction)__pyx_pw_5genes_14Metaparameters_11reset_tracking, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5genes_14Metaparameters_13__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5genes_14Metaparameters_15__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -8722,9 +9339,11 @@ static void __pyx_tp_dealloc_5genes_Network(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_5genes_Network[] = {
-  {"feed_sensor_values", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_7Network_5feed_sensor_values, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5genes_7Network_4feed_sensor_values},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5genes_7Network_7__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5genes_7Network_9__setstate_cython__, METH_O, 0},
+  {"extract_output_values", (PyCFunction)__pyx_pw_5genes_7Network_5extract_output_values, METH_O, 0},
+  {"feed_sensor_values", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5genes_7Network_7feed_sensor_values, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5genes_7Network_6feed_sensor_values},
+  {"__reduce__", (PyCFunction)__pyx_pw_5genes_7Network_9__reduce__, METH_NOARGS, 0},
+  {"get_connections", (PyCFunction)__pyx_pw_5genes_7Network_11get_connections, METH_NOARGS, 0},
+  {"as_json", (PyCFunction)__pyx_pw_5genes_7Network_13as_json, METH_NOARGS, __pyx_doc_5genes_7Network_12as_json},
   {0, 0, 0, 0}
 };
 
@@ -8869,16 +9488,18 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_allow_recurrent, __pyx_k_allow_recurrent, sizeof(__pyx_k_allow_recurrent), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_as_json, __pyx_k_as_json, sizeof(__pyx_k_as_json), 0, 0, 1, 1},
-  {&__pyx_n_s_begin, __pyx_k_begin, sizeof(__pyx_k_begin), 0, 0, 1, 1},
+  {&__pyx_n_s_base, __pyx_k_base, sizeof(__pyx_k_base), 0, 0, 1, 1},
   {&__pyx_n_s_bias_link_chance, __pyx_k_bias_link_chance, sizeof(__pyx_k_bias_link_chance), 0, 0, 1, 1},
   {&__pyx_n_s_breed, __pyx_k_breed, sizeof(__pyx_k_breed), 0, 0, 1, 1},
   {&__pyx_n_s_c1, __pyx_k_c1, sizeof(__pyx_k_c1), 0, 0, 1, 1},
   {&__pyx_n_s_c2, __pyx_k_c2, sizeof(__pyx_k_c2), 0, 0, 1, 1},
   {&__pyx_n_s_c3, __pyx_k_c3, sizeof(__pyx_k_c3), 0, 0, 1, 1},
+  {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_clone, __pyx_k_clone, sizeof(__pyx_k_clone), 0, 0, 1, 1},
   {&__pyx_n_s_conn, __pyx_k_conn, sizeof(__pyx_k_conn), 0, 0, 1, 1},
   {&__pyx_n_s_connections, __pyx_k_connections, sizeof(__pyx_k_connections), 0, 0, 1, 1},
+  {&__pyx_n_s_connections_data, __pyx_k_connections_data, sizeof(__pyx_k_connections_data), 0, 0, 1, 1},
   {&__pyx_n_s_decoder, __pyx_k_decoder, sizeof(__pyx_k_decoder), 0, 0, 1, 1},
   {&__pyx_n_s_default_value, __pyx_k_default_value, sizeof(__pyx_k_default_value), 0, 0, 1, 1},
   {&__pyx_n_s_disable_mutation_chance, __pyx_k_disable_mutation_chance, sizeof(__pyx_k_disable_mutation_chance), 0, 0, 1, 1},
@@ -8888,7 +9509,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_enable_mutation_chance, __pyx_k_enable_mutation_chance, sizeof(__pyx_k_enable_mutation_chance), 0, 0, 1, 1},
   {&__pyx_n_s_enabled, __pyx_k_enabled, sizeof(__pyx_k_enabled), 0, 0, 1, 1},
   {&__pyx_n_s_encoder, __pyx_k_encoder, sizeof(__pyx_k_encoder), 0, 0, 1, 1},
-  {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_extract_output_values, __pyx_k_extract_output_values, sizeof(__pyx_k_extract_output_values), 0, 0, 1, 1},
   {&__pyx_n_s_f, __pyx_k_f, sizeof(__pyx_k_f), 0, 0, 1, 1},
   {&__pyx_n_s_feed_sensor_values, __pyx_k_feed_sensor_values, sizeof(__pyx_k_feed_sensor_values), 0, 0, 1, 1},
@@ -8898,6 +9518,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_genes_pyx, __pyx_k_genes_pyx, sizeof(__pyx_k_genes_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_get, __pyx_k_get, sizeof(__pyx_k_get), 0, 0, 1, 1},
   {&__pyx_n_s_getFitness, __pyx_k_getFitness, sizeof(__pyx_k_getFitness), 0, 0, 1, 1},
+  {&__pyx_n_s_get_connections, __pyx_k_get_connections, sizeof(__pyx_k_get_connections), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_ignore, __pyx_k_ignore, sizeof(__pyx_k_ignore), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
@@ -8915,6 +9536,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_json_object, __pyx_k_json_object, sizeof(__pyx_k_json_object), 0, 0, 1, 1},
   {&__pyx_n_s_load, __pyx_k_load, sizeof(__pyx_k_load), 0, 0, 1, 1},
   {&__pyx_n_s_load_from_json, __pyx_k_load_from_json, sizeof(__pyx_k_load_from_json), 0, 0, 1, 1},
+  {&__pyx_n_s_load_metaparameters, __pyx_k_load_metaparameters, sizeof(__pyx_k_load_metaparameters), 0, 0, 1, 1},
+  {&__pyx_n_s_load_metaparameters_from_json, __pyx_k_load_metaparameters_from_json, sizeof(__pyx_k_load_metaparameters_from_json), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_meta, __pyx_k_meta, sizeof(__pyx_k_meta), 0, 0, 1, 1},
   {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
@@ -8934,7 +9557,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_nodeCount, __pyx_k_nodeCount, sizeof(__pyx_k_nodeCount), 0, 0, 1, 1},
   {&__pyx_n_s_none_or, __pyx_k_none_or, sizeof(__pyx_k_none_or), 0, 0, 1, 1},
-  {&__pyx_n_s_num_inputs, __pyx_k_num_inputs, sizeof(__pyx_k_num_inputs), 0, 0, 1, 1},
   {&__pyx_n_s_num_outputs, __pyx_k_num_outputs, sizeof(__pyx_k_num_outputs), 0, 0, 1, 1},
   {&__pyx_n_s_num_sensors, __pyx_k_num_sensors, sizeof(__pyx_k_num_sensors), 0, 0, 1, 1},
   {&__pyx_n_s_onetwork, __pyx_k_onetwork, sizeof(__pyx_k_onetwork), 0, 0, 1, 1},
@@ -8962,6 +9584,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_total_nodes, __pyx_k_total_nodes, sizeof(__pyx_k_total_nodes), 0, 0, 1, 1},
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
   {&__pyx_n_s_weight, __pyx_k_weight, sizeof(__pyx_k_weight), 0, 0, 1, 1},
@@ -8970,7 +9593,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 2, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 120, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 137, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(2, 109, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -8981,17 +9604,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "genes.pyx":36
+  /* "genes.pyx":37
  *                      allow_recurrent=True,
  *                      mutate_loop=1):
  *         def none_or(value, default_value):             # <<<<<<<<<<<<<<
  *             return default_value if value is None else value
  *         self.data.c1 = none_or(c1, 0.1)
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_value, __pyx_n_s_default_value); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 36, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_n_s_value, __pyx_n_s_default_value); if (unlikely(!__pyx_tuple_)) __PYX_ERR(1, 37, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_none_or, 36, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(1, 36, __pyx_L1_error)
+  __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_none_or, 37, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(1, 37, __pyx_L1_error)
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -8999,269 +9622,274 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
+
+  /* "(tree fragment)":4
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
+ * def __setstate_cython__(self, __pyx_state):
+ *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
+ */
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__6);
-  __Pyx_GIVEREF(__pyx_tuple__6);
-
-  /* "(tree fragment)":2
- * def __reduce_cython__(self):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__7);
-  __Pyx_GIVEREF(__pyx_tuple__7);
-
-  /* "(tree fragment)":4
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")
- * def __setstate_cython__(self, __pyx_state):
- *     raise TypeError("no default __reduce__ due to non-trivial __cinit__")             # <<<<<<<<<<<<<<
- */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_s_no_default___reduce___due_to_non); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__8);
-  __Pyx_GIVEREF(__pyx_tuple__8);
-
-  /* "genes.pyx":134
+  /* "genes.pyx":174
  *             self.network = Network(num_sensors, num_outputs)
  *         else:
  *             self.network = Network(0, 0)             # <<<<<<<<<<<<<<
  *         self._metaparameters = metaparameters
  *         self.fitness = 0
  */
-  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 134, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__9);
-  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(1, 174, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "genes.pyx":244
+  /* "genes.pyx":270
  *             net_connections.push_back(conn)
  *         network.data._synchronize_connections()
  *         ret.fitness = json_object.get("fitness", 0)             # <<<<<<<<<<<<<<
  *         return ret
  * 
  */
-  __pyx_tuple__10 = PyTuple_Pack(2, __pyx_n_s_fitness, __pyx_int_0); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(1, 244, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__10);
-  __Pyx_GIVEREF(__pyx_tuple__10);
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_fitness, __pyx_int_0); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(1, 270, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__8);
+  __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "genes.pyx":130
+  /* "genes.pyx":82
+ *         self.data.reset_tracking()
+ * 
+ * def load_metaparameters(in_stream, decoder=json):             # <<<<<<<<<<<<<<
+ *     as_json = decoder.load(in_stream)
+ *     return load_metaparameters_from_json(as_json)
+ */
+  __pyx_tuple__9 = PyTuple_Pack(3, __pyx_n_s_in_stream, __pyx_n_s_decoder, __pyx_n_s_as_json); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__9);
+  __Pyx_GIVEREF(__pyx_tuple__9);
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load_metaparameters, 82, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(1, 82, __pyx_L1_error)
+
+  /* "genes.pyx":86
+ *     return load_metaparameters_from_json(as_json)
+ * 
+ * def load_metaparameters_from_json(as_json):             # <<<<<<<<<<<<<<
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),
+ */
+  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_n_s_as_json, __pyx_n_s_ret); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__11);
+  __Pyx_GIVEREF(__pyx_tuple__11);
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load_metaparameters_from_json, 86, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(1, 86, __pyx_L1_error)
+
+  /* "genes.pyx":170
  *     Metaparameters = Metaparameters
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):             # <<<<<<<<<<<<<<
  *         if num_sensors is not None:
  *             self.network = Network(num_sensors, num_outputs)
  */
-  __pyx_tuple__11 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_num_sensors, __pyx_n_s_num_outputs, __pyx_n_s_metaparameters); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(1, 130, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__11);
-  __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_init, 130, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(1, 130, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_num_sensors, __pyx_n_s_num_outputs, __pyx_n_s_metaparameters); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 170, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(4, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_init, 170, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 170, __pyx_L1_error)
 
-  /* "genes.pyx":138
+  /* "genes.pyx":178
  *         self.fitness = 0
  * 
  *     def setFitness(self, value):             # <<<<<<<<<<<<<<
  *         self.fitness = value
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_value); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(1, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_setFitness, 138, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(1, 138, __pyx_L1_error)
+  __pyx_tuple__15 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_value); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 178, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
+  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_setFitness, 178, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 178, __pyx_L1_error)
 
-  /* "genes.pyx":141
+  /* "genes.pyx":181
  *         self.fitness = value
  * 
  *     def getFitness(self):             # <<<<<<<<<<<<<<
  *         return self.fitness
  * 
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(1, 141, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_getFitness, 141, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(1, 141, __pyx_L1_error)
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 181, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_getFitness, 181, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(1, 181, __pyx_L1_error)
 
-  /* "genes.pyx":144
+  /* "genes.pyx":184
  *         return self.fitness
  * 
  *     def input_node_index(self, input_index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).input_node_index(input_index)
  */
-  __pyx_tuple__17 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_input_index, __pyx_n_s_network); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(1, 144, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_codeobj__18 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__17, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_input_node_index, 144, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__18)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_tuple__19 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_input_index, __pyx_n_s_network); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 184, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_input_node_index, 184, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(1, 184, __pyx_L1_error)
 
-  /* "genes.pyx":148
+  /* "genes.pyx":188
  *         return deref(network.data).input_node_index(input_index)
  * 
  *     def output_node_index(self, index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).output_node_index(index)
  */
-  __pyx_tuple__19 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_index, __pyx_n_s_network); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(1, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_output_node_index, 148, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(1, 148, __pyx_L1_error)
+  __pyx_tuple__21 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_index, __pyx_n_s_network); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 188, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
+  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_output_node_index, 188, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(1, 188, __pyx_L1_error)
 
-  /* "genes.pyx":152
+  /* "genes.pyx":192
  *         return deref(network.data).output_node_index(index)
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return network.feed_sensor_values(values, neurons)
  */
-  __pyx_tuple__21 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_values, __pyx_n_s_neurons, __pyx_n_s_network); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 152, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_feed_sensor_values, 152, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(1, 152, __pyx_L1_error)
-  __pyx_tuple__23 = PyTuple_Pack(1, ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 152, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_values, __pyx_n_s_neurons, __pyx_n_s_network); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_feed_sensor_values, 192, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(1, ((PyObject *)Py_None)); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 192, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "genes.pyx":156
+  /* "genes.pyx":196
  *         return network.feed_sensor_values(values, neurons)
  * 
  *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1
+ *         return network.extract_output_values(neurons)
  */
-  __pyx_tuple__24 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_neurons, __pyx_n_s_network, __pyx_n_s_num_inputs, __pyx_n_s_num_outputs); if (unlikely(!__pyx_tuple__24)) __PYX_ERR(1, 156, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__24);
-  __Pyx_GIVEREF(__pyx_tuple__24);
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__24, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_extract_output_values, 156, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(1, 156, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_neurons, __pyx_n_s_network); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 196, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__26);
+  __Pyx_GIVEREF(__pyx_tuple__26);
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_extract_output_values, 196, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(1, 196, __pyx_L1_error)
 
-  /* "genes.pyx":163
+  /* "genes.pyx":201
  * 
  * 
  *     def add_connection(self, input_index, output_index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_tuple__26 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_input_index, __pyx_n_s_output_index, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(1, 163, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__26);
-  __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_add_connection, 163, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(1, 163, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_input_index, __pyx_n_s_output_index, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 201, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__28);
+  __Pyx_GIVEREF(__pyx_tuple__28);
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_add_connection, 201, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(1, 201, __pyx_L1_error)
 
-  /* "genes.pyx":169
+  /* "genes.pyx":207
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))
  * 
  *     def perturb(self):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_tuple__28 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(1, 169, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__28);
-  __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_perturb, 169, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(1, 169, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 207, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__30);
+  __Pyx_GIVEREF(__pyx_tuple__30);
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_perturb, 207, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(1, 207, __pyx_L1_error)
 
-  /* "genes.pyx":174
+  /* "genes.pyx":212
  *         deref(network.data).perturb(deref(meta.data))
  * 
  *     def mutate(self):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_tuple__30 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(1, 174, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__30);
-  __Pyx_GIVEREF(__pyx_tuple__30);
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__30, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_mutate, 174, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(1, 174, __pyx_L1_error)
+  __pyx_tuple__32 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 212, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__32);
+  __Pyx_GIVEREF(__pyx_tuple__32);
+  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_mutate, 212, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(1, 212, __pyx_L1_error)
 
-  /* "genes.pyx":179
+  /* "genes.pyx":217
  *         return deref(network.data).mutate(deref(meta.data))
  * 
  *     def breed(self, other, _ignore=False):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Network onetwork = <Network>self.network
  */
-  __pyx_tuple__32 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_ignore, __pyx_n_s_network, __pyx_n_s_onetwork, __pyx_n_s_meta, __pyx_n_s_ret, __pyx_n_s_net, __pyx_n_s_rnetwork); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 179, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(3, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_breed, 179, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(1, 179, __pyx_L1_error)
-  __pyx_tuple__34 = PyTuple_Pack(1, ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 179, __pyx_L1_error)
+  __pyx_tuple__34 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_ignore, __pyx_n_s_network, __pyx_n_s_onetwork, __pyx_n_s_meta, __pyx_n_s_ret, __pyx_n_s_net, __pyx_n_s_rnetwork); if (unlikely(!__pyx_tuple__34)) __PYX_ERR(1, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__34);
   __Pyx_GIVEREF(__pyx_tuple__34);
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(3, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__34, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_breed, 217, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __pyx_tuple__36 = PyTuple_Pack(1, ((PyObject *)Py_False)); if (unlikely(!__pyx_tuple__36)) __PYX_ERR(1, 217, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
 
-  /* "genes.pyx":189
+  /* "genes.pyx":227
  *         return ret
  * 
  *     def distance(self, other):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  */
-  __pyx_tuple__35 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_network, __pyx_n_s_onetwork, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__35)) __PYX_ERR(1, 189, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__35);
-  __Pyx_GIVEREF(__pyx_tuple__35);
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__35, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_distance, 189, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(1, 189, __pyx_L1_error)
+  __pyx_tuple__37 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_other, __pyx_n_s_network, __pyx_n_s_onetwork, __pyx_n_s_meta); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__37);
+  __Pyx_GIVEREF(__pyx_tuple__37);
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(2, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_distance, 227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 227, __pyx_L1_error)
 
-  /* "genes.pyx":195
+  /* "genes.pyx":233
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
  *         ret = Genes(None, None, self._metaparameters)
  *         cdef Network rnetwork = <Network>ret.network
  */
-  __pyx_tuple__37 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_ret, __pyx_n_s_rnetwork, __pyx_n_s_network); if (unlikely(!__pyx_tuple__37)) __PYX_ERR(1, 195, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__37);
-  __Pyx_GIVEREF(__pyx_tuple__37);
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__37, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_clone, 195, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(1, 195, __pyx_L1_error)
+  __pyx_tuple__39 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_ret, __pyx_n_s_rnetwork, __pyx_n_s_network); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(1, 233, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__39);
+  __Pyx_GIVEREF(__pyx_tuple__39);
+  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_clone, 233, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(1, 233, __pyx_L1_error)
 
-  /* "genes.pyx":202
+  /* "genes.pyx":240
  *         return ret
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network
- *         connections = []
  */
-  __pyx_tuple__39 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_connections, __pyx_n_s_net_connections, __pyx_n_s_begin, __pyx_n_s_end, __pyx_n_s_conn); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(1, 202, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__39);
-  __Pyx_GIVEREF(__pyx_tuple__39);
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_as_json, 202, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(1, 202, __pyx_L1_error)
+  __pyx_tuple__41 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_network, __pyx_n_s_base); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(1, 240, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__41);
+  __Pyx_GIVEREF(__pyx_tuple__41);
+  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_as_json, 240, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(1, 240, __pyx_L1_error)
 
-  /* "genes.pyx":221
- *         }
+  /* "genes.pyx":247
+ *         return base
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
  *         as_json = self.as_json()
  */
-  __pyx_tuple__41 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_out_stream, __pyx_n_s_encoder, __pyx_n_s_as_json); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(1, 221, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__41);
-  __Pyx_GIVEREF(__pyx_tuple__41);
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_save, 221, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(1, 221, __pyx_L1_error)
+  __pyx_tuple__43 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_out_stream, __pyx_n_s_encoder, __pyx_n_s_as_json); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__43);
+  __Pyx_GIVEREF(__pyx_tuple__43);
+  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_save, 247, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(1, 247, __pyx_L1_error)
 
-  /* "genes.pyx":227
+  /* "genes.pyx":253
  *         out_stream.flush()
  * 
  *     def load_from_json(json_object, metaparameters):             # <<<<<<<<<<<<<<
  *         """ loads from a dict-like object """
  *         ret = Genes(0, 0, metaparameters)
  */
-  __pyx_tuple__43 = PyTuple_Pack(11, __pyx_n_s_json_object, __pyx_n_s_metaparameters, __pyx_n_s_ret, __pyx_n_s_network, __pyx_n_s_net_connections, __pyx_n_s_conn, __pyx_n_s_in_node, __pyx_n_s_out_node, __pyx_n_s_weight, __pyx_n_s_enabled, __pyx_n_s_innov); if (unlikely(!__pyx_tuple__43)) __PYX_ERR(1, 227, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__43);
-  __Pyx_GIVEREF(__pyx_tuple__43);
-  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__43, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load_from_json, 227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(11, __pyx_n_s_json_object, __pyx_n_s_metaparameters, __pyx_n_s_ret, __pyx_n_s_network, __pyx_n_s_net_connections, __pyx_n_s_conn, __pyx_n_s_in_node, __pyx_n_s_out_node, __pyx_n_s_weight, __pyx_n_s_enabled, __pyx_n_s_innov); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 253, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__45);
+  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 11, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load_from_json, 253, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 253, __pyx_L1_error)
 
-  /* "genes.pyx":247
+  /* "genes.pyx":273
  *         return ret
  * 
  *     def load(in_stream, metaparameters, decoder=json):             # <<<<<<<<<<<<<<
+ * 
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
- *         as_json = decoder.load(in_stream)
  */
-  __pyx_tuple__45 = PyTuple_Pack(4, __pyx_n_s_in_stream, __pyx_n_s_metaparameters, __pyx_n_s_decoder, __pyx_n_s_as_json); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(1, 247, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__45);
-  __Pyx_GIVEREF(__pyx_tuple__45);
-  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load, 247, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(4, __pyx_n_s_in_stream, __pyx_n_s_metaparameters, __pyx_n_s_decoder, __pyx_n_s_as_json); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(1, 273, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__47);
+  __Pyx_GIVEREF(__pyx_tuple__47);
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(3, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_genes_pyx, __pyx_n_s_load, 273, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -9325,25 +9953,24 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 14, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5genes_Metaparameters.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5genes_Metaparameters.tp_dictoffset && __pyx_type_5genes_Metaparameters.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5genes_Metaparameters.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Metaparameters, (PyObject *)&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 13, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Metaparameters, (PyObject *)&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 14, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5genes_Metaparameters) < 0) __PYX_ERR(1, 14, __pyx_L1_error)
   __pyx_ptype_5genes_Metaparameters = &__pyx_type_5genes_Metaparameters;
-  if (PyType_Ready(&__pyx_type_5genes_Network) < 0) __PYX_ERR(1, 106, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5genes_Network) < 0) __PYX_ERR(1, 107, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5genes_Network.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5genes_Network.tp_dictoffset && __pyx_type_5genes_Network.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5genes_Network.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Network, (PyObject *)&__pyx_type_5genes_Network) < 0) __PYX_ERR(1, 106, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5genes_Network) < 0) __PYX_ERR(1, 106, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Network, (PyObject *)&__pyx_type_5genes_Network) < 0) __PYX_ERR(1, 107, __pyx_L1_error)
   __pyx_ptype_5genes_Network = &__pyx_type_5genes_Network;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -9614,67 +10241,83 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   #endif
 
-  /* "genes.pyx":10
- * from cython.operator cimport dereference as deref, preincrement as inc
+  /* "genes.pyx":11
  * from libcpp.vector cimport vector
+ * from libc.string cimport memcpy
  * import array             # <<<<<<<<<<<<<<
  * import json
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_array, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 10, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_array, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_array, __pyx_t_1) < 0) __PYX_ERR(1, 10, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_array, __pyx_t_1) < 0) __PYX_ERR(1, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":11
- * from libcpp.vector cimport vector
+  /* "genes.pyx":12
+ * from libc.string cimport memcpy
  * import array
  * import json             # <<<<<<<<<<<<<<
  * 
  * cdef class Metaparameters:
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_json, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 11, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_json, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_json, __pyx_t_1) < 0) __PYX_ERR(1, 11, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_json, __pyx_t_1) < 0) __PYX_ERR(1, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "genes.pyx":75
- *         return ret
- * 
- *     def load(in_stream, decoder=json):             # <<<<<<<<<<<<<<
- *         as_json = decoder.load(in_stream)
- *         return Metaparameters.load_from_json(as_json)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_json); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 75, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_k__3 = __pyx_t_1;
-  __Pyx_GIVEREF(__pyx_t_1);
-  __pyx_t_1 = 0;
-
-  /* "genes.pyx":98
+  /* "genes.pyx":74
  *         }
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
  *         out = self.as_json()
  *         out_stream.write(encoder.dumps(out))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_json); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 98, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_json); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_k__4 = __pyx_t_1;
+  __pyx_k__3 = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "genes.pyx":126
- *         return neurons
+  /* "genes.pyx":82
+ *         self.data.reset_tracking()
+ * 
+ * def load_metaparameters(in_stream, decoder=json):             # <<<<<<<<<<<<<<
+ *     as_json = decoder.load(in_stream)
+ *     return load_metaparameters_from_json(as_json)
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_json); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_k__6 = __pyx_t_1;
+  __Pyx_GIVEREF(__pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5genes_1load_metaparameters, NULL, __pyx_n_s_genes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_load_metaparameters, __pyx_t_1) < 0) __PYX_ERR(1, 82, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "genes.pyx":86
+ *     return load_metaparameters_from_json(as_json)
+ * 
+ * def load_metaparameters_from_json(as_json):             # <<<<<<<<<<<<<<
+ *     ret = Metaparameters(
+ *         c1=as_json.get("c1"),
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5genes_3load_metaparameters_from_json, NULL, __pyx_n_s_genes); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 86, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_load_metaparameters_from_json, __pyx_t_1) < 0) __PYX_ERR(1, 86, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "genes.pyx":166
+ *         }
  * 
  * class Genes:             # <<<<<<<<<<<<<<
  * 
  *     Metaparameters = Metaparameters
  */
-  __pyx_t_1 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_Genes, __pyx_n_s_Genes, (PyObject *) NULL, __pyx_n_s_genes, (PyObject *) NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 126, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_Genes, __pyx_n_s_Genes, (PyObject *) NULL, __pyx_n_s_genes, (PyObject *) NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "genes.pyx":128
+  /* "genes.pyx":168
  * class Genes:
  * 
  *     Metaparameters = Metaparameters             # <<<<<<<<<<<<<<
@@ -9682,241 +10325,241 @@ if (!__Pyx_RefNanny) {
  *     def __init__(self, num_sensors, num_outputs, metaparameters):
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_Metaparameters);
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 128, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_Metaparameters, __pyx_t_2) < 0) __PYX_ERR(1, 128, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_Metaparameters, __pyx_t_2) < 0) __PYX_ERR(1, 168, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":130
+  /* "genes.pyx":170
  *     Metaparameters = Metaparameters
  * 
  *     def __init__(self, num_sensors, num_outputs, metaparameters):             # <<<<<<<<<<<<<<
  *         if num_sensors is not None:
  *             self.network = Network(num_sensors, num_outputs)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_1__init__, 0, __pyx_n_s_Genes___init, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 130, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_1__init__, 0, __pyx_n_s_Genes___init, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_2) < 0) __PYX_ERR(1, 130, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_init, __pyx_t_2) < 0) __PYX_ERR(1, 170, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":138
+  /* "genes.pyx":178
  *         self.fitness = 0
  * 
  *     def setFitness(self, value):             # <<<<<<<<<<<<<<
  *         self.fitness = value
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_3setFitness, 0, __pyx_n_s_Genes_setFitness, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 138, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_3setFitness, 0, __pyx_n_s_Genes_setFitness, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setFitness, __pyx_t_2) < 0) __PYX_ERR(1, 138, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_setFitness, __pyx_t_2) < 0) __PYX_ERR(1, 178, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":141
+  /* "genes.pyx":181
  *         self.fitness = value
  * 
  *     def getFitness(self):             # <<<<<<<<<<<<<<
  *         return self.fitness
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_5getFitness, 0, __pyx_n_s_Genes_getFitness, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 141, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_5getFitness, 0, __pyx_n_s_Genes_getFitness, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_getFitness, __pyx_t_2) < 0) __PYX_ERR(1, 141, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_getFitness, __pyx_t_2) < 0) __PYX_ERR(1, 181, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":144
+  /* "genes.pyx":184
  *         return self.fitness
  * 
  *     def input_node_index(self, input_index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).input_node_index(input_index)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_7input_node_index, 0, __pyx_n_s_Genes_input_node_index, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 144, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_7input_node_index, 0, __pyx_n_s_Genes_input_node_index, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_input_node_index, __pyx_t_2) < 0) __PYX_ERR(1, 144, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_input_node_index, __pyx_t_2) < 0) __PYX_ERR(1, 184, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":148
+  /* "genes.pyx":188
  *         return deref(network.data).input_node_index(input_index)
  * 
  *     def output_node_index(self, index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return deref(network.data).output_node_index(index)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_9output_node_index, 0, __pyx_n_s_Genes_output_node_index, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_9output_node_index, 0, __pyx_n_s_Genes_output_node_index, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_output_node_index, __pyx_t_2) < 0) __PYX_ERR(1, 148, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_output_node_index, __pyx_t_2) < 0) __PYX_ERR(1, 188, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":152
+  /* "genes.pyx":192
  *         return deref(network.data).output_node_index(index)
  * 
  *     def feed_sensor_values(self, values, neurons=None):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         return network.feed_sensor_values(values, neurons)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_11feed_sensor_values, 0, __pyx_n_s_Genes_feed_sensor_values, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 152, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_11feed_sensor_values, 0, __pyx_n_s_Genes_feed_sensor_values, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 192, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__23);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_feed_sensor_values, __pyx_t_2) < 0) __PYX_ERR(1, 152, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__25);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_feed_sensor_values, __pyx_t_2) < 0) __PYX_ERR(1, 192, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":156
+  /* "genes.pyx":196
  *         return network.feed_sensor_values(values, neurons)
  * 
  *     def extract_output_values(self, neurons):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         num_inputs = deref(network.data).input_count() + 1
+ *         return network.extract_output_values(neurons)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_13extract_output_values, 0, __pyx_n_s_Genes_extract_output_values, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 156, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_13extract_output_values, 0, __pyx_n_s_Genes_extract_output_values, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_extract_output_values, __pyx_t_2) < 0) __PYX_ERR(1, 156, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_extract_output_values, __pyx_t_2) < 0) __PYX_ERR(1, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":163
+  /* "genes.pyx":201
  * 
  * 
  *     def add_connection(self, input_index, output_index):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_15add_connection, 0, __pyx_n_s_Genes_add_connection, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 163, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_15add_connection, 0, __pyx_n_s_Genes_add_connection, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_add_connection, __pyx_t_2) < 0) __PYX_ERR(1, 163, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_add_connection, __pyx_t_2) < 0) __PYX_ERR(1, 201, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":169
+  /* "genes.pyx":207
  *         return deref(network.data).add_connection(input_index, output_index, deref(meta.data))
  * 
  *     def perturb(self):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_17perturb, 0, __pyx_n_s_Genes_perturb, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 169, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_17perturb, 0, __pyx_n_s_Genes_perturb, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_perturb, __pyx_t_2) < 0) __PYX_ERR(1, 169, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_perturb, __pyx_t_2) < 0) __PYX_ERR(1, 207, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":174
+  /* "genes.pyx":212
  *         deref(network.data).perturb(deref(meta.data))
  * 
  *     def mutate(self):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Metaparameters meta = <Metaparameters>self._metaparameters
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_19mutate, 0, __pyx_n_s_Genes_mutate, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 174, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_19mutate, 0, __pyx_n_s_Genes_mutate, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 212, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_mutate, __pyx_t_2) < 0) __PYX_ERR(1, 174, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_mutate, __pyx_t_2) < 0) __PYX_ERR(1, 212, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":179
+  /* "genes.pyx":217
  *         return deref(network.data).mutate(deref(meta.data))
  * 
  *     def breed(self, other, _ignore=False):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
  *         cdef Network onetwork = <Network>self.network
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_21breed, 0, __pyx_n_s_Genes_breed, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 179, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_21breed, 0, __pyx_n_s_Genes_breed, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__34);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_breed, __pyx_t_2) < 0) __PYX_ERR(1, 179, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_2, __pyx_tuple__36);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_breed, __pyx_t_2) < 0) __PYX_ERR(1, 217, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":189
+  /* "genes.pyx":227
  *         return ret
  * 
  *     def distance(self, other):             # <<<<<<<<<<<<<<
  *         cdef Network network = <Network>self.network
- *         cdef Network onetwork = <Network>self.network
+ *         cdef Network onetwork = <Network>other.network
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_23distance, 0, __pyx_n_s_Genes_distance, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 189, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_23distance, 0, __pyx_n_s_Genes_distance, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_distance, __pyx_t_2) < 0) __PYX_ERR(1, 189, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_distance, __pyx_t_2) < 0) __PYX_ERR(1, 227, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":195
+  /* "genes.pyx":233
  *         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
  * 
  *     def clone(self):             # <<<<<<<<<<<<<<
  *         ret = Genes(None, None, self._metaparameters)
  *         cdef Network rnetwork = <Network>ret.network
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_25clone, 0, __pyx_n_s_Genes_clone, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 195, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_25clone, 0, __pyx_n_s_Genes_clone, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_clone, __pyx_t_2) < 0) __PYX_ERR(1, 195, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_clone, __pyx_t_2) < 0) __PYX_ERR(1, 233, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":202
+  /* "genes.pyx":240
  *         return ret
  * 
  *     def as_json(self):             # <<<<<<<<<<<<<<
+ *         """ returns self as a dict """
  *         cdef Network network = <Network>self.network
- *         connections = []
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_27as_json, 0, __pyx_n_s_Genes_as_json, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 202, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_27as_json, 0, __pyx_n_s_Genes_as_json, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_as_json, __pyx_t_2) < 0) __PYX_ERR(1, 202, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_as_json, __pyx_t_2) < 0) __PYX_ERR(1, 240, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":221
- *         }
+  /* "genes.pyx":247
+ *         return base
  * 
  *     def save(self, out_stream, encoder=json):             # <<<<<<<<<<<<<<
  *         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
  *         as_json = self.as_json()
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_29save, 0, __pyx_n_s_Genes_save, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 221, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_29save, 0, __pyx_n_s_Genes_save, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults), 1)) __PYX_ERR(1, 221, __pyx_L1_error)
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 221, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults), 1)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_Defaults(__pyx_defaults, __pyx_t_2)->__pyx_arg_encoder = __pyx_t_3;
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
-  __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_2, __pyx_pf_5genes___defaults__);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_save, __pyx_t_2) < 0) __PYX_ERR(1, 221, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_2, __pyx_pf_5genes_4__defaults__);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_save, __pyx_t_2) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":227
+  /* "genes.pyx":253
  *         out_stream.flush()
  * 
  *     def load_from_json(json_object, metaparameters):             # <<<<<<<<<<<<<<
  *         """ loads from a dict-like object """
  *         ret = Genes(0, 0, metaparameters)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_31load_from_json, 0, __pyx_n_s_Genes_load_from_json, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 227, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_31load_from_json, 0, __pyx_n_s_Genes_load_from_json, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_load_from_json, __pyx_t_2) < 0) __PYX_ERR(1, 227, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_load_from_json, __pyx_t_2) < 0) __PYX_ERR(1, 253, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":247
+  /* "genes.pyx":273
  *         return ret
  * 
  *     def load(in_stream, metaparameters, decoder=json):             # <<<<<<<<<<<<<<
+ * 
  *         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
- *         as_json = decoder.load(in_stream)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_33load, 0, __pyx_n_s_Genes_load, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 247, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_5genes_5Genes_33load, 0, __pyx_n_s_Genes_load, NULL, __pyx_n_s_genes, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults1), 1)) __PYX_ERR(1, 247, __pyx_L1_error)
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 247, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_2, sizeof(__pyx_defaults1), 1)) __PYX_ERR(1, 273, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_json); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_CyFunction_Defaults(__pyx_defaults1, __pyx_t_2)->__pyx_arg_decoder = __pyx_t_3;
   __Pyx_GIVEREF(__pyx_t_3);
   __pyx_t_3 = 0;
-  __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_2, __pyx_pf_5genes_2__defaults__);
-  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_load, __pyx_t_2) < 0) __PYX_ERR(1, 247, __pyx_L1_error)
+  __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_2, __pyx_pf_5genes_6__defaults__);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_load, __pyx_t_2) < 0) __PYX_ERR(1, 273, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "genes.pyx":126
- *         return neurons
+  /* "genes.pyx":166
+ *         }
  * 
  * class Genes:             # <<<<<<<<<<<<<<
  * 
  *     Metaparameters = Metaparameters
  */
-  __pyx_t_2 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_Genes, __pyx_empty_tuple, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 126, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_Genes, __pyx_empty_tuple, __pyx_t_1, NULL, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 166, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Genes, __pyx_t_2) < 0) __PYX_ERR(1, 126, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Genes, __pyx_t_2) < 0) __PYX_ERR(1, 166, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -10848,29 +11491,6 @@ static PyObject *__Pyx_CyFunction_New(PyMethodDef *ml, int flags, PyObject* qual
     return op;
 }
 
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
-}
-#endif
-
 /* PyFunctionFastCall */
 #if CYTHON_FAST_PYCALL
 static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
@@ -11010,35 +11630,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 }
 #endif
 
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
-}
-
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
@@ -11056,6 +11647,51 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
             "NULL result without error in PyObject_Call");
     }
     return result;
+}
+#endif
+
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
+/* PyCFunctionFastCall */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
 }
 #endif
 
@@ -11099,143 +11735,34 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
-/* GetItemInt */
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
 }
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
-}
-#endif
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
 
 /* PyErrFetchRestore */
 #if CYTHON_FAST_THREAD_STATE
@@ -11420,6 +11947,372 @@ bad:
 }
 #endif
 
+/* PyDictVersioning */
+#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
+}
+static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
+    PyObject **dictptr = NULL;
+    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
+    if (offset) {
+#if CYTHON_COMPILING_IN_CPYTHON
+        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
+#else
+        dictptr = _PyObject_GetDictPtr(obj);
+#endif
+    }
+    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
+}
+static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
+    PyObject *dict = Py_TYPE(obj)->tp_dict;
+    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
+        return 0;
+    return obj_dict_version == __Pyx_get_object_dict_version(obj);
+}
+#endif
+
+/* GetModuleGlobalName */
+#if CYTHON_USE_DICT_VERSIONS
+static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
+#else
+static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
+#endif
+{
+    PyObject *result;
+#if !CYTHON_AVOID_BORROWED_REFS
+#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
+    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    } else if (unlikely(PyErr_Occurred())) {
+        return NULL;
+    }
+#else
+    result = PyDict_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+#endif
+#else
+    result = PyObject_GetItem(__pyx_d, name);
+    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
+    if (likely(result)) {
+        return __Pyx_NewRef(result);
+    }
+    PyErr_Clear();
+#endif
+    return __Pyx_GetBuiltinName(name);
+}
+
+/* DictGetItem */
+#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
+static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
+    PyObject *value;
+    value = PyDict_GetItemWithError(d, key);
+    if (unlikely(!value)) {
+        if (!PyErr_Occurred()) {
+            if (unlikely(PyTuple_Check(key))) {
+                PyObject* args = PyTuple_Pack(1, key);
+                if (likely(args)) {
+                    PyErr_SetObject(PyExc_KeyError, args);
+                    Py_DECREF(args);
+                }
+            } else {
+                PyErr_SetObject(PyExc_KeyError, key);
+            }
+        }
+        return NULL;
+    }
+    Py_INCREF(value);
+    return value;
+}
+#endif
+
+/* PyIntBinop */
+#if !CYTHON_COMPILING_IN_PYPY
+static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, int inplace, int zerodivision_check) {
+    (void)inplace;
+    (void)zerodivision_check;
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            x = (long)((unsigned long)a - b);
+            if (likely((x^a) >= 0 || (x^~b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_subtract(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+#ifdef HAVE_LONG_LONG
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+#endif
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+#ifdef HAVE_LONG_LONG
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+#endif
+                    }
+                    CYTHON_FALLTHROUGH;
+                default: return PyLong_Type.tp_as_number->nb_subtract(op1, op2);
+            }
+        }
+                x = a - b;
+            return PyLong_FromLong(x);
+#ifdef HAVE_LONG_LONG
+        long_long:
+                llx = lla - llb;
+            return PyLong_FromLongLong(llx);
+#endif
+        
+        
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+            double result;
+            PyFPE_START_PROTECT("subtract", return NULL)
+            result = ((double)a) - (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
+}
+#endif
+
+/* RaiseTooManyValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+}
+
+/* RaiseNeedMoreValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* IterFinish */
+static CYTHON_INLINE int __Pyx_IterFinish(void) {
+#if CYTHON_FAST_THREAD_STATE
+    PyThreadState *tstate = __Pyx_PyThreadState_Current;
+    PyObject* exc_type = tstate->curexc_type;
+    if (unlikely(exc_type)) {
+        if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) {
+            PyObject *exc_value, *exc_tb;
+            exc_value = tstate->curexc_value;
+            exc_tb = tstate->curexc_traceback;
+            tstate->curexc_type = 0;
+            tstate->curexc_value = 0;
+            tstate->curexc_traceback = 0;
+            Py_DECREF(exc_type);
+            Py_XDECREF(exc_value);
+            Py_XDECREF(exc_tb);
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+    return 0;
+#else
+    if (unlikely(PyErr_Occurred())) {
+        if (likely(PyErr_ExceptionMatches(PyExc_StopIteration))) {
+            PyErr_Clear();
+            return 0;
+        } else {
+            return -1;
+        }
+    }
+    return 0;
+#endif
+}
+
+/* UnpackItemEndCheck */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
+    if (unlikely(retval)) {
+        Py_DECREF(retval);
+        __Pyx_RaiseTooManyValuesError(expected);
+        return -1;
+    } else {
+        return __Pyx_IterFinish();
+    }
+    return 0;
+}
+
+/* SliceObject */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(PyObject* obj,
+        Py_ssize_t cstart, Py_ssize_t cstop,
+        PyObject** _py_start, PyObject** _py_stop, PyObject** _py_slice,
+        int has_cstart, int has_cstop, CYTHON_UNUSED int wraparound) {
+#if CYTHON_USE_TYPE_SLOTS
+    PyMappingMethods* mp;
+#if PY_MAJOR_VERSION < 3
+    PySequenceMethods* ms = Py_TYPE(obj)->tp_as_sequence;
+    if (likely(ms && ms->sq_slice)) {
+        if (!has_cstart) {
+            if (_py_start && (*_py_start != Py_None)) {
+                cstart = __Pyx_PyIndex_AsSsize_t(*_py_start);
+                if ((cstart == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
+            } else
+                cstart = 0;
+        }
+        if (!has_cstop) {
+            if (_py_stop && (*_py_stop != Py_None)) {
+                cstop = __Pyx_PyIndex_AsSsize_t(*_py_stop);
+                if ((cstop == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
+            } else
+                cstop = PY_SSIZE_T_MAX;
+        }
+        if (wraparound && unlikely((cstart < 0) | (cstop < 0)) && likely(ms->sq_length)) {
+            Py_ssize_t l = ms->sq_length(obj);
+            if (likely(l >= 0)) {
+                if (cstop < 0) {
+                    cstop += l;
+                    if (cstop < 0) cstop = 0;
+                }
+                if (cstart < 0) {
+                    cstart += l;
+                    if (cstart < 0) cstart = 0;
+                }
+            } else {
+                if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                    goto bad;
+                PyErr_Clear();
+            }
+        }
+        return ms->sq_slice(obj, cstart, cstop);
+    }
+#endif
+    mp = Py_TYPE(obj)->tp_as_mapping;
+    if (likely(mp && mp->mp_subscript))
+#endif
+    {
+        PyObject* result;
+        PyObject *py_slice, *py_start, *py_stop;
+        if (_py_slice) {
+            py_slice = *_py_slice;
+        } else {
+            PyObject* owned_start = NULL;
+            PyObject* owned_stop = NULL;
+            if (_py_start) {
+                py_start = *_py_start;
+            } else {
+                if (has_cstart) {
+                    owned_start = py_start = PyInt_FromSsize_t(cstart);
+                    if (unlikely(!py_start)) goto bad;
+                } else
+                    py_start = Py_None;
+            }
+            if (_py_stop) {
+                py_stop = *_py_stop;
+            } else {
+                if (has_cstop) {
+                    owned_stop = py_stop = PyInt_FromSsize_t(cstop);
+                    if (unlikely(!py_stop)) {
+                        Py_XDECREF(owned_start);
+                        goto bad;
+                    }
+                } else
+                    py_stop = Py_None;
+            }
+            py_slice = PySlice_New(py_start, py_stop, Py_None);
+            Py_XDECREF(owned_start);
+            Py_XDECREF(owned_stop);
+            if (unlikely(!py_slice)) goto bad;
+        }
+#if CYTHON_USE_TYPE_SLOTS
+        result = mp->mp_subscript(obj, py_slice);
+#else
+        result = PyObject_GetItem(obj, py_slice);
+#endif
+        if (!_py_slice) {
+            Py_DECREF(py_slice);
+        }
+        return result;
+    }
+    PyErr_Format(PyExc_TypeError,
+        "'%.200s' object is unsliceable", Py_TYPE(obj)->tp_name);
+bad:
+    return NULL;
+}
+
 /* SetItemInt */
 static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
     int r;
@@ -11468,6 +12361,122 @@ static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObje
 #endif
     return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
 }
+
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* ObjectGetItem */
+#if CYTHON_USE_TYPE_SLOTS
+static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
+    PyObject *runerr;
+    Py_ssize_t key_value;
+    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
+    if (unlikely(!(m && m->sq_item))) {
+        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
+        return NULL;
+    }
+    key_value = __Pyx_PyIndex_AsSsize_t(index);
+    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
+        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
+    }
+    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
+        PyErr_Clear();
+        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
+    }
+    return NULL;
+}
+static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
+    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
+    if (likely(m && m->mp_subscript)) {
+        return m->mp_subscript(obj, key);
+    }
+    return __Pyx_PyObject_GetIndex(obj, key);
+}
+#endif
 
 /* PyIntBinop */
 #if !CYTHON_COMPILING_IN_PYPY
@@ -11619,248 +12628,6 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
     return PyObject_SetAttr(obj, attr_name, value);
 }
 #endif
-
-/* SliceObject */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_GetSlice(PyObject* obj,
-        Py_ssize_t cstart, Py_ssize_t cstop,
-        PyObject** _py_start, PyObject** _py_stop, PyObject** _py_slice,
-        int has_cstart, int has_cstop, CYTHON_UNUSED int wraparound) {
-#if CYTHON_USE_TYPE_SLOTS
-    PyMappingMethods* mp;
-#if PY_MAJOR_VERSION < 3
-    PySequenceMethods* ms = Py_TYPE(obj)->tp_as_sequence;
-    if (likely(ms && ms->sq_slice)) {
-        if (!has_cstart) {
-            if (_py_start && (*_py_start != Py_None)) {
-                cstart = __Pyx_PyIndex_AsSsize_t(*_py_start);
-                if ((cstart == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
-            } else
-                cstart = 0;
-        }
-        if (!has_cstop) {
-            if (_py_stop && (*_py_stop != Py_None)) {
-                cstop = __Pyx_PyIndex_AsSsize_t(*_py_stop);
-                if ((cstop == (Py_ssize_t)-1) && PyErr_Occurred()) goto bad;
-            } else
-                cstop = PY_SSIZE_T_MAX;
-        }
-        if (wraparound && unlikely((cstart < 0) | (cstop < 0)) && likely(ms->sq_length)) {
-            Py_ssize_t l = ms->sq_length(obj);
-            if (likely(l >= 0)) {
-                if (cstop < 0) {
-                    cstop += l;
-                    if (cstop < 0) cstop = 0;
-                }
-                if (cstart < 0) {
-                    cstart += l;
-                    if (cstart < 0) cstart = 0;
-                }
-            } else {
-                if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                    goto bad;
-                PyErr_Clear();
-            }
-        }
-        return ms->sq_slice(obj, cstart, cstop);
-    }
-#endif
-    mp = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(mp && mp->mp_subscript))
-#endif
-    {
-        PyObject* result;
-        PyObject *py_slice, *py_start, *py_stop;
-        if (_py_slice) {
-            py_slice = *_py_slice;
-        } else {
-            PyObject* owned_start = NULL;
-            PyObject* owned_stop = NULL;
-            if (_py_start) {
-                py_start = *_py_start;
-            } else {
-                if (has_cstart) {
-                    owned_start = py_start = PyInt_FromSsize_t(cstart);
-                    if (unlikely(!py_start)) goto bad;
-                } else
-                    py_start = Py_None;
-            }
-            if (_py_stop) {
-                py_stop = *_py_stop;
-            } else {
-                if (has_cstop) {
-                    owned_stop = py_stop = PyInt_FromSsize_t(cstop);
-                    if (unlikely(!py_stop)) {
-                        Py_XDECREF(owned_start);
-                        goto bad;
-                    }
-                } else
-                    py_stop = Py_None;
-            }
-            py_slice = PySlice_New(py_start, py_stop, Py_None);
-            Py_XDECREF(owned_start);
-            Py_XDECREF(owned_stop);
-            if (unlikely(!py_slice)) goto bad;
-        }
-#if CYTHON_USE_TYPE_SLOTS
-        result = mp->mp_subscript(obj, py_slice);
-#else
-        result = PyObject_GetItem(obj, py_slice);
-#endif
-        if (!_py_slice) {
-            Py_DECREF(py_slice);
-        }
-        return result;
-    }
-    PyErr_Format(PyExc_TypeError,
-        "'%.200s' object is unsliceable", Py_TYPE(obj)->tp_name);
-bad:
-    return NULL;
-}
-
-/* PyDictVersioning */
-#if CYTHON_USE_DICT_VERSIONS && CYTHON_USE_TYPE_SLOTS
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_tp_dict_version(PyObject *obj) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    return likely(dict) ? __PYX_GET_DICT_VERSION(dict) : 0;
-}
-static CYTHON_INLINE PY_UINT64_T __Pyx_get_object_dict_version(PyObject *obj) {
-    PyObject **dictptr = NULL;
-    Py_ssize_t offset = Py_TYPE(obj)->tp_dictoffset;
-    if (offset) {
-#if CYTHON_COMPILING_IN_CPYTHON
-        dictptr = (likely(offset > 0)) ? (PyObject **) ((char *)obj + offset) : _PyObject_GetDictPtr(obj);
-#else
-        dictptr = _PyObject_GetDictPtr(obj);
-#endif
-    }
-    return (dictptr && *dictptr) ? __PYX_GET_DICT_VERSION(*dictptr) : 0;
-}
-static CYTHON_INLINE int __Pyx_object_dict_version_matches(PyObject* obj, PY_UINT64_T tp_dict_version, PY_UINT64_T obj_dict_version) {
-    PyObject *dict = Py_TYPE(obj)->tp_dict;
-    if (unlikely(!dict) || unlikely(tp_dict_version != __PYX_GET_DICT_VERSION(dict)))
-        return 0;
-    return obj_dict_version == __Pyx_get_object_dict_version(obj);
-}
-#endif
-
-/* GetModuleGlobalName */
-#if CYTHON_USE_DICT_VERSIONS
-static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_version, PyObject **dict_cached_value)
-#else
-static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
-#endif
-{
-    PyObject *result;
-#if !CYTHON_AVOID_BORROWED_REFS
-#if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030500A1
-    result = _PyDict_GetItem_KnownHash(__pyx_d, name, ((PyASCIIObject *) name)->hash);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    } else if (unlikely(PyErr_Occurred())) {
-        return NULL;
-    }
-#else
-    result = PyDict_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-#endif
-#else
-    result = PyObject_GetItem(__pyx_d, name);
-    __PYX_UPDATE_DICT_CACHE(__pyx_d, result, *dict_cached_value, *dict_version)
-    if (likely(result)) {
-        return __Pyx_NewRef(result);
-    }
-    PyErr_Clear();
-#endif
-    return __Pyx_GetBuiltinName(name);
-}
-
-/* DictGetItem */
-#if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
-static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
-    PyObject *value;
-    value = PyDict_GetItemWithError(d, key);
-    if (unlikely(!value)) {
-        if (!PyErr_Occurred()) {
-            if (unlikely(PyTuple_Check(key))) {
-                PyObject* args = PyTuple_Pack(1, key);
-                if (likely(args)) {
-                    PyErr_SetObject(PyExc_KeyError, args);
-                    Py_DECREF(args);
-                }
-            } else {
-                PyErr_SetObject(PyExc_KeyError, key);
-            }
-        }
-        return NULL;
-    }
-    Py_INCREF(value);
-    return value;
-}
-#endif
-
-/* RaiseTooManyValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
-}
-
-/* IterFinish */
-static CYTHON_INLINE int __Pyx_IterFinish(void) {
-#if CYTHON_FAST_THREAD_STATE
-    PyThreadState *tstate = __Pyx_PyThreadState_Current;
-    PyObject* exc_type = tstate->curexc_type;
-    if (unlikely(exc_type)) {
-        if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) {
-            PyObject *exc_value, *exc_tb;
-            exc_value = tstate->curexc_value;
-            exc_tb = tstate->curexc_traceback;
-            tstate->curexc_type = 0;
-            tstate->curexc_value = 0;
-            tstate->curexc_traceback = 0;
-            Py_DECREF(exc_type);
-            Py_XDECREF(exc_value);
-            Py_XDECREF(exc_tb);
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#else
-    if (unlikely(PyErr_Occurred())) {
-        if (likely(PyErr_ExceptionMatches(PyExc_StopIteration))) {
-            PyErr_Clear();
-            return 0;
-        } else {
-            return -1;
-        }
-    }
-    return 0;
-#endif
-}
-
-/* UnpackItemEndCheck */
-static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
-    if (unlikely(retval)) {
-        Py_DECREF(retval);
-        __Pyx_RaiseTooManyValuesError(expected);
-        return -1;
-    } else {
-        return __Pyx_IterFinish();
-    }
-    return 0;
-}
 
 /* PyObject_GenericGetAttrNoDict */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000

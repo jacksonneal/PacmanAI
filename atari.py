@@ -22,9 +22,10 @@ class Game:
         return fitness + 20
     
     def calculateFitnessHelp(self, all):
+        networks = [ind.network for ind in all]
         num_threads = int(mp.cpu_count() - 1)
         pool = mp.Pool(num_threads)
-        res = pool.map(self.battle, all)
+        res = pool.map(self.battle, networks)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         pool.close()
@@ -42,7 +43,7 @@ class Game:
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         fm = open("boxing/metaparameters_300.json", "r")
-        meta = Genes.Metaparameters.load(fm)
+        meta = load_metaparameters(fm)
         fm.close()
         fg = open("boxing/sample_gene_300.json", "r")
         best = Genes.load(fg, meta)

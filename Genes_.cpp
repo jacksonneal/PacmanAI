@@ -318,7 +318,7 @@ double distance(_Network const& a, _Network const& b, _Metaparameters const& met
 		auto const soi = so.innov_number;
 		if (sci == soi)
 		{
-			weight_difference += std::abs(sc.weight - so.weight);
+			weight_difference += std::abs(double(sc.weight) - so.weight);
 			shared += 1;
 			++i;
 			++j;
@@ -336,7 +336,7 @@ double distance(_Network const& a, _Network const& b, _Metaparameters const& met
 			}
 		}
 	}
-	auto const excess = blen - j + alen - i;
+	auto const excess = double(blen - j + alen - i);
 	return (c1 * excess / n) + (c2 * disjoint / n) + (shared == 0 ? 0.0 : c3 * weight_difference / shared);
 }
 

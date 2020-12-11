@@ -18,6 +18,7 @@ def run_mountain_car(env, ind, render, time_limit=200):
     action_space = env.action_space
     neurons = None
     max_reached = observation[0]
+    j = ind.as_json()
     for t in range(time_limit):
         if render:
             env.render()
@@ -42,13 +43,15 @@ class MountainCarFitness:
         return fitness
 
     def calculateFitness(self, population, _):
+        networks = []
         all = []
         for list in population:
             for ind in list["individuals"]:
                 all.append(ind)
+                networks.append(ind.network)
         num_threads = int(mp.cpu_count() - 1)
         pool = mp.Pool(num_threads)
-        res = pool.map(self.battle, all)
+        res = pool.map(self.battle, networks)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         print(f"average fitness = {sum(res) / len(res)}")
@@ -64,7 +67,7 @@ if __name__ == "__main__":
     #        ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
     #        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
     fitness = MountainCarFitness()
-    optimizer = GeneticOptimizer(population, fitness, 100, 1)
+    optimizer = GeneticOptimizer(population, fitness, 100, 100)
     optimizer.initialize()
     optimizer.evolve()
     best = optimizer.getBestIndividual()

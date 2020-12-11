@@ -7,6 +7,7 @@ from Genes_ cimport distance
 from cpython cimport array
 from cython.operator cimport dereference as deref, preincrement as inc
 from libcpp.vector cimport vector
+from libc.string cimport memcpy 
 import array
 import json
 
@@ -51,31 +52,6 @@ cdef class Metaparameters:
         self.data.mutate_loop = none_or(mutate_loop, 1)
         self.data.innovation_number = 0
 
-    def load_from_json(as_json):
-        ret = Metaparameters(
-            c1=as_json.get("c1"),
-            c2=as_json.get("c2"),
-            c3=as_json.get("c3"),
-            perturbation_chance=as_json.get("perturbation_chance"),
-            perturbation_stdev=as_json.get("perturbation_stdev"),
-            reset_weight_chance=as_json.get("reset_weight_chance"),
-            new_link_chance=as_json.get("new_link_chance"),
-            bias_link_chance=as_json.get("bias_link_chance"),
-            new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
-            new_node_chance=as_json.get("new_node_chance"),
-            disable_mutation_chance=as_json.get("disable_mutation_chance"),
-            enable_mutation_chance=as_json.get("enable_mutation_chance"),
-            allow_recurrent=as_json.get("allow_recurrent"),
-            mutate_loop=as_json.get("mutate_loop")
-        )
-        if "innovation_number" in as_json:
-            ret.data.innovation_number = as_json["innovation_number"]
-        return ret
-
-    def load(in_stream, decoder=json):
-        as_json = decoder.load(in_stream)
-        return Metaparameters.load_from_json(as_json)
-
     def as_json(self):
         return {
             "innovation_number": self.data.innovation_number,
@@ -103,14 +79,55 @@ cdef class Metaparameters:
     def reset_tracking(self):
         self.data.reset_tracking()
 
+def load_metaparameters(in_stream, decoder=json):
+    as_json = decoder.load(in_stream)
+    return load_metaparameters_from_json(as_json)
+
+def load_metaparameters_from_json(as_json):
+    ret = Metaparameters(
+        c1=as_json.get("c1"),
+        c2=as_json.get("c2"),
+        c3=as_json.get("c3"),
+        perturbation_chance=as_json.get("perturbation_chance"),
+        perturbation_stdev=as_json.get("perturbation_stdev"),
+        reset_weight_chance=as_json.get("reset_weight_chance"),
+        new_link_chance=as_json.get("new_link_chance"),
+        bias_link_chance=as_json.get("bias_link_chance"),
+        new_link_weight_stdev=as_json.get("new_link_weight_stdev"),
+        new_node_chance=as_json.get("new_node_chance"),
+        disable_mutation_chance=as_json.get("disable_mutation_chance"),
+        enable_mutation_chance=as_json.get("enable_mutation_chance"),
+        allow_recurrent=as_json.get("allow_recurrent"),
+        mutate_loop=as_json.get("mutate_loop")
+    )
+    if "innovation_number" in as_json:
+        ret.data.innovation_number = as_json["innovation_number"]
+    return ret
+
 cdef class Network:
     cdef _Network* data
 
-    def __cinit__(self, num_sensors, num_outputs):
+    def __cinit__(self, num_sensors, num_outputs, total_nodes=None, connections_data=None):
         self.data = new _Network(num_sensors, num_outputs)
+        cdef connection_t conn
+        if total_nodes is not None:
+            self.data._dynamic_nodes.resize(total_nodes - self.data.input_count() - 1)
+            for in_node, out_node, weight, enabled, innov in connections_data:
+                conn.in_node = in_node
+                conn.out_node = out_node
+                conn.weight = weight
+                conn.enabled = enabled
+                conn.innov_number = innov
+                self.data._connections.push_back(conn)
+            self.data._synchronize_connections()
 
     def __dealloc__(self):
         del self.data
+
+    def extract_output_values(self, neurons):
+        num_inputs = self.data.input_count() + 1
+        num_outputs = self.data.output_count()
+        return neurons[num_inputs: num_inputs + num_outputs]
 
     def feed_sensor_values(self, values, neurons=None):
         """ Run the network with the given input through the given neurons (creates them if not given), returns neuron values """
@@ -122,6 +139,29 @@ cdef class Network:
         cdef array.array arr = <array.array?>neurons
         self.data.feed_sensor_values(arr.data.as_floats)
         return neurons
+
+    def __reduce__(self):
+        return (self.__class__, (self.data.input_count(), self.data.output_count(), self.data.total_neurons(), self.get_connections()))
+
+    def get_connections(self):
+        connections = []
+        net_connections = &self.data._connections
+        begin = net_connections.begin()
+        end = net_connections.end()
+        while begin != end:
+            conn = deref(begin)
+            connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
+            inc(begin)
+        return connections
+
+    def as_json(self):
+        """ returns self as a dict """
+        return {
+            "nodeCount": self.data.total_neurons(), 
+            "inputCount": self.data.input_count(), 
+            "outputCount": self.data.output_count(), 
+            "connections": self.get_connections()
+        }
 
 class Genes:
 
@@ -155,9 +195,7 @@ class Genes:
 
     def extract_output_values(self, neurons):
         cdef Network network = <Network>self.network
-        num_inputs = deref(network.data).input_count() + 1
-        num_outputs = deref(network.data).output_count()
-        return neurons[num_inputs: num_inputs + num_outputs]
+        return network.extract_output_values(neurons)
 
 
     def add_connection(self, input_index, output_index):
@@ -188,7 +226,7 @@ class Genes:
 
     def distance(self, other):
         cdef Network network = <Network>self.network
-        cdef Network onetwork = <Network>self.network
+        cdef Network onetwork = <Network>other.network
         cdef Metaparameters meta = <Metaparameters>self._metaparameters
         return distance(deref(network.data), deref(onetwork.data), deref(meta.data))
 
@@ -200,23 +238,11 @@ class Genes:
         return ret
 
     def as_json(self):
-        cdef Network network = <Network>self.network
-        connections = []
-        net_connections = &deref(network.data)._connections
-        begin = net_connections.begin()
-        end = net_connections.end()
-        while begin != end:
-            conn = deref(begin)
-            connections.append([conn.in_node, conn.out_node, conn.weight, conn.enabled, conn.innov_number])
-            inc(begin)
         """ returns self as a dict """
-        return {
-            "nodeCount": network.data.total_neurons(), 
-            "inputCount": network.data.input_count(), 
-            "outputCount": network.data.output_count(), 
-            "connections": connections, 
-            "fitness": self.fitness
-        }
+        cdef Network network = <Network>self.network
+        base = network.as_json()
+        base["fitness"] = self.fitness
+        return base
 
     def save(self, out_stream, encoder=json):
         """ save to the stream using the given encoder, encoder must define dumps function that takes in a JSON-like object"""
@@ -229,9 +255,9 @@ class Genes:
         ret = Genes(0, 0, metaparameters)
         cdef Network network = <Network>ret.network
         net_connections = &deref(network.data)._connections
-        net_connections.resize(json_object["nodeCount"])
         network.data._num_inputs = json_object["inputCount"]
         network.data._num_outputs = json_object["outputCount"]
+        network.data._dynamic_nodes.resize(json_object["nodeCount"] - network.data.input_count() - 1)
         cdef connection_t conn
         for in_node, out_node, weight, enabled, innov in json_object["connections"]:
             conn.in_node = in_node
@@ -245,6 +271,7 @@ class Genes:
         return ret
 
     def load(in_stream, metaparameters, decoder=json):
+        
         """ load from stream using given decoder, decoder must define load function that takes in a stream and returns a dict-like object"""
         as_json = decoder.load(in_stream)
         return Genes.load_from_json(as_json, metaparameters)

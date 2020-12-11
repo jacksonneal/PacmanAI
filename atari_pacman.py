@@ -73,12 +73,14 @@ class Game:
             return
         sys.stdout.flush()
         all = []
+        networks = []
         for list in population:
             for ind in list["individuals"]:
                 all.append(ind)
+                networks.append(ind.network)
         num_threads = int(mp.cpu_count() - 1)
         pool = mp.Pool(num_threads)
-        res = pool.map(self.battle, all)
+        res = pool.map(self.battle, networks)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         average = mean(res)
