@@ -13,7 +13,7 @@ import time
 
 class GeneticOptimizer:
 
-    def __init__(self, population, fitnessCalculator, maxGenerations, fitnessThreshold=9999999999999):
+    def __init__(self, population, fitnessCalculator, maxGenerations, fitnessThreshold=9999999999999, populationSize=None):
         """ Initialize the optimizer
         :param population - set of starting genes, all of same initial species
         :param fitnessCalculator - capable of scoring a population of individuals
@@ -27,7 +27,7 @@ class GeneticOptimizer:
         self.speciesCount = 1
         self.fitnessCalculator = fitnessCalculator
         self.generationCount = 0
-        self.populationSize = len(population)
+        self.populationSize = len(population) if populationSize is None else populationSize
         self.maxGenerations = maxGenerations
         self.fitnessThreshold = fitnessThreshold
         self.best = population[randint(0, len(population) - 1)]
@@ -90,12 +90,13 @@ class GeneticOptimizer:
 
             # Eliminate worst individual
             # TODO: eliminate worst individual from population, not from each species
-            candidates = individuals[(len(individuals) / 4):]
+            candidates = individuals[m.floor(len(individuals) / 4):]
             # candidates = individuals
             # candidates = individuals
             # Autocopy best individual for large species
             if len(individuals) > 5:
-                speciesOffspring.append(individuals[-1].clone())
+                speciesOffspring.extend(individuals[m.floor(5 * len(individuals) / 6): len(individuals)])
+                # speciesOffspring.append(individuals[-1].clone())
             # if len(individuals) > 2:
             #    candidates = individuals[1:]
 
@@ -107,7 +108,7 @@ class GeneticOptimizer:
                     crossRand = random.uniform(0, 1)
                     connMutateRand = random.uniform(0, 1)
                     if crossRand < .75:
-                        if crossRand < .001:
+                        if crossRand < .05:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
                             child = selected.breed(randMate, (selected.getFitness() > randMate.getFitness()))
@@ -117,7 +118,7 @@ class GeneticOptimizer:
                     else:
                         child = selected.clone()
                     # if connMutateRand < .80:
-                    child = child.mutate()
+                    child.mutate()
                     speciesOffspring.append(child)
             allOffspring.extend(speciesOffspring)
 

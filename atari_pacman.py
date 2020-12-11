@@ -23,9 +23,12 @@ class Game:
         fitness = 0
         observation = env.reset()
         neurons = None
+        # feed_time = 0
+        # game_time = 0
         while True:
             if render:
                 env.render()
+            # t0 = time.time()
             neurons = ind.feed_sensor_values(observation, neurons)
             result = ind.extract_output_values(neurons)
             up = result[0] > 0.5 and result[0] > result[3]
@@ -52,13 +55,15 @@ class Game:
                 action = 3
             else:
                 action = 0
+            t1 = time.time()
             observation, reward, done, info = env.step(action)
-            if reward >= 200:
-                ghosts_eaten = math.floor(reward / 200)
-                reward -= ghosts_eaten * 200
-            fitness += reward
+            t2 = time.time()
+            # feed_time += (t1 - t0)
+            # game_time += (t2 - t1)
+            fitness += reward % 200
             if done:
                 break
+        # print(f"{feed_time}, {game_time}")
         print(fitness, file=sys.stderr)
         return fitness
 
@@ -68,12 +73,14 @@ class Game:
             return
         sys.stdout.flush()
         all = []
+        networks = []
         for list in population:
             for ind in list["individuals"]:
                 all.append(ind)
+                networks.append(ind.network)
         num_threads = int(mp.cpu_count() - 1)
         pool = mp.Pool(num_threads)
-        res = pool.map(self.battle, all)
+        res = pool.map(self.battle, networks)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         average = mean(res)
@@ -83,14 +90,14 @@ class Game:
 
 if __name__ == "__main__":
     if len(sys.argv) == 2:
-        fg = open("atari_pacman_best.json", "r")
-        fm = open("atari_pacman_meta.json", "r")
+        fg = open("sample_gene_446.json", "r")
+        fm = open("metaparameters_446.json", "r")
         meta = Genes.Metaparameters.load(fm)
         fm.close()
         base = Genes.load(fg, meta)
         fg.close()
         game = Game()
-        run_game(game.environment, base, True, 999999999999999)
+        game.battle(base, True)
         game.environment.close()
 
     else:
@@ -99,8 +106,10 @@ if __name__ == "__main__":
         if len(sys.argv) < 2:
             base = Genes(inputs, outputs, Genes.Metaparameters(
                 perturbation_chance=0.5, 
-                perturbation_stdev=0.5, 
-                new_link_weight_stdev=4, 
+                perturbation_stdev=0.5,
+                reset_weight_chance=0.05,
+                new_link_weight_stdev=4,
+                mutate_loop=6,
                 new_node_chance=0.5,
                 new_link_chance=0.5,
                 c1=2.2, c2=2.2, c3=1.2,
@@ -109,13 +118,15 @@ if __name__ == "__main__":
             population = [base.clone() for i in range(150)]
             for ind in population:
                 for _ in range(50):
-                    ind.mutate()
+                    ind._add_connection()
+                for _ in range(30):
+                    ind._add_node()
         else:
             population = []
-            f = open("metaparameters_98.json", "r")
+            f = open("metaparameters_652.json", "r")
             metaparameters = Genes.Metaparameters.load(f)
             f.close()
-            f = open("sample_population_98.json", "r")
+            f = open("sample_population_652.json", "r")
             obj = json.load(f)
             f.close()
             population = []
