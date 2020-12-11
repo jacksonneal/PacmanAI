@@ -118,7 +118,7 @@ class GeneticOptimizer:
                     else:
                         child = selected.clone()
                     # if connMutateRand < .80:
-                    child = child.mutate()
+                    child.mutate()
                     speciesOffspring.append(child)
             allOffspring.extend(speciesOffspring)
 
