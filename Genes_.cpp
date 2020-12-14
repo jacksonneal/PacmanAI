@@ -234,7 +234,7 @@ _Network breed(_Network const& a, _Network const& b, double fitness_a, double fi
 		else if (sci < soi)
 		{
 			++i;
-			if (fitness_a > fitness_b || (fitness_a == fitness_b) && flip_coin(0.5))
+			if (fitness_a > fitness_b || ((fitness_a == fitness_b) && flip_coin(0.5)))
 			{
 				ret_add_connection(sc);
 			}
@@ -242,7 +242,7 @@ _Network breed(_Network const& a, _Network const& b, double fitness_a, double fi
 		else
 		{
 			++j;
-			if (fitness_a < fitness_b || (fitness_a == fitness_b) && flip_coin(0.5))
+			if (fitness_a < fitness_b || ((fitness_a == fitness_b) && flip_coin(0.5)))
 			{
 				ret_add_connection(so);
 			}
