@@ -199,7 +199,6 @@ class Genes:
         cdef Network network = <Network>self.network
         return network.extract_output_values(neurons)
 
-
     def add_connection(self, input_index, output_index):
         cdef Network network = <Network>self.network
         cdef Metaparameters meta = <Metaparameters>self._metaparameters

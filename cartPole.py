@@ -43,9 +43,11 @@ class CartPoleFitness:
 base = Genes(4, 2, Genes.Metaparameters(perturbation_chance=0.5, perturbation_stdev=0.5, new_link_weight_stdev=4, c1=2, c2=2, c3=0.4))
 population = [base.clone() for i in range(150)]
 optimizer = GeneticOptimizer(population, CartPoleFitness(), 20, 499.99)
+optimizer.saveInterval = 100000
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()
+best_json = best.as_json()
 population = optimizer.getPopulation()
 fitness = run_cart_pole(best, True, 99999999999999999999999)
 

@@ -16,9 +16,58 @@ import sys
 class Game:
     def __init__(self):
         self.environment = AtariEnv(game="boxing")
+        self.skip_first = False
 
-    def battle(self, ind):
-        fitness = run_game(self.environment, ind, False)
+    def battle(self, ind, render=False):
+        env = self.environment
+        fitness = 0
+        observation = env.reset()
+        neurons = None
+        # feed_time = 0
+        # game_time = 0
+        while True:
+            if render:
+                env.render()
+            # t0 = time.time()
+            # neurons = ind.feed_sensor_values(observation, neurons)
+            # result = ind.extract_output_values(neurons)
+            result = [np.random.normal() for _ in range(5)]
+            up = result[0] > 0.5 and result[0] > result[3]
+            right = result[1] > 0.5 and result[1] > result[2]
+            left = result[2] > 0.5
+            down = result[3] > 0.5
+            if up:
+                if right:
+                    action = 6
+                elif left:
+                    action = 7
+                else:
+                    action = 2
+            elif down:
+                if right:
+                    action = 8
+                elif left:
+                    action = 9
+                else:
+                    action = 5
+            elif right:
+                action = 3
+            elif left:
+                action = 4
+            else:
+                action = 0
+            fire = result[4] > 0.5
+            if fire:
+                if action == 0:
+                    action = 1
+                else:
+                    action += 8
+            observation, reward, done, info = env.step(action)
+            fitness += reward
+            if done or fitness <= -10:
+                break
+        # print(f"{feed_time}, {game_time}")
+        print(fitness, file=sys.stderr)
         return fitness + 20
     
     def calculateFitnessHelp(self, all):
@@ -29,9 +78,13 @@ class Game:
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
         pool.close()
+        #print(res, file=sys.stderr)
         print(np.mean(res))
 
     def calculateFitness(self, population, _):
+        if self.skip_first:
+            self.skip_first = False
+            return
         all = []
         for list in population:
             for ind in list["individuals"]:
@@ -41,11 +94,15 @@ class Game:
 
 
 if __name__ == "__main__":
+    game = Game()
+    game.battle(None, True)
+    game.environment.close()
+    pass
     if len(sys.argv) > 1:
-        fm = open("boxing/metaparameters_300.json", "r")
+        fm = open("boxing2/metaparameters_300.json", "r")
         meta = load_metaparameters(fm)
         fm.close()
-        fg = open("boxing/sample_gene_300.json", "r")
+        fg = open("boxing2/sample_gene_300.json", "r")
         best = Genes.load(fg, meta)
         fg.close()
         game = Game()
@@ -54,12 +111,12 @@ if __name__ == "__main__":
         # fout = open("atari_best_194.json", "w")
         # best.save(fout)
         # fout.close()
-        run_game(game.environment, best, True, 999999999999999)
+        game.battle(best.network, True)
         game.environment.close()
 
     else:
         inputs = 128
-        outputs = 4
+        outputs = 5
         base = Genes(inputs, outputs, Genes.Metaparameters(
             perturbation_chance=0.5, 
             perturbation_stdev=0.5, 

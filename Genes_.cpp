@@ -91,7 +91,7 @@ void _Network::feed_sensor_values(float* const neurons) const noexcept
 		}
 		if (has_connections)
 		{
-			dynamic_neurons[node_index] = std::tanh(sum);
+			dynamic_neurons[node_index] = std::tanh(sum); // 1 / (1 + std::exp(-sum)); 
 		}
 	};
 

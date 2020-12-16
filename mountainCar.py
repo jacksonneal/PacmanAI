@@ -67,7 +67,9 @@ if __name__ == "__main__":
     #        ind.add_connection(ind.input_node_index(1), ind.output_node_index(output_node_index))
     #        ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(output_node_index))
     fitness = MountainCarFitness()
-    optimizer = GeneticOptimizer(population, fitness, 100, 100)
+    optimizer = GeneticOptimizer(population, fitness, 100, 110)
+    optimizer.save=False
+    optimizer.saveInterval=9999999
     optimizer.initialize()
     optimizer.evolve()
     best = optimizer.getBestIndividual()

@@ -111,10 +111,10 @@ class GeneticOptimizer:
                         if crossRand < .05:
                             randSpecies = self.population[randint(0, len(self.population) - 1)]
                             randMate = randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)]
-                            child = selected.breed(randMate, (selected.getFitness() > randMate.getFitness()))
+                            child = selected.breed(randMate)
                         else:
                             mate = candidates[randint(0, len(candidates) - 1)]
-                            child = selected.breed(mate, (selected.getFitness() > mate.getFitness()))
+                            child = selected.breed(mate)
                     else:
                         child = selected.clone()
                     # if connMutateRand < .80:
@@ -127,9 +127,9 @@ class GeneticOptimizer:
             rando = random.uniform(0, 1)
             if rando < .3:
                 randSpecies = self.population[randint(0, len(self.population) - 1)]
-                allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)])
+                allOffspring.append(randSpecies["individuals"][randint(0, len(randSpecies["individuals"]) - 1)].clone())
             else:
-                allOffspring.append(self.selector.select(all_inds, 2, 1)[0])
+                allOffspring.append(self.selector.select(all_inds, 2, 1)[0].clone())
 
         for offspring in allOffspring:
             compatible = False

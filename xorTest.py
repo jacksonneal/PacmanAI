@@ -21,8 +21,9 @@ population = [base.clone() for i in range(150)]
 #for ind in population:
 #    ind.add_connection(ind.input_node_index(0), ind.output_node_index(0))
 #    ind.add_connection(ind.input_node_index(1), ind.output_node_index(0))
-#   ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(0))
-optimizer = GeneticOptimizer(population, XorFitness(), 10000, 5.95)
+#    ind.add_connection(Genes.BIAS_INDEX, ind.output_node_index(0))
+optimizer = GeneticOptimizer(population, XorFitness(), 500, 5.95)
+optimizer.saveInterval = 999999999999
 optimizer.initialize()
 optimizer.evolve()
 best = optimizer.getBestIndividual()
@@ -32,4 +33,5 @@ for input, output in zip(inputs, outputs):
     neurons = best.feed_sensor_values(input)
     result = best.extract_output_values(neurons)[0]
     print(f"{input[0]} xor {input[1]} = {result}")
+print(best_json)
 pass

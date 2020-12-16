@@ -83,6 +83,7 @@ class Game:
         res = pool.map(self.battle, networks)
         for ind, fitness in zip(all, res):
             ind.setFitness(fitness)
+        fitnesses = [(ind.getFitness(), f) for ind, f in zip(all, res)]
         average = mean(res)
         print(f"average fitness {average}")
         pool.close()
